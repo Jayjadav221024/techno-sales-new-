@@ -74,7 +74,7 @@ export default function Contact({ onShowToast }) {
                 required
               />
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+            <div className="form-row">
               <div className="form-group">
                 <label className="form-label">Phone Number</label>
                 <input

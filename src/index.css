@@ -673,6 +673,7 @@ html {
   flex-direction: column;
   gap: 0.1rem;
   max-height: 70vh;
+  max-height: 70dvh;
   overflow-y: auto;
 
   background: linear-gradient(
@@ -760,6 +761,7 @@ html {
 .hero {
   position: relative;
   min-height: 90vh;
+  min-height: 90dvh;
   display: flex;
   align-items: center;
   padding: 8rem 0 4rem 0; /* Clears the floating navbar (now ends ~4.75rem down) */
@@ -835,7 +837,7 @@ html {
 }
 
 .hero-title {
-  font-size: 3.25rem;
+  font-size: clamp(2rem, 6vw, 3.25rem);
   font-weight: 800;
   line-height: 1.15;
   margin-bottom: 1.25rem;
@@ -1099,7 +1101,7 @@ html {
 
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(340px, 100%), 1fr));
   gap: 2rem;
 }
 
@@ -1221,7 +1223,7 @@ html {
 
 .features-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
   gap: 2rem;
 }
 
@@ -1271,7 +1273,7 @@ html {
    of wrapping 4 + 1 and leaving an orphan. */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(190px, 100%), 1fr));
   gap: 1.5rem;
 }
 
@@ -1472,7 +1474,7 @@ html {
 /* Blogs Section */
 .blogs-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr));
   gap: 2rem;
 }
 
@@ -1626,6 +1628,7 @@ html {
   left: 0;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   background-color: rgba(11, 15, 25, 0.85);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -1655,6 +1658,7 @@ html {
   transform: translateY(20px);
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   max-height: 90vh;
+  max-height: 90dvh;
   overflow-y: auto;
 }
 
@@ -1771,7 +1775,7 @@ footer {
 
 .footer-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
   gap: 2.5rem;
   margin-bottom: 3rem;
 }
@@ -1911,10 +1915,6 @@ footer {
     scroll-margin-top: 5rem;
   }
   
-  .hero-title {
-    font-size: 2.5rem;
-  }
-  
   .hero-stats-row {
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
@@ -1928,7 +1928,7 @@ footer {
 
 .partner-brands-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
   gap: 2rem;
   margin-top: 3rem;
 }
@@ -2066,7 +2066,7 @@ footer {
 }
 
 .partner-brand-name {
-  font-size: 1.6rem;
+  font-size: clamp(1.3rem, 3.5vw, 1.6rem);
   margin-bottom: 0.75rem;
   color: var(--color-ink-900);
   font-weight: 800;
