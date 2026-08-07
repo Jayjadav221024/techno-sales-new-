@@ -1,0 +1,58 @@
+/* ==========================================================================
+   Neue Montreal @font-face declarations.
+
+   NOT IMPORTED YET — ON PURPOSE.
+
+   This file is only wired up once the actual font files exist in
+   public/fonts/. Importing it before then makes the browser request files
+   that aren't there; because the app uses BrowserRouter, the SPA fallback
+   answers those requests with index.html and a 200, so the browser tries to
+   parse HTML as a font and logs:
+
+       Failed to decode downloaded font
+       OTS parsing error: invalid sfntVersion: 1008813135
+
+   (1008813135 is 0x3C21444F — the ASCII bytes "<!DO", i.e. <!DOCTYPE html>.)
+
+   TO ENABLE:
+     1. Put your licensed .woff2 files in public/fonts/ — see the README there
+        for the exact filenames.
+     2. Uncomment the `import './fonts.css'` line in src/main.jsx.
+
+   That's it; --font-family / --font-headings in index.css already list
+   'Neue Montreal' first.
+   ========================================================================== */
+
+@font-face {
+  font-family: 'Neue Montreal';
+  src: url('/fonts/NeueMontreal-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Neue Montreal';
+  src: url('/fonts/NeueMontreal-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Neue Montreal';
+  src: url('/fonts/NeueMontreal-Bold.woff2') format('woff2');
+  /* Covers 600–800 too; the site uses 800 in places and Neue Montreal has no
+     such weight, so this maps them onto Bold instead of synthesising one. */
+  font-weight: 600 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Neue Montreal';
+  src: url('/fonts/NeueMontreal-Italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}

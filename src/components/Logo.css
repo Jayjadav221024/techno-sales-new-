@@ -1,0 +1,158 @@
+.brand-logo-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-family);
+  user-select: none;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+/* Logo Symbol Animations */
+.logo-symbol-svg {
+  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+              filter 0.35s ease;
+  overflow: visible; /* let the hover glow spill past the 100x100 viewBox */
+}
+
+.brand-logo-container:hover .logo-symbol-svg {
+  transform: scale(1.08) rotate(5deg);
+  filter: drop-shadow(0 0 8px rgba(245, 130, 32, 0.55));
+}
+
+/* Arrows draw themselves in once on mount.
+   With pathLength="100" on the path, 100 is exactly the full stroke. */
+.logo-arrow-left,
+.logo-arrow-right {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: logoDrawArrow 1.3s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+.logo-arrow-right {
+  animation-delay: 0.16s;
+}
+
+@keyframes logoDrawArrow {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Core dot pulsing.
+   transform-box/origin are required: SVG elements default to the user-space
+   origin (0,0), so scale() would fling the dot toward the corner instead of
+   growing it in place. */
+.logo-core {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: corePulse 2.4s infinite ease-in-out;
+}
+
+@keyframes corePulse {
+  0%, 100% {
+    transform: scale(0.9);
+    opacity: 0.75;
+  }
+  50% {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+}
+
+.brand-logo-container:hover .logo-core {
+  animation-duration: 1.1s;
+}
+
+/* Logo Text styling */
+.logo-text-wrapper {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.logo-text-techno {
+  font-weight: 800;
+  font-size: 1.35rem;
+  letter-spacing: 0.05em;
+  color: #FFFFFF; /* fallback when background-clip:text is unsupported */
+  background-image: linear-gradient(
+    90deg,
+    #FFFFFF 0%,
+    #FFD9B0 35%,
+    #F58220 50%,
+    #FFD9B0 65%,
+    #FFFFFF 100%
+  );
+  /* A fixed-width tile that repeats, so shifting by exactly one tile loops
+     seamlessly — percentage positioning jumps at the wrap. */
+  background-size: 200px 100%;
+  background-repeat: repeat-x;
+  -webkit-background-clip: text;
+  background-clip: text;
+  background-position: 0 center;
+}
+
+/* The shine animates background-position, which is a PAINT property, not a
+   composited one — running it forever meant repainting the logo on every
+   frame inside a position:fixed header, and that in turn invalidated the
+   navbar's backdrop-filter each frame. It now only runs on hover. */
+.brand-logo-container:hover .logo-text-techno {
+  animation: logoShine 4.5s linear infinite;
+}
+
+/* Only knock out the text fill where the gradient can actually clip to it,
+   otherwise the wordmark disappears entirely. */
+@supports ((background-clip: text) or (-webkit-background-clip: text)) {
+  .logo-text-techno {
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+@keyframes logoShine {
+  from { background-position: 0 center; }
+  to   { background-position: 200px center; }
+}
+
+.logo-text-sales {
+  font-weight: 800;
+  font-size: 1.35rem;
+  letter-spacing: 0.05em;
+  color: var(--color-brand-400); /* Strictly Orange */
+  transition: color 0.3s ease;
+}
+
+.logo-text-sub {
+  display: block;
+  font-size: 0.65rem;
+  color: var(--color-ink-300); /* Strictly White/Silver-grey */
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  margin-top: 0.1rem;
+}
+
+.brand-logo-container:hover .logo-text-sales {
+  color: var(--color-brand-500); /* Shading of orange */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-symbol-svg,
+  .logo-arrow-left,
+  .logo-arrow-right,
+  .logo-core,
+  .logo-text-techno {
+    animation: none;
+    transition: none;
+  }
+
+  /* The draw-in starts fully hidden, so it must be reset or the mark vanishes */
+  .logo-arrow-left,
+  .logo-arrow-right {
+    stroke-dashoffset: 0;
+  }
+
+  .logo-core {
+    opacity: 1;
+    transform: none;
+  }
+}
