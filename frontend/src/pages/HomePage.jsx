@@ -53,35 +53,20 @@ export default function HomePage({ onOpenRFQ }) {
               or a bare stretch scrolls into view at the loop point. */}
           <div className="marquee-content">
             {[0, 1, 2, 3].map((pass) =>
-              BRAND_MARQUEE.map((brand, i) => (
+              BRAND_MARQUEE.map((brand) => (
                 <div
                   className="brand-logo-tile"
                   key={`${pass}-${brand.name}`}
                   aria-hidden={pass > 0 ? 'true' : undefined}
                 >
-                  {/* --i is the tile's slot in the flip rota: only one tile
-                      turns at a time and they take it in turns. Passes 0 and 2
-                      share a slot (as do 1 and 3) because the track loops by
-                      translating -50% — its two halves have to stay identical
-                      or the loop point shows a jump. Two tiles do share each
-                      slot, but they sit a half-track apart, which is wider
-                      than any viewport, so only one is ever on screen. */}
-                  <div
-                    className="brand-tile-inner"
-                    style={{ '--i': (pass % 2) * BRAND_MARQUEE.length + i }}
-                  >
-                    <div className="brand-tile-face">
-                      <Img
-                        src={brand.logo}
-                        alt={pass === 0 ? `${brand.name} logo` : ''}
-                        loading="lazy"
-                        width={158}
-                        height={70}
-                      />
-                    </div>
-                    <div className="brand-tile-face is-back" aria-hidden="true">
-                      <Img src={brand.logo} alt="" loading="lazy" width={158} height={70} />
-                    </div>
+                  <div className="brand-tile-face">
+                    <Img
+                      src={brand.logo}
+                      alt={pass === 0 ? `${brand.name} logo` : ''}
+                      loading="lazy"
+                      width={158}
+                      height={70}
+                    />
                   </div>
                 </div>
               ))
@@ -104,12 +89,22 @@ export default function HomePage({ onOpenRFQ }) {
         <div className="category-cards reveal-on-scroll">
           {CATEGORIES.map((cat) => (
             <Link to={`/products/${cat.id}`} className="glass-card category-card" key={cat.id}>
-              <h3>{cat.title}</h3>
-              <p>{cat.tagline}</p>
-              <span className="category-card-link">
-                Browse
-                <Icon name="arrowRight" size={15} />
-              </span>
+              <div className="category-card-image-wrapper">
+                <Img
+                  src={cat.image}
+                  alt={`${cat.title} category`}
+                  className="category-card-image"
+                  loading="lazy"
+                />
+              </div>
+              <div className="category-card-content">
+                <h3>{cat.title}</h3>
+                <p>{cat.tagline}</p>
+                <span className="category-card-link">
+                  Browse
+                  <Icon name="arrowRight" size={15} />
+                </span>
+              </div>
             </Link>
           ))}
         </div>
@@ -352,7 +347,7 @@ export default function HomePage({ onOpenRFQ }) {
               referrerPolicy="no-referrer-when-downgrade"
               allowFullScreen
             />
-            <div style={{ padding: '2rem' }}>
+            <div className="home-visit-details">
               <h3>Visit the Counter</h3>
               <p className="home-visit-address">
                 <Icon name="mapPin" size={18} />

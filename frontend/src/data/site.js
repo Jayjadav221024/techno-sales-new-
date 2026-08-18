@@ -396,6 +396,7 @@ export const CATEGORIES = [
     navLabel: 'Motors',
     title: 'Industrial Motors',
     tagline: 'Siemens, CG & ABB induction motors',
+    image: '/images/categories/industrial-motors.jpg',
     blurb: 'Energy-efficient IE2/IE3/IE4 induction motors from Siemens, Crompton Greaves and ABB — sized, stocked and supported for continuous plant duty across Ankleshwar GIDC.',
     longIntro: [
       "Techno Sales offers a wide range of high-quality electric motors designed for energy efficiency, durability, and consistent performance across diverse industrial applications. With decades of expertise in the electro-mechanical industry, we provide motors suitable for general-purpose use as well as heavy-duty operations.",
@@ -449,6 +450,7 @@ export const CATEGORIES = [
     navLabel: 'Cables & Wires',
     title: 'Polycab Cables & Wires',
     tagline: 'LT power, control & flexible wiring',
+    image: '/images/categories/polycab-cables.jpg',
     blurb: 'Authorized Polycab LT power cables, control cables and flexible copper wires — including instrumentation and FR/FRLS/HRFR cables for panels and switchboards.'
   },
   {
@@ -457,6 +459,7 @@ export const CATEGORIES = [
     navLabel: 'SIEMENS Switchgears',
     title: 'SIEMENS Switchgears',
     tagline: 'MCB, MCCB, ACB & contactors',
+    image: '/images/categories/siemens-switchgears.jpg',
     blurb: 'Authorized Siemens circuit protection — MCBs, MCCBs, ACBs, SIRIUS contactors and overload relays for industrial electrical safety and panel building.'
   },
   {
@@ -465,6 +468,7 @@ export const CATEGORIES = [
     navLabel: 'FRP Products',
     title: 'FRP Gratings & Cable Trays',
     tagline: 'Corrosion-proof structural solutions',
+    image: '/images/categories/frp-products.jpg',
     blurb: 'Anti-corrosive, non-conductive FRP gratings and pultruded cable trays for chemical and petrochemical plants, oil & gas, power plants, wastewater treatment plants, and textile & paper mills.'
   }
 ];

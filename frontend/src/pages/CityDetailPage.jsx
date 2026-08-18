@@ -174,16 +174,16 @@ export default function CityDetailPage({ onOpenRFQ }) {
 
           <div style={{ display: 'flex', gap: '3rem', margin: '2.5rem 0 2rem 0', flexWrap: 'wrap' }}>
             <div>
-              <div style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--text-main)' }}>4</div>
-              <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text-muted)' }}>Product Lines Supplied</div>
+              <div className="counter-value">4</div>
+              <div className="stat-label">Product Lines Supplied</div>
             </div>
             <div>
-              <div style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--text-main)' }}>{city.distance}</div>
-              <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text-muted)' }}>From Ankleshwar GIDC</div>
+              <div className="counter-value">{city.distance}</div>
+              <div className="stat-label">From Ankleshwar GIDC</div>
             </div>
             <div>
-              <div style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--text-main)' }}>{city.zones}</div>
-              <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text-muted)' }}>Industrial Zones Covered</div>
+              <div className="counter-value">{city.zones}</div>
+              <div className="stat-label">Industrial Zones Covered</div>
             </div>
           </div>
 
@@ -210,8 +210,8 @@ export default function CityDetailPage({ onOpenRFQ }) {
 
       {/* Products Available Grid */}
       <section className="container">
-        <div className="section-header" style={{ textAlign: 'center', marginBottom: '4rem' }}>
-          <h2 className="section-title" style={{ fontSize: '2rem', textTransform: 'uppercase', letterSpacing: '1px' }}>
+        <div className="section-header">
+          <h2 className="section-title">
             Products Available in {city.name}
           </h2>
           <div style={{ width: '60px', height: '3px', background: 'var(--accent-cyan)', margin: '1rem auto 0 auto', borderRadius: '2px' }} />
@@ -224,7 +224,7 @@ export default function CityDetailPage({ onOpenRFQ }) {
             const localizedDesc = `${product.desc.split('.')[0]}. Engineered and certified for plants in ${city.name} and surrounding estates.`;
 
             return (
-              <div key={product.id} className="glass-card" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+              <div key={product.id} className="glass-card product-card reveal-on-scroll">
                 <div style={{ height: '200px', width: '100%', position: 'relative', overflow: 'hidden' }}>
                   <img 
                     src={product.image} 
@@ -236,35 +236,37 @@ export default function CityDetailPage({ onOpenRFQ }) {
                   </div>
                 </div>
 
-                <div style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem', flexGrow: 1 }}>
-                  <span style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--accent-cyan)' }}>
-                    {product.category.toUpperCase()}
+                <div className="product-body" style={{ flexGrow: 1 }}>
+                  <span className="product-category">
+                    {product.category}
                   </span>
                   
-                  <h3 style={{ fontSize: '1.25rem', fontWeight: 800, margin: 0, color: 'var(--text-main)' }}>
+                  <h3 className="product-name">
                     {localizedName}
                   </h3>
                   
-                  <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: '1.6', margin: 0, flexGrow: 1 }}>
+                  <p className="product-desc" style={{ flexGrow: 1 }}>
                     {localizedDesc}
                   </p>
 
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', margin: '0.5rem 0' }}>
+                  <ul className="product-features" style={{ margin: '0.5rem 0' }}>
                     {product.specs.slice(0, 3).map((spec) => (
-                      <div key={spec} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-                        <Icon name="check" size={14} style={{ color: 'var(--color-success)' }} />
+                      <li key={spec}>
+                        <Icon name="check" size={14} />
                         {spec}
-                      </div>
+                      </li>
                     ))}
-                  </div>
+                  </ul>
 
-                  <button 
-                    className="btn btn-secondary btn-sm"
-                    onClick={() => onOpenRFQ(`Inquiry for ${localizedName}`)}
-                    style={{ marginTop: 'auto', alignSelf: 'flex-start' }}
-                  >
-                    View Specifications &rarr;
-                  </button>
+                  <div className="product-footer">
+                    <button 
+                      className="btn btn-secondary btn-sm"
+                      onClick={() => onOpenRFQ(`Inquiry for ${localizedName}`)}
+                      style={{ width: '100%' }}
+                    >
+                      View Specifications &rarr;
+                    </button>
+                  </div>
                 </div>
               </div>
             );

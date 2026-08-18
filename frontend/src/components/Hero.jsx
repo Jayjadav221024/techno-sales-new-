@@ -189,7 +189,7 @@ export default function Hero({ products, onSelectProduct, onOpenRFQ, searchQuery
                     alt={slideItem.imageAlt}
                     className="hero-visual-img"
                     loading={idx === 0 ? 'eager' : 'lazy'}
-                    fetchpriority={idx === 0 ? 'high' : 'auto'}
+                    fetchPriority={idx === 0 ? 'high' : 'auto'}
                   />
                 )}
               </div>

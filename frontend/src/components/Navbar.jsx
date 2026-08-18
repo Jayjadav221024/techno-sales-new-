@@ -253,7 +253,9 @@ export default function Navbar({ onOpenRFQ }) {
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
             aria-expanded={mobileMenuOpen}
+            style={{ gap: '0.25rem', fontSize: '0.8rem', fontWeight: 'bold' }}
           >
+            <span>Menu</span>
             <Icon name={mobileMenuOpen ? 'close' : 'menu'} size={22} />
           </button>
         </div>

@@ -4,7 +4,7 @@ export default function Img({
   className = "", 
   style = {}, 
   loading = "lazy", 
-  fetchpriority = "auto",
+  fetchPriority = "auto",
   width,
   height
 }) {
@@ -20,7 +20,7 @@ export default function Img({
         className={className} 
         style={style} 
         loading={loading} 
-        fetchpriority={fetchpriority}
+        fetchPriority={fetchPriority}
         width={width}
         height={height}
       />
@@ -39,7 +39,7 @@ export default function Img({
         className={className} 
         style={style} 
         loading={loading} 
-        fetchpriority={fetchpriority}
+        fetchPriority={fetchPriority}
         width={width}
         height={height}
         decoding="async"

@@ -32,12 +32,111 @@ export default function Footer() {
             <Icon name="mail" size={16} />
             <a href={COMPANY.emailHref}>{COMPANY.email}</a>
           </p>
-          <div className="footer-socials" style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem' }}>
-            <a href="https://www.facebook.com/profile.php?id=61577383764183" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(255,255,255,0.6)', transition: 'color 0.2s' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--accent-cyan)'} onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.6)'} aria-label="Facebook">
-              <Icon name="facebook" size={20} />
+          <div className="footer-socials" style={{ display: 'flex', gap: '0.75rem', marginTop: '1.5rem' }}>
+            <a 
+              href="https://www.facebook.com/profile.php?id=61577383764183" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center', 
+                width: '38px', 
+                height: '38px', 
+                borderRadius: '50%', 
+                background: 'rgba(255, 255, 255, 0.05)', 
+                color: '#FFFFFF', 
+                transition: 'all 0.3s ease' 
+              }} 
+              onMouseEnter={e => { e.currentTarget.style.background = 'var(--accent-cyan)'; e.currentTarget.style.transform = 'translateY(-3px)'; }} 
+              onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'; e.currentTarget.style.transform = 'translateY(0)'; }} 
+              aria-label="Facebook"
+            >
+              <Icon name="facebook" size={18} />
             </a>
-            <a href="https://www.linkedin.com/company/technosalesagency/" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(255,255,255,0.6)', transition: 'color 0.2s' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--accent-cyan)'} onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.6)'} aria-label="LinkedIn">
-              <Icon name="linkedin" size={20} />
+            <a 
+              href="https://www.linkedin.com/company/technosalesagency/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center', 
+                width: '38px', 
+                height: '38px', 
+                borderRadius: '50%', 
+                background: 'rgba(255, 255, 255, 0.05)', 
+                color: '#FFFFFF', 
+                transition: 'all 0.3s ease' 
+              }} 
+              onMouseEnter={e => { e.currentTarget.style.background = 'var(--accent-cyan)'; e.currentTarget.style.transform = 'translateY(-3px)'; }} 
+              onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'; e.currentTarget.style.transform = 'translateY(0)'; }} 
+              aria-label="LinkedIn"
+            >
+              <Icon name="linkedin" size={18} />
+            </a>
+            <a 
+              href="https://x.com/Techno_Sales21" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center', 
+                width: '38px', 
+                height: '38px', 
+                borderRadius: '50%', 
+                background: 'rgba(255, 255, 255, 0.05)', 
+                color: '#FFFFFF', 
+                transition: 'all 0.3s ease' 
+              }} 
+              onMouseEnter={e => { e.currentTarget.style.background = 'var(--accent-cyan)'; e.currentTarget.style.transform = 'translateY(-3px)'; }} 
+              onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'; e.currentTarget.style.transform = 'translateY(0)'; }} 
+              aria-label="Twitter"
+            >
+              <Icon name="twitter" size={18} />
+            </a>
+            <a 
+              href="https://www.instagram.com/technosales._/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center', 
+                width: '38px', 
+                height: '38px', 
+                borderRadius: '50%', 
+                background: 'rgba(255, 255, 255, 0.05)', 
+                color: '#FFFFFF', 
+                transition: 'all 0.3s ease' 
+              }} 
+              onMouseEnter={e => { e.currentTarget.style.background = 'var(--accent-cyan)'; e.currentTarget.style.transform = 'translateY(-3px)'; }} 
+              onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'; e.currentTarget.style.transform = 'translateY(0)'; }} 
+              aria-label="Instagram"
+            >
+              <Icon name="instagram" size={18} />
+            </a>
+            <a 
+              href="https://www.youtube.com/@TechnoSales-u9o8p" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center', 
+                width: '38px', 
+                height: '38px', 
+                borderRadius: '50%', 
+                background: 'rgba(255, 255, 255, 0.05)', 
+                color: '#FFFFFF', 
+                transition: 'all 0.3s ease' 
+              }} 
+              onMouseEnter={e => { e.currentTarget.style.background = 'var(--accent-cyan)'; e.currentTarget.style.transform = 'translateY(-3px)'; }} 
+              onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'; e.currentTarget.style.transform = 'translateY(0)'; }} 
+              aria-label="YouTube"
+            >
+              <Icon name="youtube" size={18} />
             </a>
           </div>
 

@@ -4,6 +4,7 @@ import PageHeader from '../components/PageHeader';
 import ProductCard from '../components/ProductCard';
 import CtaBand from '../components/CtaBand';
 import Icon from '../components/Icon';
+import Img from '../components/Img';
 import { PRODUCTS_DATA, CATEGORIES } from '../data/site';
 
 export default function ProductsPage({ onOpenRFQ }) {
@@ -39,12 +40,22 @@ export default function ProductsPage({ onOpenRFQ }) {
         <div className="category-cards">
           {CATEGORIES.map((cat) => (
             <Link to={`/products/${cat.id}`} className="glass-card category-card" key={cat.id}>
-              <h3>{cat.title}</h3>
-              <p>{cat.tagline}</p>
-              <span className="category-card-link">
-                Browse
-                <Icon name="arrowRight" size={15} />
-              </span>
+              <div className="category-card-image-wrapper">
+                <Img
+                  src={cat.image}
+                  alt={`${cat.title} category`}
+                  className="category-card-image"
+                  loading="lazy"
+                />
+              </div>
+              <div className="category-card-content">
+                <h3>{cat.title}</h3>
+                <p>{cat.tagline}</p>
+                <span className="category-card-link">
+                  Browse
+                  <Icon name="arrowRight" size={15} />
+                </span>
+              </div>
             </Link>
           ))}
         </div>

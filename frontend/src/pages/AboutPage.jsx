@@ -66,10 +66,10 @@ export default function AboutPage({ onOpenRFQ }) {
             alt="Techno Sales Warehouse Facility" 
             style={{ width: '100%', height: '100%', minHeight: '300px', objectFit: 'cover', display: 'block' }} 
           />
-          <div style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-            <span className="section-tag" style={{ color: 'var(--color-brand-400)', fontWeight: 700, fontSize: '0.75rem', letterSpacing: '0.1em', textTransform: 'uppercase' }}>OUR FACILITY</span>
-            <h3 style={{ fontSize: '1.75rem', margin: '0.5rem 0 1rem 0', fontWeight: 800 }}>Ankleshwar GIDC Warehouse</h3>
-            <p style={{ color: 'var(--text-muted)', lineHeight: '1.6', fontSize: '0.95rem', margin: 0 }}>
+          <div className="facility-details-card">
+            <span className="section-tag">OUR FACILITY</span>
+            <h3>Ankleshwar GIDC Warehouse</h3>
+            <p>
               Our central warehouse is strategically located in Ankleshwar GIDC. Stocked with high-efficiency AC motors, industrial switchgears, heavy-duty power cables, and flexible wires, it enables us to ensure fast delivery times and support local processing and manufacturing plants.
             </p>
           </div>

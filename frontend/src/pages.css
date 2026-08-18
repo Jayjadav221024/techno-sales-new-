@@ -118,7 +118,7 @@
 /* Category landing tiles */
 .category-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
   gap: 1.5rem;
   margin-bottom: 3.5rem;
 }
@@ -126,19 +126,50 @@
 .category-card {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  padding: 1.75rem;
+  padding: 0;
+  overflow: hidden;
+  height: 100%;
+}
+
+.category-card-image-wrapper {
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+  position: relative;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.category-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: var(--transition-smooth);
+}
+
+.category-card:hover .category-card-image {
+  transform: scale(1.06);
+}
+
+.category-card-content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  flex-grow: 1;
 }
 
 .category-card h3 {
-  font-size: 1.15rem;
+  font-size: 1.25rem;
   font-weight: 800;
+  margin: 0;
 }
 
 .category-card p {
   font-size: 0.9rem;
   color: var(--text-muted);
   flex-grow: 1;
+  line-height: 1.45;
+  margin: 0;
 }
 
 .category-card-link {
@@ -1493,6 +1524,85 @@ video {
   }
 }
 
+/* New responsive layout classes */
+.contact-form-card {
+  padding: 2.5rem;
+}
+
+.extra-intro-card,
+.extra-list-card {
+  padding: 2.5rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border-color);
+  borderRadius: 12px;
+}
+
+.facility-details-card {
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@media (max-width: 968px) {
+  .product-detail-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .product-detail-media img {
+    height: auto;
+    aspect-ratio: 16 / 10;
+  }
+
+  .easier-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .home-faq-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .blog-layout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .contact-form-card,
+  .extra-intro-card,
+  .extra-list-card,
+  .facility-details-card {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .blog-list-card {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .blog-list-media {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+  }
+}
+
+.home-visit-details {
+  padding: 2rem;
+}
+
+@media (max-width: 768px) {
+  .home-visit-details {
+    padding: 1.5rem;
+  }
+}
+
 /* Very small handsets (iPhone SE and below) */
 @media (max-width: 380px) {
   .container {
@@ -1506,4 +1616,105 @@ video {
   .nav-sheet {
     width: auto;
   }
+}
+
+/* Unified subheadings (H3s) in detail grids / cards / panels */
+.section-subheading {
+  font-family: var(--font-headings);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 1rem;
+}
+.section-subheading.accent-color {
+  color: var(--accent-cyan);
+}
+
+/* Unified body copy paragraphs */
+.content-paragraph {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+}
+.content-paragraph:last-child {
+  margin-bottom: 0;
+}
+
+/* Detailed specifications list */
+.detail-spec-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  list-style: none;
+  padding: 0;
+}
+.detail-spec-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.05rem;
+  color: var(--text-main);
+}
+
+/* Category Page helper classes */
+.subcategory-title {
+  color: var(--text-main);
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+.subcategory-desc {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* FAQ centered titles */
+.faq-section-title {
+  font-family: var(--font-headings);
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--accent-cyan);
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* Dedicated styles for about page facility warehouse subheading */
+.facility-details-card h3 {
+  font-family: var(--font-headings);
+  font-size: 1.75rem;
+  font-weight: 800;
+  margin: 0.5rem 0 1rem 0;
+}
+
+/* Locations page card styling */
+.location-card-title {
+  font-family: var(--font-headings);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin: 0;
+}
+
+.location-card-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.facility-details-card .section-tag {
+  color: var(--color-brand-400);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.facility-details-card p {
+  color: var(--text-muted);
+  line-height: 1.6;
+  font-size: 0.95rem;
+  margin: 0;
 }

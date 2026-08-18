@@ -40,27 +40,27 @@ export default function FaqPage({ onOpenRFQ }) {
         </div>
 
         {/* FAQ Support & Business Policies Explainer (Adds real details & meets word count requirements) */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '3rem', borderTop: '1px solid var(--border-color)', marginTop: '5rem', paddingTop: '4rem', paddingBottom: '2rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(320px, 100%), 1fr))', gap: '3rem', borderTop: '1px solid var(--border-color)', marginTop: '5rem', paddingTop: '4rem', paddingBottom: '2rem' }}>
           <div>
-            <h3 style={{ fontSize: '1.5rem', fontWeight: 800, margin: '0 0 1rem 0', color: 'var(--text-main)' }}>
+            <h3 className="section-subheading">
               Authorized Distributor Warranty & support
             </h3>
-            <p style={{ color: 'var(--text-muted)', lineHeight: '1.6', fontSize: '0.95rem', marginBottom: '1.25rem' }}>
+            <p className="content-paragraph">
               Because Techno Sales is an authorized distributor and channel partner for leading brands (including Siemens switchgear and Polycab cables), every product we supply carries the official, 100% genuine manufacturer factory warranty. In the event of a warranty claim or failure, our local Ankleshwar engineering team assists in the inspection and coordination directly with the manufacturer to resolve the claim quickly.
             </p>
-            <p style={{ color: 'var(--text-muted)', lineHeight: '1.6', fontSize: '0.95rem', margin: 0 }}>
+            <p className="content-paragraph">
               This warranty coverage protects your plant operations from the risks of counterfeit, refurbished, or unauthorized parallel imports that lack developer support and fail GIDC safety regulations.
             </p>
           </div>
 
           <div>
-            <h3 style={{ fontSize: '1.5rem', fontWeight: 800, margin: '0 0 1rem 0', color: 'var(--text-main)' }}>
+            <h3 className="section-subheading">
               Billing, GST, & Industrial Credit Terms
             </h3>
-            <p style={{ color: 'var(--text-muted)', lineHeight: '1.6', fontSize: '0.95rem', marginBottom: '1.25rem' }}>
+            <p className="content-paragraph">
               We issue fully compliant tax invoices with complete GST details for every dispatch. For registered corporate clients, contractors, and public sector undertakings across Gujarat, we offer structured credit accounts subject to routine financial verification. If you represent an active plant in Ankleshwar GIDC, Vapi GIDC, or other major manufacturing clusters, contact our accounts desk to discuss setting up localized billing terms.
             </p>
-            <p style={{ color: 'var(--text-muted)', lineHeight: '1.6', fontSize: '0.95rem', margin: 0 }}>
+            <p className="content-paragraph">
               Credit lines are reviewed annually based on trade volume and payment compliance, ensuring that GIDC operations maintain a smooth and uninterrupted flow of replacement parts, spares, and project materials.
             </p>
           </div>

@@ -89,21 +89,21 @@ export default function ProductDetailPage({ onOpenRFQ }) {
         {/* Detailed Sections: Intro, Applications, Why Choose, FAQs */}
         <div className="product-details-extra reveal-on-scroll" style={{ marginTop: '4rem', display: 'flex', flexDirection: 'column', gap: '3rem' }}>
           {product.intro && (
-            <div className="glass-card extra-intro-card" style={{ padding: '2.5rem', backdropFilter: 'blur(10px)', border: '1px solid var(--border-color)', borderRadius: '12px' }}>
-              <h3 style={{ fontSize: '1.5rem', marginBottom: '1.5rem', color: 'var(--accent-cyan)' }}>Overview</h3>
+            <div className="glass-card extra-intro-card">
+              <h3 className="section-subheading accent-color">Overview</h3>
               {product.intro.map((p, idx) => (
-                <p key={idx} style={{ fontSize: '1.05rem', lineHeight: '1.8', color: 'var(--text-muted)', marginBottom: idx === 0 ? '1.5rem' : '0' }}>{p}</p>
+                <p key={idx} className="content-paragraph">{p}</p>
               ))}
             </div>
           )}
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(280px, 100%), 1fr))', gap: '2rem' }}>
             {product.applications && (
-              <div className="glass-card extra-list-card" style={{ padding: '2.5rem', backdropFilter: 'blur(10px)', border: '1px solid var(--border-color)', borderRadius: '12px' }}>
-                <h3 style={{ fontSize: '1.5rem', marginBottom: '1.5rem', color: 'var(--accent-cyan)' }}>Key Applications</h3>
-                <ul className="spec-list" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', listStyle: 'none', padding: 0 }}>
+              <div className="glass-card extra-list-card">
+                <h3 className="section-subheading accent-color">Key Applications</h3>
+                <ul className="detail-spec-list">
                   {product.applications.map((app, idx) => (
-                    <li key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '1.05rem', color: 'var(--text-main)' }}>
+                    <li key={idx}>
                       <Icon name="check" size={16} style={{ color: 'var(--accent-cyan)' }} />
                       <span>{app}</span>
                     </li>
@@ -113,11 +113,11 @@ export default function ProductDetailPage({ onOpenRFQ }) {
             )}
 
             {product.whyChoose && (
-              <div className="glass-card extra-list-card" style={{ padding: '2.5rem', backdropFilter: 'blur(10px)', border: '1px solid var(--border-color)', borderRadius: '12px' }}>
-                <h3 style={{ fontSize: '1.5rem', marginBottom: '1.5rem', color: 'var(--accent-cyan)' }}>Why Choose Techno Sales?</h3>
-                <ul className="spec-list" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', listStyle: 'none', padding: 0 }}>
+              <div className="glass-card extra-list-card">
+                <h3 className="section-subheading accent-color">Why Choose Techno Sales?</h3>
+                <ul className="detail-spec-list">
                   {product.whyChoose.map((item, idx) => (
-                    <li key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '1.05rem', color: 'var(--text-main)' }}>
+                    <li key={idx}>
                       <Icon name="check" size={16} style={{ color: 'var(--accent-cyan)' }} />
                       <span>{item}</span>
                     </li>
@@ -129,26 +129,25 @@ export default function ProductDetailPage({ onOpenRFQ }) {
 
           {product.faqs && (
             <div className="product-faq-accordion-section">
-              <h3 style={{ fontSize: '1.8rem', marginBottom: '2rem', color: 'var(--accent-cyan)', textAlign: 'center' }}>Frequently Asked Questions</h3>
+              <h3 className="faq-section-title">Frequently Asked Questions</h3>
               <div className="faq-accordion" style={{ maxWidth: '800px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 {product.faqs.map((faq, idx) => {
                   const isOpen = faqOpenIndex === idx;
                   return (
-                    <div className={`glass-card faq-item${isOpen ? ' is-open' : ''}`} key={idx} style={{ border: '1px solid var(--border-color)', borderRadius: '8px' }}>
+                    <div className={`glass-card faq-item${isOpen ? ' is-open' : ''}`} key={idx}>
                       <h3>
-                        <button
-                          type="button"
-                          className="faq-question"
-                          onClick={() => setFaqOpenIndex(isOpen ? -1 : idx)}
-                          aria-expanded={isOpen}
-                          style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.25rem 1.5rem', background: 'none', border: 'none', color: 'var(--text-main)', fontSize: '1.1rem', cursor: 'pointer', textAlign: 'left' }}
-                        >
-                          <span>{faq.q}</span>
-                          <Icon name="chevronDown" size={18} className="faq-caret" style={{ transition: 'transform 0.3s', transform: isOpen ? 'rotate(180deg)' : 'none' }} />
-                        </button>
+                          <button
+                            type="button"
+                            className="faq-question"
+                            onClick={() => setFaqOpenIndex(isOpen ? -1 : idx)}
+                            aria-expanded={isOpen}
+                          >
+                            <span>{faq.q}</span>
+                            <Icon name="chevronDown" size={18} className="faq-caret" />
+                          </button>
                       </h3>
                       {isOpen && (
-                        <p className="faq-answer" style={{ padding: '0 1.5rem 1.25rem', color: 'var(--text-muted)', lineHeight: '1.6', fontSize: '1rem' }}>
+                        <p className="faq-answer">
                           {faq.a}
                         </p>
                       )}

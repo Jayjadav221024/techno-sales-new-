@@ -60,7 +60,7 @@ export default function Contact({ onShowToast }) {
         </div>
 
         {/* Interactive Contact Form */}
-        <div className="glass-card reveal-on-scroll" style={{ padding: '2.5rem' }}>
+        <div className="glass-card contact-form-card reveal-on-scroll">
           <h3 style={{ fontSize: '1.4rem', marginBottom: '1.5rem' }}>Send Technical Inquiry</h3>
           <form id="contact-form" onSubmit={handleSubmit}>
             <div className="form-group">
