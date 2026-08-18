@@ -1,0 +1,2297 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Sora:wght@400;500;600;700;800&display=swap');
+
+:root {
+  /* One family for body and headings. Plus Jakarta Sans / Sora stay in the
+     chain so the site keeps its current look until the licensed files land —
+     drop them and Neue Montreal wins automatically. */
+  --font-family: 'Neue Montreal', 'Plus Jakarta Sans', Arial, sans-serif;
+  --font-headings: 'Neue Montreal', 'Sora', Arial, sans-serif;
+  /* Vertical rhythm. One value for EVERY section — including the ones that
+     paint their own background band — so the gap between any two adjacent
+     sections is always 2 x --section-pad. */
+  --section-pad: 3.5rem;
+
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --border-radius-sm: 8px;
+  --border-radius-md: 12px;
+  --border-radius-lg: 20px;
+
+  /* User Defined Brand Colors */
+  --color-brand-600: #A34508;   /* text on tinted bg, white-on-orange fills */
+  --color-brand-500: #C4560A;   /* text, buttons, links — AA compliant */
+  --color-brand-400: #F58220;   /* decorative / large graphics only */
+  --color-brand-100: #FDF0E4;   /* tinted backgrounds */
+  --color-ink-900: #1A1825;     /* unified dark: replaces #2A2833 AND #00051C */
+  --color-ink-700: #2A2833;
+  --color-ink-500: #5C5A66;     /* replaces #767676 — passes on tinted bg */
+  --color-ink-300: #BFBFBF;
+  --color-surface: #FFFFFF;
+  --color-surface-alt: #F5F5F8;
+  --color-border: #D9D9D9;
+  --color-success: #1E8E3E;
+  --color-warning: #B26A00;
+  --color-danger: #C62828;
+}
+
+/* Theme Configuration */
+html[data-theme="dark"] {
+  --bg-main: var(--color-ink-900);
+  --bg-navbar: rgba(26, 24, 37, 0.85);
+  --text-main: var(--color-surface);
+  --text-muted: var(--color-ink-300);
+  --border-color: rgba(255, 255, 255, 0.08);
+  --accent-cyan: var(--color-brand-400);
+  --accent-amber: var(--color-brand-500);
+  --shadow-main: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --glass-glow: rgba(245, 130, 32, 0.15);
+  --input-bg: rgba(26, 24, 37, 0.6);
+  --modal-bg: var(--color-ink-700);
+
+  /* Frosted glass card surface */
+  --bg-card: rgba(42, 40, 51, 0.55);
+  --bg-card-solid: #26242F;
+  --bg-card-hover: rgba(52, 50, 63, 0.68);
+  --card-border: rgba(255, 255, 255, 0.14);
+  --card-highlight: rgba(255, 255, 255, 0.16);
+  --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+  --card-shadow-hover: 0 16px 48px rgba(245, 130, 32, 0.18);
+  --card-inset: rgba(0, 0, 0, 0.22);
+  --icon-tile: rgba(245, 130, 32, 0.18);
+  --icon-tile-border: rgba(245, 130, 32, 0.28);
+}
+
+html[data-theme="light"] {
+  --bg-main: #FFFFFF;
+  --bg-navbar: rgba(255, 255, 255, 0.95);
+  --text-main: var(--color-ink-900);
+  --text-muted: var(--color-ink-500);
+  --border-color: var(--color-border);
+  --accent-cyan: var(--color-brand-500);
+  --accent-amber: var(--color-brand-400);
+  --shadow-main: 0 8px 32px 0 rgba(26, 24, 37, 0.05);
+  --glass-glow: rgba(196, 86, 10, 0.05);
+  --input-bg: #FFFFFF;
+  --modal-bg: #FFFFFF;
+
+  /* Frosted glass card surface */
+  --bg-card: rgba(255, 255, 255, 0.55);
+  --bg-card-solid: #FCFBFA;               /* fallback when backdrop-filter is unsupported */
+  --bg-card-hover: rgba(255, 255, 255, 0.7);
+  --card-border: rgba(255, 255, 255, 0.7);
+  --card-highlight: rgba(255, 255, 255, 0.85);
+  --card-shadow: 0 8px 32px rgba(26, 24, 37, 0.09);
+  --card-shadow-hover: 0 16px 48px rgba(196, 86, 10, 0.14);
+  --card-inset: rgba(255, 255, 255, 0.35);  /* nested wells: image frames */
+  --icon-tile: rgba(245, 130, 32, 0.14);    /* tinted badge behind an icon */
+  --icon-tile-border: rgba(245, 130, 32, 0.22);
+}
+
+/* Global Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+  line-height: 1.5;
+
+}
+
+/* Ambient brand-tinted wash that the translucent cards sit on.
+   This lives on a fixed pseudo-element rather than `background-attachment:
+   fixed` on <body>. Fixed attachment forces a full-viewport repaint on every
+   scroll frame; a fixed-position layer gets its own compositor layer and is
+   simply re-used, costing nothing while scrolling. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-color: var(--bg-main);
+  background-image:
+    radial-gradient(45rem 45rem at 12% 6%, rgba(245, 130, 32, 0.11), transparent 62%),
+    radial-gradient(38rem 38rem at 88% 28%, rgba(196, 86, 10, 0.08), transparent 62%),
+    radial-gradient(42rem 42rem at 20% 62%, rgba(26, 24, 37, 0.06), transparent 62%),
+    radial-gradient(46rem 46rem at 82% 88%, rgba(245, 130, 32, 0.08), transparent 62%);
+}
+
+/* Shared vector icon base — every icon inherits the surrounding text colour */
+.icon {
+  display: inline-block;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+/* Neue Montreal is a neo-grotesque and sets tighter than Sora did, so
+   headings lose the old 0.05em tracking that was tuned for the previous face. */
+h1, h2, h3, h4, h5, h6, .logo-text-techno, .logo-text-sales {
+  font-family: var(--font-headings);
+  letter-spacing: -0.01em;
+}
+
+/* Small uppercase UI text still wants the wider tracking */
+.btn, .tab-btn, .section-tag, .nav-links a {
+  font-family: var(--font-headings);
+  letter-spacing: 0.02em;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: var(--transition-smooth);
+}
+
+ul {
+  list-style: none;
+}
+
+button {
+  font-family: var(--font-family);
+  cursor: pointer;
+  border: none;
+  background: none;
+  transition: var(--transition-smooth);
+}
+
+/* padding-inline, NOT the `padding: 0 1.5rem` shorthand. Most sections are
+   `<section class="...-section container">`, and the shorthand's implied
+   vertical 0 outranked `section { padding: ... }` on specificity (0,1,0 beats
+   0,0,1) — so every one of those sections silently had no vertical padding and
+   its heading sat flush against the block above. Setting only the inline axis
+   here leaves the block axis to the section rule. */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-inline: 1.5rem;
+}
+
+/* Utility Components */
+/* No backdrop-filter here on purpose. These cards sit on a smooth gradient,
+   and blurring a smooth gradient returns the same gradient — the filter cost
+   real frames on every scroll and bought nothing visually. Blur is kept only
+   where the backdrop has detail: .hero-3d-card and .modal-backdrop. */
+.glass-card {
+  background: var(--bg-card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--border-radius-lg);
+  /* Outer lift + a 1px top highlight, which is what sells the glass edge */
+  box-shadow: var(--card-shadow), inset 0 1px 0 var(--card-highlight);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--accent-cyan);
+  box-shadow: var(--card-shadow-hover), inset 0 1px 0 var(--card-highlight);
+  transform: translateY(-4px);
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .glass-card,
+  .glass-card:hover {
+    background: var(--bg-card-solid);
+  }
+}
+
+/* The marquee animates transform forever — keep it on its own compositor
+   layer so it never repaints the content underneath. */
+.marquee-content {
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  border-radius: var(--border-radius-sm);
+  transition: var(--transition-smooth);
+}
+
+.btn-sm {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+
+.btn-primary {
+  background-color: var(--accent-cyan);
+  color: #FFFFFF;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.15);
+  box-shadow: 0 0 15px var(--accent-cyan);
+  transform: scale(1.02);
+}
+
+.btn-amber {
+  background-color: var(--accent-amber);
+  color: #FFFFFF;
+}
+
+.btn-amber:hover {
+  filter: brightness(1.15);
+  box-shadow: 0 0 15px var(--accent-amber);
+  transform: scale(1.02);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: var(--text-main);
+}
+
+.gradient-text-cyan {
+  background: linear-gradient(45deg, var(--color-brand-400), var(--color-brand-500));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Sections Global */
+/* ---- Vertical rhythm -----------------------------------------------------
+   Adjacent sections each contribute padding, so the visible gap between two
+   sections is ALWAYS double this value: 3.5rem gives a 7rem (112px) gap.
+   Nothing overrides this — sections that paint their own background band use
+   the same padding as the plain ones, so the rhythm never changes down the
+   page. Any new section should inherit this rather than set its own.
+   padding-block only, so it composes with .container's padding-inline instead
+   of the two shorthands cancelling each other out. */
+section {
+  padding-block: var(--section-pad);
+}
+
+/* Keep anchor jumps clear of the fixed navbar */
+section[id] {
+  scroll-margin-top: 7rem;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 2.75rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.section-tag {
+  color: var(--accent-cyan);
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  display: inline-block;
+  margin-bottom: 0.75rem;
+}
+
+.section-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.section-subtitle {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+}
+
+/* ==========================================================================
+   Liquid glass navigation bar
+   One continuous surface instead of the old three disconnected capsules.
+   A pill glides between items on hover and settles on the current route.
+   ========================================================================== */
+.site-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 1.1rem 1.5rem 0;
+  pointer-events: none;
+  perspective: 1400px;
+}
+
+.site-nav-shell {
+  pointer-events: auto;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  height: 68px;
+  padding: 0 0.55rem 0 1.1rem;
+  border-radius: 22px;
+
+  /* Liquid glass surface */
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.88),
+    rgba(255, 255, 255, 0.74)
+  );
+  /* 12px and no saturate(). This bar is fixed and never leaves the screen, so
+     the browser re-blurs whatever scrolls behind it on every single frame —
+     blur radius and pass count ARE the scroll cost here. The old
+     blur(26px) saturate(190%) was roughly 4x this. Opacity is raised to
+     compensate so the surface still reads as glass. */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  box-shadow:
+    0 10px 30px rgba(26, 24, 37, 0.10),
+    0 2px 8px rgba(26, 24, 37, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+
+  transform-style: preserve-3d;
+  transition:
+    height 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    border-radius 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.4s ease,
+    background 0.4s ease;
+  animation: navDrop 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* 3D drop-in on first paint */
+@keyframes navDrop {
+  from {
+    opacity: 0;
+    transform: rotateX(-16deg) translateY(-22px);
+  }
+  to {
+    opacity: 1;
+    transform: rotateX(0) translateY(0);
+  }
+}
+
+/* Condenses and lifts once the page scrolls */
+.site-nav.is-scrolled .site-nav-shell {
+  height: 58px;
+  border-radius: 18px;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.96),
+    rgba(255, 255, 255, 0.88)
+  );
+  box-shadow:
+    0 16px 40px rgba(26, 24, 37, 0.16),
+    0 3px 10px rgba(26, 24, 37, 0.07),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+}
+
+/* ---- Brand ---- */
+.nav-brand {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  transform: translateZ(18px);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.nav-brand:hover {
+  transform: translateZ(18px) scale(1.03);
+}
+
+.nav-brand .logo-text-sub {
+  display: none;
+}
+
+.nav-brand .logo-text-techno,
+.nav-brand .logo-text-sales {
+  font-size: 1.05rem;
+}
+
+/* ---- Centre links ---- */
+.nav-center {
+  position: relative;
+  display: flex;
+  align-items: center;
+  transform: translateZ(12px);
+}
+
+.nav-list {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+  list-style: none;
+}
+
+.nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  padding: 0.55rem 0.85rem;
+  border-radius: 999px;
+  font-family: var(--font-headings);
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  white-space: nowrap;
+  color: var(--color-ink-700);
+  transition: color 0.25s ease, transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.nav-item:hover .nav-link {
+  color: var(--color-brand-600);
+  transform: translateY(-1px);
+}
+
+.nav-link.is-current {
+  color: var(--color-brand-600);
+  font-weight: 800;
+}
+
+.nav-caret {
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.nav-trigger.is-open .nav-caret {
+  transform: rotate(180deg);
+}
+
+/* The liquid indicator. Springy easing is what makes it read as fluid
+   rather than as a box being repositioned. */
+.nav-pill {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  z-index: 0;
+  height: 38px;
+  width: var(--pill-w, 0px);
+  border-radius: 999px;
+  transform: translate3d(var(--pill-x, 0px), -50%, 0);
+  background: linear-gradient(
+    140deg,
+    rgba(245, 130, 32, 0.20),
+    rgba(245, 130, 32, 0.10)
+  );
+  border: 1px solid rgba(245, 130, 32, 0.32);
+  box-shadow:
+    0 4px 14px rgba(196, 86, 10, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 0.45s cubic-bezier(0.34, 1.4, 0.64, 1),
+    width 0.45s cubic-bezier(0.34, 1.4, 0.64, 1),
+    opacity 0.28s ease;
+}
+
+.nav-pill.is-visible {
+  opacity: 1;
+}
+
+/* ---- Actions ---- */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+  transform: translateZ(18px);
+}
+
+.nav-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.68rem 1.25rem;
+  border-radius: 999px;
+  font-family: var(--font-headings);
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  background: linear-gradient(135deg, var(--color-brand-500), var(--color-brand-600));
+  box-shadow: 0 6px 18px rgba(196, 86, 10, 0.32);
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+}
+
+.nav-cta .icon {
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.nav-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(196, 86, 10, 0.42);
+}
+
+.nav-cta:hover .icon {
+  transform: translateX(3px);
+}
+
+.nav-burger {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  color: var(--color-ink-900);
+  background: rgba(26, 24, 37, 0.06);
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.nav-burger:hover {
+  background: rgba(26, 24, 37, 0.12);
+  transform: scale(1.05);
+}
+
+/* ---- Dropdown panels ---- */
+/* The wrapper's top padding bridges the gap between trigger and panel so the
+   menu doesn't close while the pointer travels down to it. */
+.nav-dropdown-wrap {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  padding-top: 1.05rem;
+  z-index: 1100;
+}
+
+.nav-dropdown {
+  display: flex;
+  border-radius: 18px;
+  overflow: hidden;
+  background: linear-gradient(
+    150deg,
+    rgba(255, 255, 255, 0.94),
+    rgba(255, 255, 255, 0.86)
+  );
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow:
+    0 22px 50px rgba(26, 24, 37, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  animation: navMenuIn 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+  transform-origin: top center;
+}
+
+@keyframes navMenuIn {
+  from {
+    opacity: 0;
+    transform: perspective(900px) rotateX(-10deg) translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: perspective(900px) rotateX(0) translateY(0);
+  }
+}
+
+.nav-mega-col {
+  list-style: none;
+  min-width: 245px;
+  padding: 0.5rem;
+}
+
+.nav-mega-col--products {
+  min-width: 225px;
+  border-left: 1px solid var(--color-border);
+}
+
+.nav-menu-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  width: 100%;
+  padding: 0.72rem 0.9rem;
+  border-radius: 12px;
+  font-family: var(--font-family);
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--color-ink-900);
+  text-align: left;
+  transition: background 0.22s ease, color 0.22s ease, transform 0.22s ease;
+}
+
+.nav-menu-row .icon {
+  opacity: 0.35;
+  transition: transform 0.22s ease, opacity 0.22s ease;
+}
+
+.nav-menu-row:hover {
+  background: rgba(245, 130, 32, 0.12);
+  color: var(--color-brand-600);
+  transform: translateX(2px);
+}
+
+.nav-menu-row:hover .icon {
+  opacity: 1;
+  transform: translateX(2px);
+}
+
+/* Category whose products are currently shown alongside */
+.nav-menu-row.is-active {
+  background: linear-gradient(135deg, var(--color-brand-500), var(--color-brand-600));
+  color: #FFFFFF;
+  font-weight: 700;
+  box-shadow: 0 4px 14px rgba(196, 86, 10, 0.3);
+}
+
+.nav-menu-row.is-active .icon {
+  opacity: 1;
+}
+
+.nav-menu-row--all {
+  font-weight: 700;
+  color: var(--color-brand-600);
+}
+
+/* ---- Mobile sheet ---- */
+.nav-sheet {
+  pointer-events: auto;
+  max-width: 1200px;
+  margin: 0.6rem auto 0;
+  padding: 1rem 1.15rem 1.25rem;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  max-height: 70vh;
+  max-height: 70dvh;
+  overflow-y: auto;
+
+  background: linear-gradient(
+    150deg,
+    rgba(255, 255, 255, 0.95),
+    rgba(255, 255, 255, 0.88)
+  );
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 22px 50px rgba(26, 24, 37, 0.2);
+  animation: navMenuIn 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.nav-sheet-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.75rem 0.25rem;
+  font-family: var(--font-headings);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-ink-900);
+  text-align: left;
+  border-bottom: 1px solid rgba(26, 24, 37, 0.07);
+  transition: color 0.25s ease;
+}
+
+.nav-sheet-link:hover,
+.nav-sheet-toggle.is-open {
+  color: var(--color-brand-600);
+}
+
+.nav-sheet-toggle.is-open .nav-caret {
+  transform: rotate(180deg);
+}
+
+.nav-sheet-sub {
+  display: flex;
+  flex-direction: column;
+  margin: 0.4rem 0 0.6rem 0.25rem;
+  padding-left: 0.9rem;
+  border-left: 2px solid var(--color-brand-400);
+}
+
+.nav-sheet-sublink {
+  padding: 0.4rem 0;
+  font-size: 0.86rem;
+  font-weight: 500;
+  color: var(--color-ink-500);
+  transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.nav-sheet-sublink.is-head {
+  color: var(--color-ink-900);
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+.nav-sheet-sublink:hover {
+  color: var(--color-brand-600);
+  transform: translateX(3px);
+}
+
+.nav-sheet-cta {
+  margin-top: 1rem;
+  justify-content: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-nav-shell,
+  .nav-dropdown,
+  .nav-sheet {
+    animation: none;
+  }
+
+  .nav-pill {
+    transition: opacity 0.2s ease;
+  }
+}
+
+/* Hero Section */
+.hero {
+  position: relative;
+  min-height: 90vh;
+  min-height: 90dvh;
+  display: flex;
+  align-items: center;
+  /* Top clears the floating navbar (which ends ~4.75rem down); the bottom is
+     the shared section rhythm, so the gap to the next block matches the gap
+     between every other pair of sections. */
+  padding: 8rem 0 var(--section-pad) 0;
+  overflow: hidden;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  /* The showcase image takes the larger share, and on top of its track it
+     stays inside the container, so its right edge lines up with the navbar and
+     with every section below. minmax(0,…) so a wide image can never push the
+     text column past its own track. */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 2.5rem;
+  align-items: center;
+}
+
+.hero-text {
+  max-width: 560px;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent-cyan);
+  margin-bottom: 1.5rem;
+}
+
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--accent-cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--accent-cyan);
+  animation: pulse 1.8s infinite;
+}
+
+/* transform + opacity only. The box-shadow keyframe that used to sit at 50%
+   is a paint property, so this repainted on every frame of a loop that never
+   ends. The glow is now static on the element and only the scale pulses. */
+@keyframes pulse {
+  0%, 100% { transform: scale(0.9); opacity: 0.6; }
+  50% { transform: scale(1.2); opacity: 1; }
+}
+
+.hero-title {
+  font-size: clamp(2rem, 6vw, 3.25rem);
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 1.25rem;
+}
+
+.hero-description {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  max-width: 600px;
+}
+
+/* Search Box Engine */
+.search-box-wrapper {
+  position: relative;
+  margin-bottom: 2rem;
+  max-width: 550px;
+  z-index: 10;
+}
+
+.search-icon {
+  position: absolute;
+  left: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  padding: 1.1rem 1rem 1.1rem 3.25rem;
+  background: var(--input-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  border-radius: var(--border-radius-md);
+  font-family: var(--font-family);
+  font-size: 1rem;
+  outline: none;
+  transition: var(--transition-smooth);
+}
+
+.search-input:focus {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 15px var(--glass-glow);
+}
+
+.search-results-dropdown {
+  position: absolute;
+  top: 105%;
+  left: 0;
+  width: 100%;
+  background: var(--modal-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-main);
+  max-height: 320px;
+  overflow-y: auto;
+  display: block; /* Managed by React dynamically */
+  z-index: 50;
+}
+
+.search-result-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.9rem 1.25rem;
+  border-bottom: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.search-result-item:hover {
+  background-color: rgba(0, 229, 255, 0.08);
+}
+
+.search-result-item:last-child {
+  border-bottom: none;
+}
+
+.item-brand {
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 0.2rem 0.5rem;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+  color: var(--accent-cyan);
+}
+
+/* Hero Stats & Info Cards */
+/* Flex, not four equal grid columns. Equal columns sized every cell to the
+   narrowest value, so the long ones ("IE2–IE4", "Ready Stock") broke onto a
+   second line and left the row ragged. Here each stat takes only the width it
+   needs and a hairline rule separates one from the next. */
+.hero-stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 2.5rem;
+  border-top: 1px solid var(--border-color);
+  padding-top: 1.5rem;
+}
+
+.hero-stat-item {
+  flex: 1 1 auto;
+  padding-inline: 1.1rem;
+  border-left: 1px solid var(--border-color);
+}
+
+/* No leading divider, and the row still lines up with the text above it */
+.hero-stat-item:first-child {
+  padding-left: 0;
+  border-left: none;
+}
+
+.hero-stat-item:last-child {
+  padding-right: 0;
+}
+
+.hero-stat-item h3 {
+  /* Sized to keep the longest value on one line in the column the showcase
+     image leaves behind — nowrap makes that a guarantee rather than a hope. */
+  font-size: clamp(1rem, 1.1vw, 1.3rem);
+  font-weight: 800;
+  color: var(--accent-cyan);
+  white-space: nowrap;
+}
+
+.hero-stat-item p {
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+/* ---- Hero showcase image -------------------------------------------------
+   Replaces the old WebGL canvas. All four category shots are stacked in one
+   frame and crossfaded, so switching slides never reflows the hero and never
+   pops in a half-loaded image. */
+.hero-visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+.hero-visual-frame {
+  position: relative;
+  width: 100%;
+  /* Taller than the 2.1:1 artwork, so the card has some presence next to the
+     headline. The picture is contained inside it (never cropped) and the
+     leftover strip above and below is the same white as the card and as the
+     shots' own backgrounds, so it reads as padding. */
+  aspect-ratio: 16 / 10;
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  background: var(--color-surface);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--card-shadow), inset 0 1px 0 var(--card-highlight);
+}
+
+.hero-visual-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.7s ease;
+}
+
+.hero-visual-slide.is-active {
+  opacity: 1;
+}
+
+.hero-visual-slide picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-visual-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+}
+
+.hero-visual-caption {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.hero-visual-dots {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.85rem;
+}
+
+.hero-visual-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  background: var(--color-border);
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.hero-visual-dot:hover {
+  background: var(--color-ink-500);
+}
+
+.hero-visual-dot.is-active {
+  background: var(--color-brand-500);
+  transform: scale(1.15);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-visual-slide {
+    transition: none;
+  }
+}
+
+/* Brands Infinite Marquee */
+/* A quiet logo strip, not a coloured band — the logos are the only thing that
+   should carry colour here, and they only do so on hover. */
+.brands-section {
+  padding: 2.25rem 0;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  overflow: hidden;
+  margin: 0;
+}
+
+.brands-eyebrow {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-family: var(--font-headings);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.marquee-container {
+  display: flex;
+  width: 100%;
+  position: relative;
+  mask-image: linear-gradient(to right, transparent, #FFFFFF 15%, #FFFFFF 85%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, #FFFFFF 15%, #FFFFFF 85%, transparent);
+  /* The 3D viewport for the tiles. It lives here, on the element that is the
+     width of the screen, rather than on each tile — so the vanishing point is
+     the middle of the strip and a tile turns toward you as it travels through
+     the centre, instead of every tile spinning against its own private camera. */
+  perspective: 1400px;
+  perspective-origin: 50% 50%;
+}
+
+.marquee-content {
+  display: flex;
+  gap: 1.75rem;
+  white-space: nowrap;
+  animation: marquee 40s linear infinite;
+  align-items: center;
+  /* Children keep their own 3D space instead of being flattened into this
+     one, which is what lets each tile turn on its own axis. */
+  transform-style: preserve-3d;
+  /* Perspective makes the near edge of a turning card project slightly taller
+     than its box — this keeps the section's overflow:hidden from shaving it. */
+  padding: 1.25rem 0;
+}
+
+/* Let people actually look at a logo they are pointing at — the travel and
+   the flip both hold while the pointer is over the strip. */
+.marquee-container:hover .marquee-content,
+.marquee-container:hover .brand-tile-inner {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
+}
+
+.brand-logo-tile {
+  flex: 0 0 auto;
+  width: 210px;
+  height: 118px;
+  transform-style: preserve-3d;
+}
+
+/* ---- The 3D tile --------------------------------------------------------
+   Two faces back to back on one card. It rests face-on, turns 180deg to the
+   colour side, holds there, then completes the turn back to the muted side —
+   a full 360 per cycle, so the card always rotates the same way and never
+   rubber-bands. Only `transform` animates, so the whole row stays on the
+   compositor next to the marquee's own translate.
+
+   One tile turns at a time. The whole move lives in the last 10% of the cycle
+   and there are ten slots (--i, set in the markup) staggered by exactly a
+   tenth of it, so the active windows tile the timeline end to end and never
+   two at once: slot 0 turns over 90-100%, slot 1 over 80-90%, and so on. */
+.brand-tile-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  animation: brand-tile-flip 24s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  /* 2.4s = the 24s cycle divided by the ten slots. Negative, so each tile
+     starts part-way in rather than waiting its first turn out. */
+  animation-delay: calc(var(--i, 0) * -2.4s);
+}
+
+@keyframes brand-tile-flip {
+  0%, 90%  { transform: rotateY(0deg) translateZ(0); }
+  94%, 96% { transform: rotateY(180deg) translateZ(0); }
+  100%     { transform: rotateY(360deg) translateZ(0); }
+}
+
+.brand-tile-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem 1.75rem;
+  border-radius: var(--border-radius-md);
+  background: var(--color-surface-alt);
+  border: 1px solid var(--border-color);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* The colour side, pre-turned so it sits behind the front face */
+.brand-tile-face.is-back {
+  transform: rotateY(180deg);
+  background: var(--color-brand-100);
+  border-color: var(--color-brand-400);
+  box-shadow: 0 8px 24px rgba(196, 86, 10, 0.14);
+}
+
+/* Img renders a <picture>, which is inline by default and would not stretch
+   inside the flex face. */
+.brand-tile-face picture {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* The five logos are wildly different shapes, so they are contained inside a
+   fixed box rather than sized individually — the strip reads as one row. */
+.brand-tile-face img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  /* Muted on the front so no single brand shouts over the others; the back is
+     the same logo in full colour, which is what the turn reveals. */
+  filter: grayscale(1);
+  opacity: 0.7;
+  transition: var(--transition-smooth);
+}
+
+.brand-tile-face.is-back img {
+  filter: none;
+  opacity: 1;
+}
+
+.brand-logo-tile:hover .brand-tile-face {
+  border-color: var(--color-brand-400);
+  box-shadow: 0 10px 28px rgba(26, 24, 37, 0.12);
+}
+
+.brand-logo-tile:hover .brand-tile-face img {
+  filter: none;
+  opacity: 1;
+}
+
+/* Everything above is decoration. Strip it and leave a plain centred row. */
+@media (prefers-reduced-motion: reduce) {
+  .marquee-content {
+    animation: none;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 0;
+  }
+
+  .brand-tile-inner {
+    animation: none;
+  }
+}
+
+/* Category Tabs & Product Catalog */
+.category-tabs {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 3rem;
+}
+
+.tab-btn {
+  padding: 0.65rem 1.25rem;
+  font-weight: 600;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+}
+
+.tab-btn:hover, .tab-btn.active {
+  background-color: var(--accent-cyan);
+  color: #0b0f19;
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 10px var(--glass-glow);
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(340px, 100%), 1fr));
+  gap: 2rem;
+}
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+}
+
+.product-image-container {
+  height: 270px;
+  position: relative;
+  background: var(--card-inset);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.product-brand-tag {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background-color: #0b0f19;
+  color: var(--accent-cyan);
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+}
+
+.product-badge-spec {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: var(--accent-amber);
+  color: #0b0f19;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+}
+
+.product-svg-icon {
+  width: 80px;
+  height: 80px;
+}
+
+/* Img wraps the tag in a <picture>, which is inline by default — without this
+   the image's height:100% resolves against an auto-height parent and the shot
+   collapses back to its natural size inside the tile. */
+.product-image-container picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: var(--transition-smooth);
+}
+
+.product-card:hover .product-image {
+  transform: scale(1.05);
+}
+
+.product-body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.product-category {
+  color: var(--accent-cyan);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.product-name {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  line-height: 1.3;
+}
+
+.product-features {
+  margin-top: auto;
+  margin-bottom: 1.5rem;
+}
+
+.product-features li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 0.4rem;
+}
+
+.product-features li svg {
+  color: var(--accent-cyan);
+  flex-shrink: 0;
+}
+
+.product-footer {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 0.75rem;
+  border-top: 1px solid var(--border-color);
+  padding-top: 1.25rem;
+}
+
+/* Why Choose Us & Features */
+.why-us-section {
+  background: linear-gradient(180deg, rgba(253, 240, 228, 0.55), rgba(245, 245, 248, 0.45));
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+  gap: 2rem;
+}
+
+.feature-card {
+  padding: 2.25rem 1.75rem;
+}
+
+.feature-icon-wrapper {
+  width: 56px;
+  height: 56px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+  border-radius: var(--border-radius-md);
+  color: var(--accent-cyan);
+  background: var(--icon-tile);
+  border: 1px solid var(--icon-tile-border);
+  transition: var(--transition-smooth);
+}
+
+.feature-card:hover .feature-icon-wrapper {
+  color: var(--color-surface);
+  background: var(--color-brand-500);
+  border-color: var(--color-brand-500);
+  transform: translateY(-2px);
+}
+
+.feature-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.feature-desc {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* Counter Milestones */
+.milestones-section {
+  background: linear-gradient(180deg, transparent, rgba(253, 240, 228, 0.6));
+}
+
+/* 190px (was 220px) so all five tiles fit one row at container width instead
+   of wrapping 4 + 1 and leaving an orphan. */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(190px, 100%), 1fr));
+  gap: 1.5rem;
+}
+
+/* Wrapper owns the scroll-reveal and establishes the 3D scene, so it never
+   competes with the tilt transform on the card itself. */
+.stat-cell {
+  perspective: 800px;
+  height: 100%;
+}
+
+.stat-card {
+  --rx: 0deg;
+  --ry: 0deg;
+  --mx: 50%;
+  --my: 50%;
+
+  position: relative;
+  height: 100%;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  overflow: hidden;
+  transform: rotateX(var(--rx)) rotateY(var(--ry));
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.4s ease,
+              border-color 0.4s ease;
+}
+
+/* Near-instant while tracking so the tilt doesn't lag the cursor. The
+   transform is restated because .glass-card:hover sets translateY(-4px),
+   which would otherwise replace the tilt entirely. */
+.stat-card:hover {
+  transform: rotateX(var(--rx)) rotateY(var(--ry)) scale(1.03);
+  transition: transform 0.08s linear, box-shadow 0.4s ease, border-color 0.4s ease;
+  border-color: var(--color-brand-400);
+  box-shadow: 0 22px 44px rgba(196, 86, 10, 0.16), inset 0 1px 0 var(--card-highlight);
+}
+
+/* Liquid sheen that follows the pointer. ::before, not ::after — an ::after
+   would paint over the number whenever preserve-3d gets flattened. */
+.stat-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle at var(--mx) var(--my),
+    rgba(255, 255, 255, 0.6),
+    rgba(245, 130, 32, 0.12) 35%,
+    rgba(255, 255, 255, 0) 65%
+  );
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+
+.stat-card:hover::before {
+  opacity: 1;
+}
+
+/* Lifts the number off the card face so the tilt reads as real depth */
+.stat-inner {
+  position: relative;
+  transform: translateZ(30px);
+  transform-style: preserve-3d;
+}
+
+.counter-value {
+  font-size: clamp(2rem, 3.4vw, 3rem);
+  font-weight: 800;
+  line-height: 1.05;
+  color: var(--accent-cyan);
+  margin-bottom: 0.5rem;
+  /* Stops the tile jumping as digits change width mid count-up */
+  font-variant-numeric: tabular-nums;
+  transform: translateZ(12px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stat-cell {
+    perspective: none;
+  }
+
+  .stat-card,
+  .stat-card:hover {
+    transform: none;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+
+  .stat-card::before {
+    display: none;
+  }
+
+  .stat-inner,
+  .counter-value {
+    transform: none;
+  }
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* Testimonials Carousel */
+.testimonials-section {
+  max-width: 850px;
+}
+
+.testimonial-slider {
+  position: relative;
+}
+
+.testimonial-card {
+  padding: 3rem;
+  border-radius: var(--border-radius-lg);
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.quote-icon {
+  position: absolute;
+  top: 1.5rem;
+  left: 2rem;
+  line-height: 0;
+  color: var(--accent-cyan);
+  opacity: 0.14;
+  pointer-events: none;
+}
+
+.testimonial-text {
+  font-size: 1.25rem;
+  font-style: italic;
+  margin-bottom: 2rem;
+  color: var(--text-main);
+  line-height: 1.6;
+  position: relative;
+  z-index: 2;
+}
+
+.client-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.client-avatar {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, var(--accent-cyan), #3b82f6);
+  color: #0b0f19;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.client-details h4 {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.client-details p {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.slider-controls {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.slider-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--card-border);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-main);
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.slider-btn:hover {
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+  box-shadow: 0 0 10px var(--glass-glow);
+}
+
+/* Blogs Section */
+.blogs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr));
+  gap: 2rem;
+}
+
+.blog-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.blog-img-placeholder {
+  height: 180px;
+  background: var(--card-inset);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-cyan);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.blog-content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.blog-date {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Dot divider between the post date and its topic */
+.blog-date-sep {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+
+.blog-read-btn {
+  align-self: flex-start;
+}
+
+.blog-read-btn .icon {
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.blog-read-btn:hover .icon {
+  transform: translateX(3px);
+}
+
+.blog-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.blog-excerpt {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* Contact Grid & Form elements */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 2.5rem;
+}
+
+.contact-info-card {
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.info-item {
+  display: flex;
+  gap: 1rem;
+}
+
+.info-icon {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--accent-cyan);
+  background: var(--icon-tile);
+  border: 1px solid var(--icon-tile-border);
+}
+
+.info-text h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.info-text p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text-main);
+}
+
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: var(--input-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  border-radius: var(--border-radius-sm);
+  outline: none;
+  font-family: var(--font-family);
+  transition: var(--transition-smooth);
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 10px var(--glass-glow);
+}
+
+.form-textarea {
+  height: 100px;
+  resize: vertical;
+}
+
+/* Modal Backdrops & Card layouts */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background-color: rgba(11, 15, 25, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 200;
+  transition: opacity 0.3s ease;
+}
+
+.modal-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-card {
+  width: 90%;
+  max-width: 550px;
+  background-color: var(--modal-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  padding: 2.25rem;
+  position: relative;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  transform: translateY(20px);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  max-height: 90vh;
+  max-height: 90dvh;
+  overflow-y: auto;
+}
+
+.modal-backdrop.active .modal-card {
+  transform: translateY(0);
+}
+
+.modal-close {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  color: var(--text-muted);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.modal-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-main);
+}
+
+/* "Drag to rotate" hint under the 3D canvas */
+.modal-3d-hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  color: var(--accent-cyan);
+  margin: -1rem 0 1rem;
+}
+
+/* Technical specification list inside the product modal */
+.spec-list {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 1.5rem;
+}
+
+.spec-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.spec-list .icon {
+  color: var(--color-success);
+  margin-top: 0.15rem;
+}
+
+.modal-3d-canvas {
+  width: 100%;
+  height: 220px;
+  background: var(--card-inset);
+  border-radius: var(--border-radius-md);
+  margin-bottom: 1.5rem;
+  cursor: grab;
+}
+
+.modal-3d-canvas:active {
+  cursor: grabbing;
+}
+
+/* Toast Notifications */
+.toast-notification {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: var(--modal-bg);
+  border: 1px solid var(--accent-cyan);
+  box-shadow: 0 10px 30px rgba(0, 229, 255, 0.2);
+  border-radius: var(--border-radius-sm);
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  transform: translateY(120px);
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+  z-index: 300;
+  pointer-events: none;
+}
+
+.toast-notification.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Footer layout */
+/* The footer is always a dark surface, so it pins its own colours. Inheriting
+   --text-main / --text-muted put dark ink on near-black in the light theme
+   (headings landed at 1.1:1 — effectively invisible). */
+footer {
+  --footer-bg: #0E1018;
+  --footer-heading: #FFFFFF;
+  --footer-text: #B9B7C4;
+  --footer-accent: var(--color-brand-400);
+  --footer-border: rgba(255, 255, 255, 0.1);
+
+  background: var(--footer-bg);
+  border-top: 1px solid var(--footer-border);
+  padding: 4rem 0 2rem 0;
+  color: var(--footer-text);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+  gap: 2.5rem;
+  margin-bottom: 3rem;
+}
+
+.footer-grid h4 {
+  font-size: 1.1rem;
+  color: var(--footer-heading);
+  margin-bottom: 1.25rem;
+  font-weight: 700;
+}
+
+.footer-about {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  color: var(--footer-text);
+}
+
+.footer-address {
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  color: var(--footer-text);
+}
+
+.footer-hours {
+  color: var(--footer-accent);
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+/* Phone / email lines in the footer brand column */
+.footer-contact-line {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--footer-accent);
+  font-weight: 600;
+}
+
+.footer-contact-line + .footer-contact-line {
+  margin-top: 0.4rem;
+}
+
+.footer-contact-line--sm {
+  font-size: 0.85rem;
+}
+
+.footer-contact-line a:hover {
+  text-decoration: underline;
+}
+
+.footer-links li {
+  margin-bottom: 0.75rem;
+}
+
+.footer-links a {
+  color: var(--footer-text);
+  transition: var(--transition-smooth);
+}
+
+.footer-links a:hover {
+  color: var(--footer-accent);
+}
+
+.footer-bottom {
+  border-top: 1px solid var(--footer-border);
+  padding-top: 2rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--footer-text);
+}
+
+/* Responsive styles */
+
+/* The inline links need roughly 1020px of room inside the bar. Below that
+   they are swapped for the sheet, or the bar overflows. */
+@media (max-width: 1100px) {
+  .nav-center {
+    display: none;
+  }
+
+  .nav-burger {
+    display: inline-flex;
+  }
+}
+
+@media (max-width: 968px) {
+  .hero-content {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 0;
+  }
+
+  .hero-text {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-description {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .search-box-wrapper {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .hero-stats-row {
+    justify-content: center;
+  }
+  
+  .hero-visual {
+    max-width: 640px;
+    margin: 2rem auto 0 auto;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Scoped to the bar so the sheet's own CTA stays visible */
+  .site-nav-shell .nav-cta {
+    display: none;
+  }
+
+  .site-nav {
+    padding: 0.75rem 1rem 0;
+  }
+
+  .site-nav-shell {
+    height: 60px;
+    padding: 0 0.5rem 0 0.85rem;
+  }
+
+  .site-nav.is-scrolled .site-nav-shell {
+    height: 54px;
+  }
+
+  section[id] {
+    scroll-margin-top: 5rem;
+  }
+  
+  /* Two per row on a phone. The divider has to move with them, or the third
+     stat starts row two with a stray rule hanging off its left edge. */
+  .hero-stats-row {
+    row-gap: 1.5rem;
+  }
+
+  .hero-stat-item {
+    flex: 1 0 calc(50% - 1.1rem);
+  }
+
+  .hero-stat-item:nth-child(odd) {
+    padding-left: 0;
+    border-left: none;
+  }
+}
+
+/* Partner Brands Grid Section */
+.partner-brands-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+/* ---- 3D tilt card -------------------------------------------------------
+   --rx / --ry are written by PartnerCard on pointer move; --mx / --my drive
+   the glare highlight. Only transform and opacity animate, so the whole
+   effect stays on the compositor. */
+/* Wrapper owns the scroll-reveal and the 3D scene. Keeping it separate from
+   the tilting card is what stops the two transforms from overwriting each
+   other — see PartnerCard.jsx. */
+.partner-card-wrap {
+  perspective: 900px;
+  height: 100%;
+}
+
+.partner-brand-card {
+  --rx: 0deg;
+  --ry: 0deg;
+  --mx: 50%;
+  --my: 50%;
+
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  transform: rotateX(var(--rx)) rotateY(var(--ry));
+  transform-style: preserve-3d;
+  /* Slow, eased return when the pointer leaves... */
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.4s ease,
+              border-color 0.4s ease;
+}
+
+/* ...but near-instant while tracking, so the tilt doesn't lag the cursor.
+   The transform is restated here because the shared .glass-card:hover rule
+   sets translateY(-4px), which would otherwise replace the tilt entirely. */
+.partner-brand-card:hover {
+  transform: rotateX(var(--rx)) rotateY(var(--ry)) scale(1.02);
+  transition: transform 0.08s linear, box-shadow 0.4s ease, border-color 0.4s ease;
+  border-color: var(--color-brand-400);
+  box-shadow: 0 24px 50px rgba(26, 24, 37, 0.16), inset 0 1px 0 var(--card-highlight);
+}
+
+/* Specular glare. ::before, not ::after — an ::after would paint on top of
+   the text whenever preserve-3d gets flattened. */
+.partner-brand-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle at var(--mx) var(--my),
+    rgba(255, 255, 255, 0.45),
+    rgba(255, 255, 255, 0) 45%
+  );
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+
+.partner-brand-card:hover::before {
+  opacity: 1;
+}
+
+/* Content floats above the card face so the tilt reads as real depth */
+.partner-brand-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-grow: 1;
+  padding: 2.25rem 2rem;
+  transform: translateZ(35px);
+  transform-style: preserve-3d;
+}
+
+.partner-brand-card .partner-badge {
+  transform: translateZ(25px);
+}
+
+.partner-brand-card .partner-brand-name {
+  transform: translateZ(18px);
+}
+
+/* Tilting a card is exactly the kind of motion to drop on request */
+@media (prefers-reduced-motion: reduce) {
+  .partner-card-wrap {
+    perspective: none;
+  }
+
+  .partner-brand-card,
+  .partner-brand-card:hover {
+    transform: none;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+
+  .partner-brand-card::before {
+    display: none;
+  }
+
+  .partner-brand-body,
+  .partner-brand-card .partner-badge,
+  .partner-brand-card .partner-brand-name {
+    transform: none;
+  }
+}
+
+.partner-badge {
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1.25rem;
+}
+
+.partner-badge.official {
+  background: var(--color-brand-100);
+  color: var(--color-brand-500);
+  border: 1px solid var(--color-brand-400);
+}
+
+.partner-badge.certified {
+  background: rgba(30, 142, 62, 0.1);
+  color: var(--color-success);
+  border: 1px solid var(--color-success);
+}
+
+.partner-badge.direct {
+  background: rgba(196, 86, 10, 0.1);
+  color: var(--color-brand-500);
+  border: 1px solid var(--color-brand-400);
+}
+
+.partner-brand-name {
+  font-size: clamp(1.3rem, 3.5vw, 1.6rem);
+  margin-bottom: 0.75rem;
+  color: var(--color-ink-900);
+  font-weight: 800;
+  letter-spacing: 0.03em;
+}
+
+.partner-brand-desc {
+  font-size: 0.9rem;
+  color: var(--color-ink-500);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.partner-lines {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
+.partner-lines span {
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: var(--color-surface-alt);
+  color: var(--color-ink-700);
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  border: 1px solid var(--color-border);
+}
+
+/* Scroll Reveal Animations */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 1s cubic-bezier(0.215, 0.61, 0.355, 1), transform 1s cubic-bezier(0.215, 0.61, 0.355, 1);
+  will-change: transform, opacity;
+}
+
+.reveal-on-scroll.active {
+  opacity: 1;
+  transform: translateY(0);
+  /* Release the compositor layer once the reveal has run. Leaving will-change
+     set keeps a separate layer alive for every element on the page forever. */
+  will-change: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on-scroll {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    will-change: auto;
+  }
+}
+
