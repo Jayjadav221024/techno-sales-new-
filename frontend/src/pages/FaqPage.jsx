@@ -2,9 +2,10 @@ import { useState } from 'react';
 import PageHeader from '../components/PageHeader';
 import CtaBand from '../components/CtaBand';
 import Icon from '../components/Icon';
-import { FAQS } from '../data/site';
+import { useSiteData } from '../context/SiteDataContext';
 
 export default function FaqPage({ onOpenRFQ }) {
+  const { faqs } = useSiteData();
   const [openIndex, setOpenIndex] = useState(0);
 
   return (
@@ -18,7 +19,7 @@ export default function FaqPage({ onOpenRFQ }) {
 
       <section className="container faq-section">
         <div className="faq-accordion">
-          {FAQS.map((item, index) => {
+          {faqs.map((item, index) => {
             const isOpen = openIndex === index;
             return (
               <div className={`glass-card faq-item${isOpen ? ' is-open' : ''}`} key={item.q}>

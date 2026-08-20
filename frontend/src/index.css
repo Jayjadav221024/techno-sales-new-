@@ -1,29 +1,33 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Sora:wght@400;500;600;700;800&display=swap');
 
 :root {
-  /* One family for body and headings. Plus Jakarta Sans / Sora stay in the
-     chain so the site keeps its current look until the licensed files land —
-     drop them and Neue Montreal wins automatically. */
+  /* One family for body and headings on website. */
   --font-family: 'Neue Montreal', 'Plus Jakarta Sans', Arial, sans-serif;
   --font-headings: 'Bebas Neue', 'Sora', Arial, sans-serif;
-  /* Vertical rhythm. One value for EVERY section — including the ones that
-     paint their own background band — so the gap between any two adjacent
-     sections is always 2 x --section-pad. */
   --section-pad: 3.5rem;
+
+  /* Navbar geometry, in one place. The bar is fixed and floats, so every block
+     that starts at the top of a page has to clear it by hand - and three of
+     them had drifted to three different magic numbers (8rem / 9rem / 10rem).
+     Anything sitting under the navbar should use --nav-clearance plus its own
+     breathing room, never a literal. */
+  --nav-offset: 1.1rem;
+  --nav-height: 68px;
+  --nav-clearance: calc(var(--nav-offset) + var(--nav-height));
 
   --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --border-radius-sm: 8px;
   --border-radius-md: 12px;
   --border-radius-lg: 20px;
 
-  /* User Defined Brand Colors */
-  --color-brand-600: #A34508;   /* text on tinted bg, white-on-orange fills */
-  --color-brand-500: #C4560A;   /* text, buttons, links — AA compliant */
-  --color-brand-400: #F58220;   /* decorative / large graphics only */
-  --color-brand-100: #FDF0E4;   /* tinted backgrounds */
-  --color-ink-900: #1A1825;     /* unified dark: replaces #2A2833 AND #00051C */
+  /* User Defined Brand Colors for storefront */
+  --color-brand-600: #A34508;
+  --color-brand-500: #C4560A;
+  --color-brand-400: #F58220;
+  --color-brand-100: #FDF0E4;
+  --color-ink-900: #1A1825;
   --color-ink-700: #2A2833;
-  --color-ink-500: #5C5A66;     /* replaces #767676 — passes on tinted bg */
+  --color-ink-500: #5C5A66;
   --color-ink-300: #BFBFBF;
   --color-surface: #FFFFFF;
   --color-surface-alt: #F5F5F8;
@@ -33,8 +37,9 @@
   --color-danger: #C62828;
 }
 
-/* Theme Configuration */
-html[data-theme="dark"] {
+/* Theme Configuration for public storefront only */
+.app-root[data-theme="dark"],
+html[data-theme="dark"] .app-root {
   --bg-main: var(--color-ink-900);
   --bg-navbar: rgba(26, 24, 37, 0.85);
   --text-main: var(--color-surface);
@@ -64,7 +69,9 @@ html[data-theme="dark"] {
   --icon-tile-border: rgba(245, 130, 32, 0.28);
 }
 
-html[data-theme="light"] {
+.app-root,
+.app-root[data-theme="light"],
+html[data-theme="light"] .app-root {
   --bg-main: #FFFFFF;
   --bg-navbar: rgba(255, 255, 255, 0.95);
   --text-main: var(--color-ink-900);
@@ -94,19 +101,33 @@ html[data-theme="light"] {
   --icon-tile-border: rgba(245, 130, 32, 0.22);
 }
 
-/* Global Reset */
+/* Global Reset
+   Scoped to .app-root on purpose. This file is unlayered, and Tailwind puts its
+   utilities in @layer utilities - unlayered rules beat every layered rule no
+   matter the specificity. Left global, the margin/padding reset silently
+   cancelled every p-* and m-* class in the admin panel, which shares this
+   document. box-sizing stays global: it matches Tailwind's own preflight. */
 * {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
 }
 
+.app-root,
+.app-root * {
+  margin: 0;
+  padding: 0;
+}
+
+/* The `.app-root *` reset above never reaches html/body, so the UA's default
+   `body { margin: 8px }` survived — the whole site was drawn 8px in from every
+   edge, which is why the fixed navbar (pinned to the true viewport) and the
+   hero underneath it were measured against two different left/top origins. */
 html, body, #root, .app-root {
+  margin: 0;
   max-width: 100%;
   overflow-x: hidden;
 }
 
-body {
+.app-root {
   font-family: var(--font-family);
   background-color: var(--bg-main);
   color: var(--text-main);
@@ -114,12 +135,8 @@ body {
   line-height: 1.5;
 }
 
-/* Ambient brand-tinted wash that the translucent cards sit on.
-   This lives on a fixed pseudo-element rather than `background-attachment:
-   fixed` on <body>. Fixed attachment forces a full-viewport repaint on every
-   scroll frame; a fixed-position layer gets its own compositor layer and is
-   simply re-used, costing nothing while scrolling. */
-body::before {
+/* Ambient brand-tinted wash that the translucent cards sit on. */
+.app-root::before {
   content: '';
   position: fixed;
   inset: 0;
@@ -134,61 +151,84 @@ body::before {
 }
 
 /* Shared vector icon base — every icon inherits the surrounding text colour */
-.icon {
+.app-root .icon {
   display: inline-block;
   flex-shrink: 0;
   vertical-align: middle;
 }
 
-/* Bebas Neue is a condensed display font that looks best in uppercase with slight tracking */
-h1, h2, h3, h4, h5, h6 {
+/* Bebas Neue is a condensed display font that looks best in uppercase on the public storefront */
+.app-root h1, 
+.app-root h2, 
+.app-root h3, 
+.app-root h4, 
+.app-root h5, 
+.app-root h6 {
   font-family: var(--font-headings);
   font-weight: 400;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
-h1 {
+.app-root h1 {
   font-size: clamp(2rem, 5vw, 3.25rem);
   line-height: 1.1;
 }
 
-h2 {
+.app-root h2 {
   font-size: clamp(1.75rem, 4vw, 2.25rem);
   line-height: 1.2;
 }
 
-h3 {
+.app-root h3 {
   font-size: clamp(1.25rem, 3vw, 1.5rem);
   line-height: 1.25;
 }
 
-h4 {
+.app-root h4 {
   font-size: clamp(1.05rem, 2vw, 1.2rem);
   line-height: 1.3;
 }
 
-p {
+.app-root p {
   line-height: 1.6;
 }
 
 /* Small uppercase UI text still wants the wider tracking and clean body font */
-.btn, .tab-btn, .section-tag, .nav-links a {
+.app-root .btn, 
+.app-root .tab-btn, 
+.app-root .section-tag, 
+.app-root .nav-links a {
   font-family: var(--font-family);
   letter-spacing: 0.02em;
 }
 
-a {
+.app-root a {
   color: inherit;
   text-decoration: none;
   transition: var(--transition-smooth);
 }
 
-ul {
+.app-root ul {
   list-style: none;
 }
 
-button {
+/* :where() keeps this at specificity (0,1,0) instead of (0,1,1).
+   As `.app-root button` it outranked every single-class button rule in this
+   file - .nav-cta, .nav-burger, .modal-close, .slider-btn, .nav-sheet-cta -
+   so `background: none` silently erased their fills. The Request Quote button
+   was the visible casualty: white label, no background, on a white navbar.
+   A reset must be the weakest rule in the file, not one of the strongest. */
+/* Stops a wide image forcing sideways scroll on a phone. This was previously
+   only hidden by `#root { overflow-x: hidden }`, which clips the overflow
+   off-screen rather than making the image fit.
+   :where() again, so the many class rules that set an explicit img height
+   (.hero-visual-img, .product-detail-media img, ...) still win. */
+.app-root :where(img, svg, video, iframe) {
+  max-width: 100%;
+}
+
+.app-root :where(button) {
   font-family: var(--font-family);
   cursor: pointer;
   border: none;
@@ -202,22 +242,17 @@ button {
    0,0,1) — so every one of those sections silently had no vertical padding and
    its heading sat flush against the block above. Setting only the inline axis
    here leaves the block axis to the section rule. */
-.container {
+/* Utility Components for storefront */
+.app-root .container {
   max-width: 1200px;
   margin: 0 auto;
   padding-inline: 1.5rem;
 }
 
-/* Utility Components */
-/* No backdrop-filter here on purpose. These cards sit on a smooth gradient,
-   and blurring a smooth gradient returns the same gradient — the filter cost
-   real frames on every scroll and bought nothing visually. Blur is kept only
-   where the backdrop has detail: .hero-3d-card and .modal-backdrop. */
-.glass-card {
+.app-root .glass-card {
   background: var(--bg-card);
   border: 1px solid var(--card-border);
   border-radius: var(--border-radius-lg);
-  /* Outer lift + a 1px top highlight, which is what sells the glass edge */
   box-shadow: var(--card-shadow), inset 0 1px 0 var(--card-highlight);
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
               box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
@@ -225,7 +260,7 @@ button {
               background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.glass-card:hover {
+.app-root .glass-card:hover {
   background: var(--bg-card-hover);
   border-color: var(--accent-cyan);
   box-shadow: var(--card-shadow-hover), inset 0 1px 0 var(--card-highlight);
@@ -233,20 +268,18 @@ button {
 }
 
 @media (prefers-reduced-transparency: reduce) {
-  .glass-card,
-  .glass-card:hover {
+  .app-root .glass-card,
+  .app-root .glass-card:hover {
     background: var(--bg-card-solid);
   }
 }
 
-/* The marquee animates transform forever — keep it on its own compositor
-   layer so it never repaints the content underneath. */
-.marquee-content {
+.app-root .marquee-content {
   will-change: transform;
   backface-visibility: hidden;
 }
 
-.btn {
+.app-root .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -257,67 +290,72 @@ button {
   transition: var(--transition-smooth);
 }
 
-.btn-sm {
+.app-root .btn-sm {
   padding: 0.5rem 1rem;
   font-size: 0.875rem;
 }
 
-.btn-primary {
+.app-root .btn-primary {
   background-color: var(--accent-cyan);
   color: #FFFFFF;
 }
 
-.btn-primary:hover {
+.app-root .btn-primary:hover {
   filter: brightness(1.15);
   box-shadow: 0 0 15px var(--accent-cyan);
   transform: scale(1.02);
 }
 
-.btn-amber {
+.app-root .btn-amber {
   background-color: var(--accent-amber);
   color: #FFFFFF;
 }
 
-.btn-amber:hover {
+.app-root .btn-amber:hover {
   filter: brightness(1.15);
   box-shadow: 0 0 15px var(--accent-amber);
   transform: scale(1.02);
 }
 
-.btn-secondary {
+.app-root .btn-secondary {
   background-color: transparent;
   color: var(--text-main);
   border: 1px solid var(--border-color);
 }
 
-.btn-secondary:hover {
+.app-root .btn-secondary:hover {
   background-color: rgba(255, 255, 255, 0.05);
   border-color: var(--text-main);
 }
 
-.gradient-text-cyan {
-  background: linear-gradient(45deg, var(--color-brand-400), var(--color-brand-500));
+.app-root .gradient-text-cyan {
+  /* Literal fallbacks matter more here than anywhere else: the text is painted
+     by the gradient and then made transparent, so an unresolved variable would
+     drop the gradient and leave the headline invisible rather than just
+     un-styled. */
+  background-image: linear-gradient(
+    45deg,
+    var(--color-brand-400, #F58220),
+    var(--color-brand-500, #C4560A)
+  );
   -webkit-background-clip: text;
   background-clip: text;
-  color: var(--color-brand-500);
+  color: var(--color-brand-500, #C4560A);
   -webkit-text-fill-color: transparent;
 }
 
-/* Sections Global */
-/* ---- Vertical rhythm -----------------------------------------------------
-   Adjacent sections each contribute padding, so the visible gap between two
-   sections is ALWAYS double this value: 3.5rem gives a 7rem (112px) gap.
-   Nothing overrides this — sections that paint their own background band use
-   the same padding as the plain ones, so the rhythm never changes down the
-   page. Any new section should inherit this rather than set its own.
-   padding-block only, so it composes with .container's padding-inline instead
-   of the two shorthands cancelling each other out. */
-section {
+/* :where(), so this default sits at specificity (0,1,0) instead of (0,1,1).
+   As `.app-root section` it outranked every single-class section rule that
+   sets its own vertical padding, and silently replaced it:
+     .hero          — lost its `--nav-clearance + 3.5rem` top padding, so the
+                      badge and headline slid up underneath the fixed navbar;
+     .brands-section — lost its tighter 2.25rem band.
+   A default must be the weakest rule, not one that beats the specific ones. */
+.app-root :where(section) {
   padding-block: var(--section-pad);
 }
 
-/* Keep anchor jumps clear of the fixed navbar */
-section[id] {
+.app-root section[id] {
   scroll-margin-top: 7rem;
 }
 
@@ -572,7 +610,17 @@ html {
   font-size: 0.92rem;
   font-weight: 600;
   color: #FFFFFF;
-  background: linear-gradient(135deg, var(--color-brand-500), var(--color-brand-600));
+  /* Solid colour and gradient are set separately, each with a literal fallback.
+     As one `background: linear-gradient(var(--x), var(--y))` shorthand, a single
+     unresolved custom property invalidates the whole declaration - which left a
+     white label on the white navbar, i.e. an invisible button. Split like this,
+     the button still paints its brand colour even if the gradient is dropped. */
+  background-color: var(--color-brand-500, #C4560A);
+  background-image: linear-gradient(
+    135deg,
+    var(--color-brand-500, #C4560A),
+    var(--color-brand-600, #A34508)
+  );
   box-shadow: 0 6px 18px rgba(196, 86, 10, 0.32);
   transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
 }
@@ -693,7 +741,13 @@ html {
 
 /* Category whose products are currently shown alongside */
 .nav-menu-row.is-active {
-  background: linear-gradient(135deg, var(--color-brand-500), var(--color-brand-600));
+  /* Same split as .nav-cta - white label, so it must never lose its fill. */
+  background-color: var(--color-brand-500, #C4560A);
+  background-image: linear-gradient(
+    135deg,
+    var(--color-brand-500, #C4560A),
+    var(--color-brand-600, #A34508)
+  );
   color: #FFFFFF;
   font-weight: 700;
   box-shadow: 0 4px 14px rgba(196, 86, 10, 0.3);
@@ -808,23 +862,20 @@ html {
   position: relative;
   min-height: 90vh;
   min-height: 90dvh;
-  display: flex;
-  align-items: center;
-  /* Top clears the floating navbar (which ends ~4.75rem down); the bottom is
-     the shared section rhythm, so the gap to the next block matches the gap
-     between every other pair of sections. */
-  padding: 8rem 0 var(--section-pad) 0;
+  display: block;
+  /* Generous top clearance ensuring badge and title never overlap floating navbar */
+  padding: calc(var(--nav-clearance) + 3.5rem) 0 var(--section-pad) 0;
   overflow: hidden;
 }
 
 .hero-content {
   position: relative;
   z-index: 3;
+  min-height: calc(
+    90dvh - var(--nav-clearance) - 3.5rem - var(--section-pad)
+  );
+  align-content: start;
   display: grid;
-  /* The showcase image takes the larger share, and on top of its track it
-     stays inside the container, so its right edge lines up with the navbar and
-     with every section below. minmax(0,…) so a wide image can never push the
-     text column past its own track. */
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
   gap: 2.5rem;
   align-items: center;
@@ -834,21 +885,33 @@ html {
   max-width: 560px;
 }
 
+/* The pill has to survive the longest slide label ("Siemens Authorized
+   Distributor — Smart Protection Solutions"), so it wraps to a second line
+   rather than stretching past the text column. max-width keeps it inside
+   .hero-text's 560px measure; the old rgba(255,255,255,0.05) fill was
+   invisible on the light theme and left the label floating on a hairline. */
 .hero-badge {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--border-color);
-  padding: 0.4rem 0.8rem;
-  border-radius: 20px;
+  max-width: 100%;
+  background: var(--icon-tile);
+  border: 1px solid var(--icon-tile-border);
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
   font-size: 0.8rem;
   font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+  /* Alignment is inherited so the pill follows the hero, which centres itself
+     below 968px. */
+  text-wrap: balance;
   color: var(--accent-cyan);
   margin-bottom: 1.5rem;
 }
 
 .pulse-dot {
+  flex-shrink: 0;
   width: 8px;
   height: 8px;
   background-color: var(--accent-cyan);
@@ -1904,7 +1967,9 @@ html {
 /* The footer is always a dark surface, so it pins its own colours. Inheriting
    --text-main / --text-muted put dark ink on near-black in the light theme
    (headings landed at 1.1:1 — effectively invisible). */
-footer {
+/* Scoped: the admin panel renders its own <footer> in the same document and
+   was inheriting this dark storefront treatment. */
+.app-root footer {
   --footer-bg: #0E1018;
   --footer-heading: #FFFFFF;
   --footer-text: #B9B7C4;
@@ -2075,6 +2140,14 @@ footer {
     padding: 0.75rem 1rem 0;
   }
 
+  /* The bar is shorter and sits closer to the top edge on a phone. Restating
+     the two inputs keeps --nav-clearance accurate, so the hero and every page
+     header re-space themselves without a second set of magic numbers. */
+  :root {
+    --nav-offset: 0.75rem;
+    --nav-height: 60px;
+  }
+
   .site-nav.is-scrolled .site-nav-shell {
     height: 54px;
   }
@@ -2212,6 +2285,9 @@ footer {
 }
 
 .partner-badge {
+  /* It is a <span>; inline boxes ignore margin-bottom and don't grow for
+     vertical padding, so the pill collapsed into the name above it. */
+  display: inline-block;
   font-size: 0.65rem;
   font-weight: 800;
   padding: 0.25rem 0.75rem;
@@ -2233,7 +2309,11 @@ footer {
   border: 1px solid var(--color-success);
 }
 
-.partner-badge.direct {
+/* `supplier` as well as `direct`: the admin's Badge Type select and the API
+   fallback in services/api.js both emit "supplier", while only "direct" was
+   ever styled — so the FRP card rendered its badge as bare text. */
+.partner-badge.direct,
+.partner-badge.supplier {
   background: rgba(196, 86, 10, 0.1);
   color: var(--color-brand-500);
   border: 1px solid var(--color-brand-400);
@@ -2279,7 +2359,8 @@ footer {
   will-change: transform, opacity;
 }
 
-.reveal-on-scroll.active {
+.reveal-on-scroll.active,
+.reveal-on-scroll.revealed {
   opacity: 1;
   transform: translateY(0);
   /* Release the compositor layer once the reveal has run. Leaving will-change
@@ -2330,3 +2411,66 @@ html[data-theme="dark"] .logo-light {
   }
 }
 
+
+/* ---------------------------------------------------------------------------
+   Website editor overlay
+
+   Only active when the site is loaded inside the admin's Website editor
+   (?edit=1 in an iframe). On the live site these attributes are never set, so
+   none of this applies.
+   --------------------------------------------------------------------------- */
+[data-section-editable="true"] {
+  position: relative;
+  cursor: pointer;
+  outline: 2px dashed transparent;
+  outline-offset: -4px;
+  transition: outline-color 0.15s ease, background-color 0.15s ease;
+}
+
+[data-section-editable="true"]:hover {
+  outline-color: var(--color-brand-400);
+  background-color: rgba(245, 130, 32, 0.04);
+}
+
+[data-section-editable="true"][data-section-selected="true"] {
+  outline: 2px solid var(--color-brand-500);
+  outline-offset: -4px;
+  background-color: rgba(245, 130, 32, 0.06);
+}
+
+/* "Edit this section" tag, shown on hover in the top-left of the section. */
+[data-section-editable="true"]::after {
+  content: "✎ Edit section";
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 40;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--color-brand-500);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+[data-section-editable="true"]:hover::after,
+[data-section-editable="true"][data-section-selected="true"]::after {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+[data-section-editable="true"][data-section-selected="true"]::after {
+  content: "✎ Editing";
+}
+
+/* Links and buttons inside a section must not fire while picking a section. */
+[data-section-editable="true"] a,
+[data-section-editable="true"] button {
+  pointer-events: none;
+}

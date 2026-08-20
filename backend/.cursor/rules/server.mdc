@@ -1,0 +1,23 @@
+---
+description: Conventions for the Express + Mongoose API in apps/server
+globs: apps/server/**
+alwaysApply: false
+---
+
+Follow the pipeline in [AGENTS.md](../../AGENTS.md) — design before code, and stop and ask if a
+request contradicts a documented convention.
+
+Before editing anything here, read:
+
+- [docs/conventions/30-api.md](../../docs/conventions/30-api.md) for routes, controllers, the
+  `{ isOk, status, message, data }` envelope, `runListQuery`, auth and validation
+- [docs/conventions/20-schema.md](../../docs/conventions/20-schema.md) for models, indexes and backfills
+
+The three that are most often got wrong:
+
+- Every list endpoint goes through `runListQuery`. Its `filterable` map is an allowlist and a
+  security boundary — never build a match from `req.body` directly.
+- `filterable` on the server and `filterFields` in `apps/admin/src/entities/` describe the same set.
+  Change both together.
+- Declare indexes on every `ref`, every filterable field, and every business-unique key. Most
+  existing models don't; that's the gap, not the pattern.

@@ -578,6 +578,76 @@ export const TEAM = [
   { name: 'Manish Patel', role: 'General Manager', photo: '/images/team/manish-patel.png' }
 ];
 
+/* Fallback vacancies for /career, used until the Careers screen in the admin
+   panel has rows. Same role as TESTIMONIALS and PARTNERS above: the page never
+   renders empty just because the backend is unreachable. */
+export const JOB_OPENINGS = [
+  {
+    title: 'Sales Engineer - Industrial Motors',
+    department: 'Sales',
+    location: 'Ankleshwar GIDC, Gujarat',
+    employmentType: 'full-time',
+    experience: '2-5 years',
+    openings: 2,
+    salaryRange: '',
+    desc: 'Own the motor enquiry desk end to end — sizing questions from plant engineers, quotations, and follow-up until the material is dispatched.',
+    responsibilities: [
+      'Handle walk-in, telephonic and email enquiries for Siemens, CG and ABB motors',
+      'Size motors and drives against the customer load data, and prepare the quotation',
+      'Visit chemical, pharma and engineering plants across Ankleshwar, Panoli and Jhagadia',
+      'Coordinate with the stores team on stock availability and dispatch timelines'
+    ],
+    requirements: [
+      'Diploma or BE in Electrical or Mechanical Engineering',
+      'Working knowledge of LT motors, starters and drives',
+      'Comfortable reading a nameplate and a basic single-line diagram',
+      'Two-wheeler with a valid licence for local plant visits'
+    ]
+  },
+  {
+    title: 'Technical Sales Executive - Switchgear & Cables',
+    department: 'Sales',
+    location: 'Ankleshwar GIDC, Gujarat',
+    employmentType: 'full-time',
+    experience: '1-3 years',
+    openings: 1,
+    salaryRange: '',
+    desc: 'Support panel builders and contractors buying Siemens switchgear and Polycab cables, from the first enquiry through to the tax invoice.',
+    responsibilities: [
+      'Prepare quotations for MCBs, MCCBs, ACBs, contactors and LT power cables',
+      'Convert panel bill-of-materials into a priced offer with available substitutes',
+      'Maintain the enquiry follow-up register and report weekly conversion',
+      'Keep price lists and brand discount structures up to date'
+    ],
+    requirements: [
+      'Diploma in Electrical Engineering, or a graduate with switchgear trade experience',
+      'Confident with Excel and email correspondence',
+      'Clear spoken Gujarati, Hindi and working English'
+    ]
+  },
+  {
+    title: 'Store & Dispatch Executive',
+    department: 'Stores & Logistics',
+    location: 'Ankleshwar GIDC, Gujarat',
+    employmentType: 'full-time',
+    experience: '1-4 years',
+    openings: 1,
+    salaryRange: '',
+    desc: 'Run the counter stock — inward, binning, cut-to-length cable issue, and same-day dispatch to GIDC plants.',
+    responsibilities: [
+      'Receive and inspect incoming material against the purchase order',
+      'Maintain bin locations and physical stock accuracy for motors, spares and cable drums',
+      'Cut and issue cable to length, and pack material for dispatch',
+      'Prepare delivery challans and coordinate transporters'
+    ],
+    requirements: [
+      'ITI, Diploma or graduate with 1+ year in an industrial store',
+      'Familiar with basic inventory software and stock registers',
+      'Physically able to handle counter stock and packing'
+    ]
+  }
+];
+
 export const COMPANY = {
   phone: '+91 98980 78247',
   phoneHref: 'tel:+919898078247',
@@ -687,5 +757,70 @@ export const PROCESS_STEPS = [
     icon: 'truck',
     title: 'Dispatch & Aftercare',
     desc: 'Ready stock leaves Ankleshwar GIDC quickly, and we stay on call through commissioning and beyond.'
+  }
+];
+
+/* Home page hero carousel. Lives here rather than in components/Hero.jsx so the
+   Website editor's section registry can offer it as editable content. */
+export const HERO_SLIDES = [
+  {
+    category: 'motors',
+    title: 'High-Efficiency Industrial Motors',
+    desc: 'Authorized distributor for Siemens motors, and trusted supplier of CG and ABB heavy-duty induction motors built for continuous operation.',
+    badge: 'Authorized Distributor for Siemens Motors',
+    image: '/images/hero/motors.jpg',
+    imageAlt: 'Siemens, ABB and CG three-phase industrial induction motors',
+    caption: 'Siemens · ABB · CG induction motors — IE2 to IE4',
+    stats: [
+      { value: '10+ Years', label: 'Experience' },
+      { value: 'IE2–IE4', label: 'Efficiency Classes' },
+      { value: '1000+', label: 'Clients in Gujarat' },
+      { value: 'Ready Stock', label: 'in Ankleshwar' }
+    ]
+  },
+  {
+    category: 'switchgears',
+    title: 'Siemens Certified Switchgear Protection',
+    desc: 'Advanced circuit protection featuring Siemens MCCBs, modular electronic trip units, and contactors for automated factory operations.',
+    badge: 'Siemens Authorized Distributor — Smart Protection Solutions',
+    image: '/images/hero/siemens-switchgear.jpg',
+    imageAlt: 'Siemens MCB, MCCB panel and contactor range',
+    caption: 'Siemens MCBs, MCCBs, contactors & LT panels',
+    stats: [
+      { value: '10+ Years', label: 'Experience' },
+      { value: 'IE2–IE4', label: 'Efficiency Classes' },
+      { value: '1000+', label: 'Clients in Gujarat' },
+      { value: 'Ready Stock', label: 'in Ankleshwar' }
+    ]
+  },
+  {
+    category: 'cables',
+    title: 'Polycab LT Armoured & Flexible Cables',
+    desc: 'Heavy-duty Polycab XLPE LT Aluminium power cables and high-conductivity flexible copper control wires for switchboards and panel wiring.',
+    badge: 'Polycab Authorized Distributor — Heavy-Duty Power',
+    image: '/images/hero/polycab-cables.jpg',
+    imageAlt: 'Polycab LT armoured power cables and flexible copper wires',
+    caption: 'Polycab XLPE LT armoured cables & flexible wires',
+    stats: [
+      { value: '10+ Years', label: 'Experience' },
+      { value: 'IE2–IE4', label: 'Efficiency Classes' },
+      { value: '1000+', label: 'Clients in Gujarat' },
+      { value: 'Ready Stock', label: 'in Ankleshwar' }
+    ]
+  },
+  {
+    category: 'frp',
+    title: 'FRP Molded Gratings & Cable Trays',
+    desc: 'Lightweight, anti-corrosive, non-conductive FRP pultruded cable trays and molded floor grating mesh designed for chemical processing plants.',
+    badge: 'FRP Supplier — Chemical & Corrosion Resistant',
+    image: '/images/hero/frp-products.jpg',
+    imageAlt: 'FRP molded gratings, pultruded cable trays and structural profiles',
+    caption: 'FRP molded gratings, cable trays & profiles',
+    stats: [
+      { value: '10+ Years', label: 'Experience' },
+      { value: 'IE2–IE4', label: 'Efficiency Classes' },
+      { value: '1000+', label: 'Clients in Gujarat' },
+      { value: 'Ready Stock', label: 'in Ankleshwar' }
+    ]
   }
 ];

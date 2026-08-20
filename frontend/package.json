@@ -8,20 +8,41 @@
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "fetch:images": "node scripts/fetch-images.mjs"
+    "fetch:images": "node scripts/fetch-images.mjs",
+    "postinstall": "node scripts/link-modules.mjs && node scripts/fix-icons.mjs"
   },
   "dependencies": {
+    "@demo-panel/shared": "file:../backend/shared",
+    "@react-stately/utils": "^3.12.1",
+    "@tailwindcss/typography": "^0.5.20",
+    "@untitledui/file-icons": "^0.0.9",
+    "@untitledui/icons": "^0.0.22",
+    "axios": "^0.26.0",
+    "input-otp": "^1.4.2",
+    "jodit-react": "^5.2.6",
+    "motion": "^13.0.0",
     "react": "^19.2.8",
+    "react-aria": "^3.51.0",
+    "react-aria-components": "^1.20.0",
     "react-dom": "^19.2.8",
     "react-router-dom": "^7.18.2",
+    "react-stately": "^3.49.0",
+    "react-toastify": "^11.1.0",
+    "remixicon": "^4.9.1",
+    "tailwind-merge": "^3.6.0",
+    "tailwindcss": "^4.3.3",
+    "tailwindcss-animate": "^1.0.7",
+    "tailwindcss-react-aria-components": "^2.2.0",
     "three": "^0.185.1"
   },
   "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.4",
     "oxlint": "^1.75.0",
     "sharp": "^0.35.3",
+    "typescript": "^7.0.2",
     "vite": "^8.2.0"
   }
 }

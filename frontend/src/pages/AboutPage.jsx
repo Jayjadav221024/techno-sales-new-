@@ -5,15 +5,21 @@ import StatsBand from '../components/StatsBand';
 import EasierBand from '../components/EasierBand';
 import Icon from '../components/Icon';
 import Img from '../components/Img';
-import { COMPANY, FEATURES, PARTNERS, TEAM } from '../data/site';
+import { FEATURES, PARTNERS, TEAM } from '../data/site';
+import { useSection, useSectionProps } from '../context/SiteContentContext';
+import { useCompany } from '../context/SiteContentContext';
 
 export default function AboutPage({ onOpenRFQ }) {
+  const COMPANY = useCompany();
+  const aboutCopy = useSection('about.intro');
+  const aboutCopyProps = useSectionProps('about.intro');
   return (
     <>
       <PageHeader
-        tag="THE TECHNO SALES ADVANTAGE"
-        title="About Us"
-        lead="A decade of supplying industrial motors, switchgear, cables and FRP structures to the plants of Ankleshwar GIDC — with the engineering support to match."
+        {...aboutCopyProps}
+        tag={aboutCopy.tag}
+        title={aboutCopy.title}
+        lead={aboutCopy.lead}
       />
 
       {/* Advantages */}

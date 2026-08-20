@@ -14,7 +14,7 @@ export default function ProductCard({ product, onOpenRFQ }) {
             what makes the shot fill the taller tile. Contained, these 2.1:1
             product banners were width-bound and left a dead band below. */}
         {product.image ? (
-          <Img src={product.image} alt={product.name} className="product-image" />
+          <Img src={product.image} alt={product.imageAlt || product.name} className="product-image" />
         ) : (
           <div
             className="product-svg-icon"

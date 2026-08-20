@@ -3,25 +3,37 @@ import PageHeader from '../components/PageHeader';
 import NotFoundPage from './NotFoundPage';
 import Icon from '../components/Icon';
 import Img from '../components/Img';
-import { BLOG_POSTS } from '../data/site';
+import { useSiteData } from '../context/SiteDataContext';
+import { seoFromRecord, useSeo } from '../utils/seo';
 
 const WORDS_PER_MINUTE = 200;
 
 /** Minutes to read what is actually on the page, tags stripped. */
 function readingMinutes(post) {
-  const text = `${post.excerpt || ''} ${(post.body || '').replace(/<[^>]+>/g, ' ')}`;
+  const text = `${post.excerpt || ''} ${(post.content || post.body || '').replace(/<[^>]+>/g, ' ')}`;
   const words = text.trim().split(/\s+/).filter(Boolean).length;
   return Math.max(1, Math.round(words / WORDS_PER_MINUTE));
 }
 
 export default function BlogPostPage() {
   const { slug } = useParams();
-  const post = BLOG_POSTS.find((p) => p.slug === slug);
+  const { blogs } = useSiteData();
+  const post = blogs.find((p) => p.slug === slug);
+
+  // Above the early return - hooks cannot run conditionally.
+  useSeo(
+    seoFromRecord(post, {
+      title: post ? `${post.title} | Techno Sales Technical Hub` : undefined,
+      description: post?.excerpt,
+      type: 'article',
+    }),
+    [post, slug],
+  );
 
   if (!post) return <NotFoundPage />;
 
   // Recent/Popular feeds: show 5 other recent posts
-  const recentPosts = BLOG_POSTS.filter((p) => p.slug !== post.slug).slice(0, 5);
+  const recentPosts = blogs.filter((p) => p.slug !== post.slug).slice(0, 5);
 
   return (
     <>
@@ -34,7 +46,7 @@ export default function BlogPostPage() {
         <div className="blog-layout">
           <article className="glass-card blog-post-card">
             {post.image && (
-              <Img src={post.image} alt="" className="blog-post-cover" loading="eager" />
+              <Img src={post.image} alt={post.imageAlt || post.title} className="blog-post-cover" loading="eager" />
             )}
 
             <div className="blog-post-inner">

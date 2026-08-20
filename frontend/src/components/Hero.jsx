@@ -2,71 +2,12 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Icon from './Icon';
 import Img from './Img';
-
-const HERO_SLIDES = [
-  {
-    category: 'motors',
-    title: 'High-Efficiency Industrial Motors',
-    desc: 'Authorized distributor for Siemens motors, and trusted supplier of CG and ABB heavy-duty induction motors built for continuous operation.',
-    badge: 'Authorized Distributor for Siemens Motors',
-    image: '/images/hero/motors.jpg',
-    imageAlt: 'Siemens, ABB and CG three-phase industrial induction motors',
-    caption: 'Siemens · ABB · CG induction motors — IE2 to IE4',
-    stats: [
-      { value: '10+ Years', label: 'Experience' },
-      { value: 'IE2–IE4', label: 'Efficiency Classes' },
-      { value: '1000+', label: 'Clients in Gujarat' },
-      { value: 'Ready Stock', label: 'in Ankleshwar' }
-    ]
-  },
-  {
-    category: 'switchgears',
-    title: 'Siemens Certified Switchgear Protection',
-    desc: 'Advanced circuit protection featuring Siemens MCCBs, modular electronic trip units, and contactors for automated factory operations.',
-    badge: 'Siemens Authorized Distributor — Smart Protection Solutions',
-    image: '/images/hero/siemens-switchgear.jpg',
-    imageAlt: 'Siemens MCB, MCCB panel and contactor range',
-    caption: 'Siemens MCBs, MCCBs, contactors & LT panels',
-    stats: [
-      { value: '10+ Years', label: 'Experience' },
-      { value: 'IE2–IE4', label: 'Efficiency Classes' },
-      { value: '1000+', label: 'Clients in Gujarat' },
-      { value: 'Ready Stock', label: 'in Ankleshwar' }
-    ]
-  },
-  {
-    category: 'cables',
-    title: 'Polycab LT Armoured & Flexible Cables',
-    desc: 'Heavy-duty Polycab XLPE LT Aluminium power cables and high-conductivity flexible copper control wires for switchboards and panel wiring.',
-    badge: 'Polycab Authorized Distributor — Heavy-Duty Power',
-    image: '/images/hero/polycab-cables.jpg',
-    imageAlt: 'Polycab LT armoured power cables and flexible copper wires',
-    caption: 'Polycab XLPE LT armoured cables & flexible wires',
-    stats: [
-      { value: '10+ Years', label: 'Experience' },
-      { value: 'IE2–IE4', label: 'Efficiency Classes' },
-      { value: '1000+', label: 'Clients in Gujarat' },
-      { value: 'Ready Stock', label: 'in Ankleshwar' }
-    ]
-  },
-  {
-    category: 'frp',
-    title: 'FRP Molded Gratings & Cable Trays',
-    desc: 'Lightweight, anti-corrosive, non-conductive FRP pultruded cable trays and molded floor grating mesh designed for chemical processing plants.',
-    badge: 'FRP Supplier — Chemical & Corrosion Resistant',
-    image: '/images/hero/frp-products.jpg',
-    imageAlt: 'FRP molded gratings, pultruded cable trays and structural profiles',
-    caption: 'FRP molded gratings, cable trays & profiles',
-    stats: [
-      { value: '10+ Years', label: 'Experience' },
-      { value: 'IE2–IE4', label: 'Efficiency Classes' },
-      { value: '1000+', label: 'Clients in Gujarat' },
-      { value: 'Ready Stock', label: 'in Ankleshwar' }
-    ]
-  }
-];
+import { useSection, useSectionProps } from '../context/SiteContentContext';
 
 export default function Hero({ products, onSelectProduct, onOpenRFQ, searchQuery, setSearchQuery }) {
+  const hero = useSection('home.hero');
+  const sectionProps = useSectionProps('home.hero');
+  const HERO_SLIDES = hero.slides;
   const [showDropdown, setShowDropdown] = useState(false);
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
   // Every slide image is stacked in the same frame, so all four would sit in
@@ -81,7 +22,7 @@ export default function Hero({ products, onSelectProduct, onOpenRFQ, searchQuery
       setActiveSlideIndex((prev) => (prev + 1) % HERO_SLIDES.length);
     }, 6000);
     return () => clearInterval(timer);
-  }, []);
+  }, [HERO_SLIDES.length]);
 
   useEffect(() => {
     const next = (activeSlideIndex + 1) % HERO_SLIDES.length;
@@ -98,21 +39,24 @@ export default function Hero({ products, onSelectProduct, onOpenRFQ, searchQuery
       )
     : [];
 
-  const slide = HERO_SLIDES[activeSlideIndex];
+  // Someone editing the slides in the admin panel can delete the one currently
+  // showing, so the index is clamped rather than trusted.
+  const slide = HERO_SLIDES[activeSlideIndex] ?? HERO_SLIDES[0];
+  if (!slide) return null;
 
   return (
-    <section id="hero" className="hero">
+    <section id="hero" className="hero" {...sectionProps}>
       <div className="container hero-content">
         <div className="hero-text reveal-on-scroll">
           <div className="hero-badge">
             <div className="pulse-dot"></div>
             {slide.badge}
           </div>
-          
+
           <h1 className="hero-title">
-            Powering Industry with <span className="gradient-text-cyan">{slide.title}</span>
+            {hero.headingPrefix} <span className="gradient-text-cyan">{slide.title}</span>
           </h1>
-          
+
           <p className="hero-description">
             {slide.desc}
           </p>
@@ -123,7 +67,7 @@ export default function Hero({ products, onSelectProduct, onOpenRFQ, searchQuery
             <input
               type="text"
               className="search-input"
-              placeholder="Search Products (e.g. Siemens, Polycab, FRP)..."
+              placeholder={hero.searchPlaceholder}
               value={searchQuery}
               onChange={(e) => {
                 setSearchQuery(e.target.value);

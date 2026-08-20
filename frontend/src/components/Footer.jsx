@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 import Logo from './Logo';
 import Icon from './Icon';
-import { CATEGORIES, COMPANY } from '../data/site';
+import { CATEGORIES } from '../data/site';
+import { useCompany } from '../context/SiteContentContext';
 
 const QUICK_LINKS = [
   { to: '/', label: 'Home' },
@@ -15,6 +16,7 @@ const QUICK_LINKS = [
 ];
 
 export default function Footer() {
+  const COMPANY = useCompany();
   return (
     <footer>
       <div className="container footer-grid">

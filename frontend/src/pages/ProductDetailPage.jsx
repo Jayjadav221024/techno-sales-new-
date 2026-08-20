@@ -1,21 +1,59 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import PageHeader from '../components/PageHeader';
 import ProductCard from '../components/ProductCard';
 import CtaBand from '../components/CtaBand';
 import Icon from '../components/Icon';
 import NotFoundPage from './NotFoundPage';
-import { findProduct, findCategory, productsInCategory, COMPANY } from '../data/site';
+
+import { useSiteData } from '../context/SiteDataContext';
+import { fetchProductBySlug } from '../services/api';
+import { SEO_DEFAULTS } from '../data/seoDefaults';
+import { seoFromRecord, useSeo } from '../utils/seo';
+import { useCompany } from '../context/SiteContentContext';
 
 export default function ProductDetailPage({ onOpenRFQ }) {
+  const COMPANY = useCompany();
   const [faqOpenIndex, setFaqOpenIndex] = useState(-1);
   const { productId } = useParams();
-  const product = findProduct(productId);
+  const { products, categories } = useSiteData();
+
+  const [product, setProduct] = useState(() => {
+    return products.find((p) => p.slug === productId || p.id === productId) || null;
+  });
+
+  useEffect(() => {
+    // If not found in memory context or we want latest DB edits
+    const found = products.find((p) => p.slug === productId || p.id === productId);
+    if (found) {
+      setProduct(found);
+    } else {
+      fetchProductBySlug(productId).then((res) => {
+        if (res) setProduct(res);
+      });
+    }
+  }, [productId, products]);
+
+  // Kept above the early return below - hooks cannot run conditionally.
+  // Order of preference: the record's SEO fields, then the hand-written entry
+  // for this exact URL, then something built from the product itself.
+  useSeo(
+    seoFromRecord(product, {
+      ...(SEO_DEFAULTS[`/product/${productId}`] ?? {
+        title: product ? `${product.name} Supplier in Ankleshwar | Techno Sales` : undefined,
+        description: product?.desc,
+      }),
+      type: 'product',
+    }),
+    [product, productId],
+  );
 
   if (!product) return <NotFoundPage />;
 
-  const category = findCategory(product.category);
-  const siblings = productsInCategory(product.category).filter((p) => p.id !== product.id);
+  const category = categories.find((c) => c.slug === product.category || c.id === product.category);
+  const siblings = products.filter(
+    (p) => (p.category === product.category || p.categorySlug === product.category) && (p.slug !== product.slug && p.id !== product.id)
+  );
 
   return (
     <>
@@ -25,7 +63,7 @@ export default function ProductDetailPage({ onOpenRFQ }) {
         lead={product.desc}
         trail={[
           { label: 'Products', to: '/products' },
-          { label: category?.title ?? product.category, to: `/products/${product.category}` }
+          { label: category?.title ?? product.category, to: `/products/${category?.slug || product.category}` }
         ]}
       />
 
@@ -35,7 +73,7 @@ export default function ProductDetailPage({ onOpenRFQ }) {
           <div>
             <div className="glass-card product-detail-media">
               {product.image ? (
-                <img src={product.image} alt={product.name} />
+                <img src={product.image} alt={product.imageAlt || product.name} />
               ) : (
                 <div
                   className="product-svg-icon"
@@ -57,7 +95,7 @@ export default function ProductDetailPage({ onOpenRFQ }) {
 
             <h3 className="product-detail-subhead">Technical Specifications</h3>
             <ul className="spec-list">
-              {product.specs.map((spec, index) => (
+              {(product.specs || []).map((spec, index) => (
                 <li key={index}>
                   <Icon name="check" size={16} />
                   <span>{spec}</span>
@@ -88,7 +126,7 @@ export default function ProductDetailPage({ onOpenRFQ }) {
 
         {/* Detailed Sections: Intro, Applications, Why Choose, FAQs */}
         <div className="product-details-extra reveal-on-scroll" style={{ marginTop: '4rem', display: 'flex', flexDirection: 'column', gap: '3rem' }}>
-          {product.intro && (
+          {product.intro && product.intro.length > 0 && (
             <div className="glass-card extra-intro-card">
               <h3 className="section-subheading accent-color">Overview</h3>
               {product.intro.map((p, idx) => (
@@ -98,7 +136,7 @@ export default function ProductDetailPage({ onOpenRFQ }) {
           )}
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(280px, 100%), 1fr))', gap: '2rem' }}>
-            {product.applications && (
+            {product.applications && product.applications.length > 0 && (
               <div className="glass-card extra-list-card">
                 <h3 className="section-subheading accent-color">Key Applications</h3>
                 <ul className="detail-spec-list">
@@ -112,7 +150,7 @@ export default function ProductDetailPage({ onOpenRFQ }) {
               </div>
             )}
 
-            {product.whyChoose && (
+            {product.whyChoose && product.whyChoose.length > 0 && (
               <div className="glass-card extra-list-card">
                 <h3 className="section-subheading accent-color">Why Choose Techno Sales?</h3>
                 <ul className="detail-spec-list">
@@ -127,7 +165,7 @@ export default function ProductDetailPage({ onOpenRFQ }) {
             )}
           </div>
 
-          {product.faqs && (
+          {product.faqs && product.faqs.length > 0 && (
             <div className="product-faq-accordion-section">
               <h3 className="faq-section-title">Frequently Asked Questions</h3>
               <div className="faq-accordion" style={{ maxWidth: '800px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -136,15 +174,15 @@ export default function ProductDetailPage({ onOpenRFQ }) {
                   return (
                     <div className={`glass-card faq-item${isOpen ? ' is-open' : ''}`} key={idx}>
                       <h3>
-                          <button
-                            type="button"
-                            className="faq-question"
-                            onClick={() => setFaqOpenIndex(isOpen ? -1 : idx)}
-                            aria-expanded={isOpen}
-                          >
-                            <span>{faq.q}</span>
-                            <Icon name="chevronDown" size={18} className="faq-caret" />
-                          </button>
+                        <button
+                          type="button"
+                          className="faq-question"
+                          onClick={() => setFaqOpenIndex(isOpen ? -1 : idx)}
+                          aria-expanded={isOpen}
+                        >
+                          <span>{faq.q}</span>
+                          <Icon name="chevronDown" size={18} className="faq-caret" />
+                        </button>
                       </h3>
                       {isOpen && (
                         <p className="faq-answer">
@@ -164,14 +202,14 @@ export default function ProductDetailPage({ onOpenRFQ }) {
             <h3>More in {category?.title ?? 'this range'}</h3>
             <div className="products-grid">
               {siblings.map((p) => (
-                <ProductCard key={p.id} product={p} onOpenRFQ={onOpenRFQ} />
+                <ProductCard key={p.slug || p.id} product={p} onOpenRFQ={onOpenRFQ} />
               ))}
             </div>
           </div>
         )}
 
         <div className="section-actions">
-          <Link to={`/products/${product.category}`} className="btn btn-secondary">
+          <Link to={`/products/${category?.slug || product.category}`} className="btn btn-secondary">
             <Icon name="chevronLeft" size={16} />
             Back to {category?.title ?? 'Products'}
           </Link>

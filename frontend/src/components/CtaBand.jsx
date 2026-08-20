@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { COMPANY } from '../data/site';
+
+import { useCompany } from '../context/SiteContentContext';
 
 /** Shared "talk to us" band that closes most inner pages. */
 export default function CtaBand({
@@ -7,6 +8,7 @@ export default function CtaBand({
   text = 'Our sales engineers size motors, breakers and cable runs for you — no obligation.',
   onOpenRFQ
 }) {
+  const COMPANY = useCompany();
   return (
     <section className="cta-section container">
       <div className="cta-band reveal-on-scroll">

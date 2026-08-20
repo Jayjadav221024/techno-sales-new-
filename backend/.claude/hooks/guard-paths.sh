@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# PreToolUse(Write|Edit|NotebookEdit) — deny writes to generated, vendored-lock or secret files.
+#
+# Only deterministic, zero-false-positive paths belong here. Judgement calls
+# (is this really a new page? does this schema need an index?) are the skills'
+# job, not a hook's — see AGENTS.md.
+set -euo pipefail
+
+input=$(cat)
+path=$(jq -r '.tool_input.file_path // .tool_input.notebook_path // empty' <<<"$input")
+[ -n "$path" ] || exit 0
+
+deny() {
+  jq -n --arg reason "$1" '{
+    hookSpecificOutput: {
+      hookEventName: "PreToolUse",
+      permissionDecision: "deny",
+      permissionDecisionReason: $reason
+    }
+  }'
+  exit 0
+}
+
+case "$path" in
+  # Build output. Kept to the literal gitignored dirs — a broader pattern like
+  # */out/* would deny a legitimate source dir that merely contains "out".
+  */apps/server/out/*|apps/server/out/*)
+    deny "apps/server/out/ is build output from 'npm run build' and is gitignored. Edit the source in apps/admin/ instead." ;;
+  */node_modules/*|node_modules/*)
+    deny "node_modules/ is installed, not authored. Change package.json and reinstall." ;;
+  */package-lock.json|package-lock.json)
+    deny "package-lock.json is generated. Run the npm command instead of editing it." ;;
+esac
+
+# .env holds live credentials and is gitignored. .env.example is the one to edit.
+case "${path##*/}" in
+  .env|.env.*)
+    [ "${path##*/}" = ".env.example" ] || \
+      deny "$path holds live credentials and is gitignored. Add the variable to .env.example with a comment; ask the user to set the real value." ;;
+esac
+
+exit 0

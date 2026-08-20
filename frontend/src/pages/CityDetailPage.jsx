@@ -1,7 +1,13 @@
+import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { COMPANY, PRODUCTS_DATA } from '../data/site';
+// CITY_DATA below is built at module scope, before any hook can run, so it uses
+// the shipped contact details. The component overrides them with the live,
+// editable ones via useCompany().
+import { COMPANY as SHIPPED_COMPANY, PRODUCTS_DATA } from '../data/site';
 import Icon from '../components/Icon';
 import PageHeader from '../components/PageHeader';
+import { fetchLocationBySlug } from '../services/api';
+import { seoFromRecord, useSeo } from '../utils/seo';
 
 const CITY_DATA = {
   vadodara: {
@@ -11,8 +17,8 @@ const CITY_DATA = {
     desc: "Vadodara's heavy engineering, chemical manufacturing, and power transmission clusters require high-performance, certified components built to withstand intense production environments.",
     distance: '~85 KM',
     zones: '5',
-    phone: COMPANY.phone,
-    phoneHref: COMPANY.phoneHref
+    phone: SHIPPED_COMPANY.phone,
+    phoneHref: SHIPPED_COMPANY.phoneHref
   },
   ahmedabad: {
     name: 'Ahmedabad',
@@ -31,8 +37,8 @@ const CITY_DATA = {
     desc: "Supporting the dairy processing, packaging, and agro-engineering units of Anand with high-efficiency IE3/IE4 motors and reliable electrical switchgear panels.",
     distance: '~140 KM',
     zones: '4',
-    phone: COMPANY.phone,
-    phoneHref: COMPANY.phoneHref
+    phone: SHIPPED_COMPANY.phone,
+    phoneHref: SHIPPED_COMPANY.phoneHref
   },
   ankleshwar: {
     name: 'Ankleshwar',
@@ -41,8 +47,8 @@ const CITY_DATA = {
     desc: "Located directly in Ankleshwar GIDC, we support Asia's largest chemical processing hub with immediate off-the-shelf dispatch, technical sizing, and certified warranty support.",
     distance: '0 KM',
     zones: '8',
-    phone: COMPANY.phone,
-    phoneHref: COMPANY.phoneHref
+    phone: SHIPPED_COMPANY.phone,
+    phoneHref: SHIPPED_COMPANY.phoneHref
   },
   bharuch: {
     name: 'Bharuch',
@@ -51,8 +57,8 @@ const CITY_DATA = {
     desc: "Serving Dahej SEZ and Vilayat GIDC's massive chemical, fertilizer, and petrochemical infrastructure with heavy-duty LT power cables and flameproof motors.",
     distance: '~15 KM',
     zones: '6',
-    phone: COMPANY.phone,
-    phoneHref: COMPANY.phoneHref
+    phone: SHIPPED_COMPANY.phone,
+    phoneHref: SHIPPED_COMPANY.phoneHref
   },
   surat: {
     name: 'Surat',
@@ -61,8 +67,8 @@ const CITY_DATA = {
     desc: "Powering Sachin GIDC, Pandesara, and Hazira's textiles, diamond, and heavy industrial facilities with certified cables, circuit breakers, and mechanical drives.",
     distance: '~80 KM',
     zones: '7',
-    phone: COMPANY.phone,
-    phoneHref: COMPANY.phoneHref
+    phone: SHIPPED_COMPANY.phone,
+    phoneHref: SHIPPED_COMPANY.phoneHref
   },
   rajkot: {
     name: 'Rajkot',
@@ -71,8 +77,8 @@ const CITY_DATA = {
     desc: "Supporting Rajkot's metal casting, forging, auto parts, and machine tools manufacturing sectors with high-torque gearboxes, motors, and robust control panels.",
     distance: '~280 KM',
     zones: '5',
-    phone: COMPANY.phone,
-    phoneHref: COMPANY.phoneHref
+    phone: SHIPPED_COMPANY.phone,
+    phoneHref: SHIPPED_COMPANY.phoneHref
   },
   godhra: {
     name: 'Godhra',
@@ -81,8 +87,8 @@ const CITY_DATA = {
     desc: "Providing reliable motor starters, LT power cables, and mineral processing drive systems to factories across Godhra and Halol industrial zones.",
     distance: '~190 KM',
     zones: '3',
-    phone: COMPANY.phone,
-    phoneHref: COMPANY.phoneHref
+    phone: SHIPPED_COMPANY.phone,
+    phoneHref: SHIPPED_COMPANY.phoneHref
   },
   navsari: {
     name: 'Navsari',
@@ -91,8 +97,8 @@ const CITY_DATA = {
     desc: "Sourcing certified cables and energy-saving low voltage motors for paper mills, textiles, and floricultural processing plants in Navsari GIDC.",
     distance: '~120 KM',
     zones: '3',
-    phone: COMPANY.phone,
-    phoneHref: COMPANY.phoneHref
+    phone: SHIPPED_COMPANY.phone,
+    phoneHref: SHIPPED_COMPANY.phoneHref
   },
   vapi: {
     name: 'Vapi',
@@ -101,8 +107,8 @@ const CITY_DATA = {
     desc: "Equipping chemical processing, paper packaging, and plastic manufacturing plants of Vapi GIDC with chemical-resistant FRP materials and certified switchgear.",
     distance: '~140 KM',
     zones: '6',
-    phone: COMPANY.phone,
-    phoneHref: COMPANY.phoneHref
+    phone: SHIPPED_COMPANY.phone,
+    phoneHref: SHIPPED_COMPANY.phoneHref
   },
   bhuj: {
     name: 'Bhuj',
@@ -111,8 +117,8 @@ const CITY_DATA = {
     desc: "Supplying metallurgy facilities, power plants, and maritime logistics operators in Mundra and Gandhidham with heavy-duty LT power cables and high-efficiency induction motors.",
     distance: '~390 KM',
     zones: '5',
-    phone: COMPANY.phone,
-    phoneHref: COMPANY.phoneHref
+    phone: SHIPPED_COMPANY.phone,
+    phoneHref: SHIPPED_COMPANY.phoneHref
   },
   amreli: {
     name: 'Amreli',
@@ -121,8 +127,8 @@ const CITY_DATA = {
     desc: "Supporting cement manufacturing and maritime trade hubs near Pipavav with robust motors, protective switchgear, and marine-grade distribution wiring.",
     distance: '~340 KM',
     zones: '3',
-    phone: COMPANY.phone,
-    phoneHref: COMPANY.phoneHref
+    phone: SHIPPED_COMPANY.phone,
+    phoneHref: SHIPPED_COMPANY.phoneHref
   },
   dahod: {
     name: 'Dahod',
@@ -131,14 +137,36 @@ const CITY_DATA = {
     desc: "Supplying local mineral-processing workshops, railway engineering units, and agricultural mills with certified electric motors and circuit breakers.",
     distance: '~240 KM',
     zones: '3',
-    phone: COMPANY.phone,
-    phoneHref: COMPANY.phoneHref
+    phone: SHIPPED_COMPANY.phone,
+    phoneHref: SHIPPED_COMPANY.phoneHref
   }
 };
 
 export default function CityDetailPage({ onOpenRFQ }) {
   const { cityId } = useParams();
   const city = CITY_DATA[cityId.toLowerCase()];
+
+  // The page copy comes from CITY_DATA above, but the SEO fields are editable
+  // in the admin panel, so those are read from the matching database row.
+  const [record, setRecord] = useState(null);
+  useEffect(() => {
+    let cancelled = false;
+    fetchLocationBySlug(cityId.toLowerCase()).then((res) => {
+      if (!cancelled) setRecord(res);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [cityId]);
+
+  const cityName = city?.name || cityId.charAt(0).toUpperCase() + cityId.slice(1);
+  useSeo(
+    seoFromRecord(record, {
+      title: `Industrial Motors, Cables & FRP Gratings in ${cityName} | Techno Sales`,
+      description: `Find FRP Gratings, Cable Trays, Wires & Cables, Switchgears, and Industrial Motors in ${cityName} and surrounding industrial zones.`,
+    }),
+    [record, cityName],
+  );
 
   if (!city) {
     return (

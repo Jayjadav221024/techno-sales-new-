@@ -2,9 +2,10 @@ import PageHeader from '../components/PageHeader';
 import CtaBand from '../components/CtaBand';
 import StatsBand from '../components/StatsBand';
 import Icon from '../components/Icon';
-import { TESTIMONIALS } from '../data/site';
+import { useSiteData } from '../context/SiteDataContext';
 
 export default function TestimonialsPage({ onOpenRFQ }) {
+  const { testimonials } = useSiteData();
   return (
     <>
       <PageHeader
@@ -16,8 +17,8 @@ export default function TestimonialsPage({ onOpenRFQ }) {
 
       <section className="testimonial-list-section container">
         <div className="testimonial-grid">
-          {TESTIMONIALS.map((t) => (
-            <div className="glass-card testimonial-tile reveal-on-scroll" key={t.name}>
+          {testimonials.map((t, idx) => (
+            <div className="glass-card testimonial-tile reveal-on-scroll" key={t._id || t.name || idx}>
               <div className="quote-icon">
                 <Icon name="quote" size={44} strokeWidth={1.5} />
               </div>

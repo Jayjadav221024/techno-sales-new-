@@ -7,7 +7,8 @@
 .page-header {
   background: var(--color-ink-900);
   color: #FFFFFF;
-  padding: 10rem 0 4rem; /* clears the fixed navbar */
+  /* Clears the fixed navbar - see --nav-clearance in index.css. */
+  padding: calc(var(--nav-clearance) + 4.5rem) 0 4rem;
   position: relative;
   overflow: hidden;
 }
@@ -433,6 +434,279 @@
   line-height: 1.7;
 }
 
+/* ---- Careers (/career) --------------------------------------------------
+   Same accordion idiom as the FAQ above, widened because a job card carries
+   two bullet columns rather than one paragraph. */
+.careers-section {
+  padding: 4.5rem 0 1rem;
+}
+
+.careers-perks {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+  gap: 1.5rem;
+}
+
+.careers-perk {
+  padding: 1.9rem 1.6rem;
+}
+
+/* Same tile as .feature-icon / .industry-icon / .step-icon, including the
+   fill-on-hover, so the perk row reads as part of the same set. */
+.careers-perk-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  margin-bottom: 1.1rem;
+  border-radius: var(--border-radius-md);
+  color: var(--accent-cyan);
+  background: var(--icon-tile);
+  border: 1px solid var(--icon-tile-border);
+  transition: var(--transition-smooth);
+}
+
+.careers-perk:hover .careers-perk-icon {
+  color: var(--color-surface);
+  background: var(--color-brand-500);
+  border-color: var(--color-brand-500);
+  transform: translateY(-2px);
+}
+
+.careers-perk h3 {
+  margin-bottom: 0.55rem;
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.careers-perk p {
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+.careers-list {
+  display: grid;
+  gap: 1rem;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.career-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+/* The whole header is the toggle, so it must not inherit the button reset's
+   centred text or the title and the meta row lose their left edge. */
+.career-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+  width: 100%;
+  padding: 1.45rem 1.75rem;
+  text-align: left;
+}
+
+.career-card-title h3 {
+  font-family: var(--font-headings);
+  font-size: 1.06rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.career-card-head:hover .career-card-title h3,
+.career-card.is-open .career-card-title h3 {
+  color: var(--color-brand-600);
+}
+
+.career-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.15rem;
+  margin-top: 0.6rem;
+}
+
+.career-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.career-meta .icon {
+  color: var(--accent-cyan);
+}
+
+.career-card-aside {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  flex-shrink: 0;
+}
+
+.career-openings {
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--card-border);
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  color: var(--text-muted);
+}
+
+.career-caret {
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.career-card.is-open .career-caret {
+  transform: rotate(180deg);
+}
+
+.career-card-body {
+  padding: 1.5rem 1.75rem 1.6rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.career-desc {
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+.career-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  gap: 1.75rem 2.5rem;
+}
+
+.career-columns h4 {
+  margin-bottom: 0.85rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-main);
+}
+
+.career-bullets {
+  display: grid;
+  gap: 0.6rem;
+  list-style: none;
+}
+
+.career-bullets li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: var(--text-muted);
+}
+
+.career-bullets .icon {
+  flex-shrink: 0;
+  margin-top: 0.2rem;
+  color: var(--color-success);
+}
+
+.career-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.85rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.career-salary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.career-salary .icon {
+  color: var(--accent-cyan);
+}
+
+.career-action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.careers-empty {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 2.75rem 2rem;
+  text-align: center;
+}
+
+.careers-empty .icon {
+  color: var(--accent-cyan);
+}
+
+.careers-empty h3 {
+  margin: 1rem 0 0.6rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.careers-empty p,
+.careers-empty-text {
+  font-size: 0.94rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+.careers-empty-text {
+  text-align: center;
+}
+
+.careers-note {
+  max-width: 720px;
+  margin: 3rem auto 0;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.careers-empty a,
+.careers-note a {
+  font-weight: 600;
+  color: var(--color-brand-600);
+}
+
+@media (max-width: 640px) {
+  .career-card-head {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.25rem 1.35rem;
+  }
+
+  .career-card-body {
+    padding: 1.35rem 1.35rem 1.4rem;
+  }
+
+  .career-actions {
+    align-items: flex-start;
+  }
+}
+
 /* ---- About page ---- */
 .about-grid {
   display: grid;
@@ -681,13 +955,13 @@
   }
 
   .page-header {
-    padding: 9rem 0 3.5rem;
+    padding: calc(var(--nav-clearance) + 3.5rem) 0 3.5rem;
   }
 }
 
 @media (max-width: 768px) {
   .page-header {
-    padding: 8.5rem 0 3rem;
+    padding: calc(var(--nav-clearance) + 3rem) 0 3rem;
   }
 
 
@@ -1062,7 +1336,7 @@ video {
   }
 
   .page-header {
-    padding: 8.5rem 0 3rem;
+    padding: calc(var(--nav-clearance) + 3rem) 0 3rem;
   }
 
   .breadcrumbs {
@@ -1117,10 +1391,17 @@ video {
     flex-direction: column;
   }
 
-  /* Tabs scroll horizontally instead of stacking into a tall wall */
+  /* Tabs scroll horizontally instead of stacking into a tall wall.
+     min-width/max-width are what make that work: as a flex item of
+     .products-toolbar the strip was sizing to its 558px of content inside a
+     342px column, so `overflow-x: auto` had nothing to scroll and the ancestor's
+     `overflow-x: hidden` simply cut the last three categories off the screen
+     with no way to reach them. */
   .category-tabs {
     flex-wrap: nowrap;
     overflow-x: auto;
+    min-width: 0;
+    max-width: 100%;
     justify-content: flex-start;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
@@ -1534,7 +1815,9 @@ video {
   padding: 2.5rem;
   backdrop-filter: blur(10px);
   border: 1px solid var(--border-color);
-  borderRadius: 12px;
+  /* was `borderRadius: 12px` — the JSX inline-style spelling, which CSS drops
+     as an unknown property, so these cards had square corners. */
+  border-radius: 12px;
 }
 
 .facility-details-card {
@@ -1717,4 +2000,327 @@ video {
   line-height: 1.6;
   font-size: 0.95rem;
   margin: 0;
+}
+
+/* ===========================================================================
+   Home section internals
+
+   The JSX rewrite renamed every card's inner parts without bringing the
+   matching rules across, so these class names had no CSS at all:
+   .industry-card > .icon became .industry-icon, .process-step h3 became
+   .step-title, the testimonial became .quote-card, and the blog and FAQ cards
+   grew a new inner structure. The result was unpadded text sitting flush
+   against the .glass-card shell — .glass-card only paints the surface, each
+   card has always supplied its own padding.
+
+   Values follow the card language already in this codebase: 1.75rem-2.25rem
+   of card padding, 2rem grid gaps, --text-muted body copy, and the
+   --icon-tile / --icon-tile-border pair for icon chips.
+   =========================================================================== */
+
+/* Lead paragraph under a .section-title. Capped and centred by the
+   .section-header wrapper, so only the type treatment belongs here. */
+.section-desc {
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+/* ---- Icon chips ---------------------------------------------------------
+   Same treatment as .feature-icon-wrapper, which the older feature cards use.
+   Grouped rather than duplicated so all four stay in step. */
+.feature-icon,
+.industry-icon,
+.step-icon {
+  width: 52px;
+  height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-bottom: 1.1rem;
+  border-radius: var(--border-radius-md);
+  color: var(--accent-cyan);
+  background: var(--icon-tile);
+  border: 1px solid var(--icon-tile-border);
+  transition: var(--transition-smooth);
+}
+
+.feature-card:hover .feature-icon,
+.industry-card:hover .industry-icon,
+.process-step:hover .step-icon {
+  color: var(--color-surface);
+  background: var(--color-brand-500);
+  border-color: var(--color-brand-500);
+  transform: translateY(-2px);
+}
+
+/* ---- Industries ---------------------------------------------------------
+   .industry-card is already `display: flex` with a 1rem gap for the old
+   icon-beside-text markup. The rewrite nests the copy in <h3>/<p> siblings of
+   the icon, so the card switches to a column and the icon keeps its own row. */
+.industries-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  gap: 1.5rem;
+}
+
+.industry-card {
+  flex-direction: column;
+  gap: 0;
+}
+
+.industry-icon {
+  margin-bottom: 1rem;
+}
+
+.industry-name {
+  font-size: 1.05rem;
+  font-weight: 800;
+  margin-bottom: 0.4rem;
+}
+
+.industry-desc {
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+/* ---- Process steps ------------------------------------------------------
+   .process-step only ever set `padding-top: 2.75rem` — it leant on a
+   now-deleted rule for the other three sides, which is why the step number sat
+   on the card's left border. */
+.process-step {
+  padding: 1.75rem;
+}
+
+.step-number {
+  font-family: var(--font-headings);
+  font-size: 1.6rem;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  color: var(--color-brand-400);
+  opacity: 0.55;
+  margin-bottom: 0.9rem;
+}
+
+.step-icon {
+  width: 44px;
+  height: 44px;
+  margin-bottom: 0.9rem;
+}
+
+.step-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  margin-bottom: 0.4rem;
+}
+
+.step-desc {
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+/* ---- Testimonial quote --------------------------------------------------
+   Replaces .testimonial-card, which the rewrite stopped rendering. The
+   .quote-icon it contains is absolutely positioned at top 1.5rem / left 2rem,
+   so the card needs at least that much padding or the glyph lands outside it. */
+.quote-card {
+  position: relative;
+  max-width: 850px;
+  margin-inline: auto;
+  /* 4rem at the top, not 3rem: .quote-icon is absolutely positioned at
+     top 1.5rem and is 32px tall, so a uniform 3rem inset ran the glyph
+     straight through the opening line of the quote. */
+  padding: 4rem 3rem 2.75rem;
+  border-radius: var(--border-radius-lg);
+}
+
+.quote-text {
+  font-size: 1.15rem;
+  line-height: 1.75;
+  color: var(--text-main);
+  margin-bottom: 1.75rem;
+}
+
+.quote-author {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.author-avatar {
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--color-brand-500);
+  color: #FFFFFF;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.author-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.author-role {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+/* ---- Blog tiles ---------------------------------------------------------
+   .blog-card is a `flex-direction: column` shell with no padding of its own —
+   .blog-card-body is the part that was meant to supply it. */
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+  gap: 2rem;
+}
+
+.blog-card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 0.75rem;
+  padding: 1.75rem;
+}
+
+/* gap, so the topic and the date stop running together ("Cables6 July, 2026"). */
+.blog-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.blog-topic {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: var(--icon-tile);
+  border: 1px solid var(--icon-tile-border);
+  color: var(--accent-cyan);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.blog-card-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.blog-card-title a:hover {
+  color: var(--accent-cyan);
+}
+
+/* margin-top: auto pins the link to the bottom, so tiles of differing excerpt
+   length still line their "Read Article" up across the row. */
+.blog-card-excerpt {
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: var(--text-muted);
+}
+
+/* a.blog-card-link, not .blog-card-link: the global `.app-root a { color:
+   inherit }` reset is (0,1,1) and would otherwise repaint this link back to
+   body ink. Same reason .blog-card-title a:hover carries its element. */
+a.blog-card-link {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 0.4rem;
+  margin-top: auto;
+  padding-top: 0.35rem;
+  color: var(--accent-cyan);
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.blog-card-link .icon {
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.blog-card-link:hover .icon {
+  transform: translateX(3px);
+}
+
+/* ---- FAQ tiles ---------------------------------------------------------- */
+.faq-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr));
+  gap: 1.25rem;
+}
+
+.faq-card {
+  padding: 1.6rem 1.75rem;
+}
+
+.faq-q {
+  font-size: 1.05rem;
+  font-weight: 800;
+  line-height: 1.3;
+  margin-bottom: 0.6rem;
+}
+
+.faq-a {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+/* ---- RFQ modal footer --------------------------------------------------- */
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+/* ---- Home section internals: phones -------------------------------------
+   The grids above are all auto-fit minmax(min(Xpx, 100%), 1fr), so they
+   collapse to a single column on their own. What does need adjusting is the
+   card padding: 3rem of inset either side of a 390px screen leaves barely
+   200px of measure for the text. */
+@media (max-width: 640px) {
+  .quote-card {
+    padding: 3rem 1.5rem 2rem;
+  }
+
+  /* Follows the card's smaller inset, or the glyph floats in from the edge. */
+  .quote-card .quote-icon {
+    top: 1.1rem;
+    left: 1.5rem;
+  }
+
+  .quote-text {
+    font-size: 1.02rem;
+    line-height: 1.7;
+  }
+
+  .blog-card-body,
+  .faq-card,
+  .process-step,
+  .industry-card {
+    padding: 1.4rem;
+  }
+
+  .blog-grid {
+    gap: 1.25rem;
+  }
+
+  .faq-grid,
+  .industries-grid {
+    gap: 1rem;
+  }
 }

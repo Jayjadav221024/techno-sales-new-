@@ -1,5 +1,6 @@
 import Icon from './Icon';
-import { COMPANY, MAPS } from '../data/site';
+import { MAPS } from '../data/site';
+import { useCompany } from '../context/SiteContentContext';
 
 /** Google Maps embed for the Ankleshwar GIDC counter, with directions links. */
 export default function LocationMap({
@@ -7,6 +8,7 @@ export default function LocationMap({
   title = 'Our Ankleshwar GIDC Counter',
   lead = 'Walk-in collection for switchgear, motor spares and cut-to-length cable — five minutes off Old NH 8.'
 }) {
+  const COMPANY = useCompany();
   return (
     <section className="map-section container">
       <div className="section-header reveal-on-scroll">

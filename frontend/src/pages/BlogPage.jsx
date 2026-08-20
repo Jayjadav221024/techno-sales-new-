@@ -4,20 +4,21 @@ import PageHeader from '../components/PageHeader';
 import CtaBand from '../components/CtaBand';
 import Icon from '../components/Icon';
 import Img from '../components/Img';
-import { BLOG_POSTS } from '../data/site';
+import { useSiteData } from '../context/SiteDataContext';
 
 const POSTS_PER_PAGE = 10;
 
 export default function BlogPage({ onOpenRFQ }) {
+  const { blogs } = useSiteData();
   const [currentPage, setCurrentPage] = useState(1);
 
   // Pagination logic
-  const totalPages = Math.ceil(BLOG_POSTS.length / POSTS_PER_PAGE);
+  const totalPages = Math.ceil(blogs.length / POSTS_PER_PAGE);
   const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
-  const selectedPosts = BLOG_POSTS.slice(startIndex, startIndex + POSTS_PER_PAGE);
+  const selectedPosts = blogs.slice(startIndex, startIndex + POSTS_PER_PAGE);
 
   // Popular Feeds sidebar (show first 5 posts)
-  const popularFeeds = BLOG_POSTS.slice(0, 5);
+  const popularFeeds = blogs.slice(0, 5);
 
   return (
     <>

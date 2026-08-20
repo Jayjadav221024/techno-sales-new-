@@ -8,11 +8,17 @@ import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import './pages.css'
 import App from './App.jsx'
+import { SiteDataProvider } from './context/SiteDataContext.jsx'
+import { SiteContentProvider } from './context/SiteContentContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
-      <App />
+      <SiteContentProvider>
+        <SiteDataProvider>
+          <App />
+        </SiteDataProvider>
+      </SiteContentProvider>
     </BrowserRouter>
   </StrictMode>,
 )

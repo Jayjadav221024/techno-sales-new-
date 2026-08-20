@@ -3,17 +3,10 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "workspaces": [
-    "frontend",
-    "backend"
-  ],
   "scripts": {
-    "dev:frontend": "npm run dev --workspace=frontend",
-    "dev:backend": "npm run dev --workspace=backend",
-    "dev": "concurrently \"npm run dev --workspace=frontend\" \"npm run dev --workspace=backend\"",
-    "build:frontend": "npm run build --workspace=frontend"
-  },
-  "devDependencies": {
-    "concurrently": "^8.2.2"
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend/server && npm run dev",
+    "dev": "concurrently -n \"frontend,backend\" -c \"cyan,green\" \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "build:frontend": "cd frontend && npm run build"
   }
 }

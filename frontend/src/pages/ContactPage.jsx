@@ -1,14 +1,18 @@
 import PageHeader from '../components/PageHeader';
 import Contact from '../components/Contact';
 import LocationMap from '../components/LocationMap';
+import { useSection, useSectionProps } from '../context/SiteContentContext';
 
 export default function ContactPage({ onShowToast }) {
+  const contactCopy = useSection('contact.intro');
+  const contactCopyProps = useSectionProps('contact.intro');
   return (
     <>
       <PageHeader
-        tag="GET IN TOUCH"
-        title="Contact Us"
-        lead="Visit our Ankleshwar GIDC counter or send a technical inquiry — our sales engineering team replies within two working hours."
+        {...contactCopyProps}
+        tag={contactCopy.tag}
+        title={contactCopy.title}
+        lead={contactCopy.lead}
       />
 
       <Contact onShowToast={onShowToast} />

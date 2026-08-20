@@ -8,9 +8,11 @@ import Icon from './Icon';
  * `trail` is the chain between Home and the current page, e.g.
  *   [{ label: 'Products', to: '/products' }]
  */
-export default function PageHeader({ tag, title, lead, trail = [] }) {
+export default function PageHeader({ tag, title, lead, trail = [], ...rest }) {
   return (
-    <header className="page-header">
+    // `rest` carries the Website editor's data-section attributes when the page
+    // passes them; on the live site it is empty.
+    <header className="page-header" {...rest}>
       <div className="container">
         {tag && <span className="page-header-tag">{tag}</span>}
         <h1 className="page-header-title">{title}</h1>

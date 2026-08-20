@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import PageHeader from '../components/PageHeader';
 import Icon from '../components/Icon';
+import { useSection, useSectionProps } from '../context/SiteContentContext';
 
 const LOCATIONS = [
   { name: 'Vadodara', district: 'Vadodara District' },
@@ -19,12 +20,15 @@ const LOCATIONS = [
 ];
 
 export default function LocationsPage() {
+  const locationsCopy = useSection('locations.intro');
+  const locationsCopyProps = useSectionProps('locations.intro');
   return (
     <>
       <PageHeader
-        tag="OUR footprint"
-        title="Service Locations We Cover"
-        lead="We supply and support our entire industrial product line across major industrial estates and cities in Gujarat. Click on any city to view local details, industries served, and nearby areas."
+        {...locationsCopyProps}
+        tag={locationsCopy.tag}
+        title={locationsCopy.title}
+        lead={locationsCopy.lead}
       />
 
       <section className="container">

@@ -1,0 +1,185 @@
+import express from "express";
+import { authMiddleware } from "../../middlewares/authMiddleware.js";
+import { ANY_ROLE } from "@demo-panel/shared/roles";
+import {
+  createDepartment,
+  updateDepartment,
+  deleteDepartment,
+  getDeparmentById,
+  listDepartments,
+  listDepartmentByParams,
+} from "../../controllers/v1/department.controller.js";
+
+const router = express.Router();
+
+/**
+ * @swagger
+ * /departments:
+ *   post:
+ *     summary: Create a new department
+ *     tags: [Departments]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/CreateDepartment'
+ *     responses:
+ *       200:
+ *         description: Department created successfully
+ *       401:
+ *         description: Unauthorized
+ */
+router.post(
+  "/departments",
+  authMiddleware(ANY_ROLE),
+  createDepartment,
+);
+
+/**
+ * @swagger
+ * /departments:
+ *   get:
+ *     summary: List all departments
+ *     tags: [Departments]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of departments
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 isOk:
+ *                   type: boolean
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Department'
+ */
+router.get(
+  "/departments",
+  authMiddleware(ANY_ROLE),
+  listDepartments,
+);
+
+/**
+ * @swagger
+ * /departments/{departmentId}:
+ *   get:
+ *     summary: Get department by ID
+ *     tags: [Departments]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: departmentId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Department ID
+ *     responses:
+ *       200:
+ *         description: Department details
+ *       404:
+ *         description: Department not found
+ */
+router.get(
+  "/departments/:departmentId",
+  authMiddleware(ANY_ROLE),
+  getDeparmentById,
+);
+
+/**
+ * @swagger
+ * /departments/{departmentId}:
+ *   put:
+ *     summary: Update department
+ *     tags: [Departments]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: departmentId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Department ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/CreateDepartment'
+ *     responses:
+ *       200:
+ *         description: Department updated successfully
+ *       404:
+ *         description: Department not found
+ */
+router.put(
+  "/departments/:departmentId",
+  authMiddleware(ANY_ROLE),
+  updateDepartment,
+);
+
+/**
+ * @swagger
+ * /departments/{departmentId}:
+ *   delete:
+ *     summary: Delete department
+ *     tags: [Departments]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: departmentId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Department ID
+ *     responses:
+ *       200:
+ *         description: Department deleted successfully
+ *       404:
+ *         description: Department not found
+ */
+router.delete(
+  "/departments/:departmentId",
+  authMiddleware(ANY_ROLE),
+  deleteDepartment,
+);
+
+/**
+ * @swagger
+ * /departments/search:
+ *   post:
+ *     summary: Search departments with pagination
+ *     tags: [Departments]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/SearchParams'
+ *     responses:
+ *       200:
+ *         description: Paginated list of departments
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/PaginatedResponse'
+ */
+router.post(
+  "/departments/search",
+  authMiddleware(ANY_ROLE),
+  listDepartmentByParams,
+);
+
+export default router;

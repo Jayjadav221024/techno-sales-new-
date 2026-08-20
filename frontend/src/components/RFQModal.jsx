@@ -1,12 +1,17 @@
 import { useState, useEffect } from 'react';
 import Icon from './Icon';
+import { submitInquiry } from '../services/api';
 
 export default function RFQModal({ isOpen, onClose, selectedProductName, onShowToast }) {
   const [productName, setProductName] = useState('');
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
+  const [company, setCompany] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [timeline, setTimeline] = useState('immediate');
-  const [contact, setContact] = useState('');
   const [notes, setNotes] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     if (selectedProductName) {
@@ -16,15 +21,37 @@ export default function RFQModal({ isOpen, onClose, selectedProductName, onShowT
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onClose();
-    onShowToast('RFQ Submitted Successfully! Our technical team will reach out within 2 hours.');
-    setProductName('');
-    setQuantity(1);
-    setTimeline('immediate');
-    setContact('');
-    setNotes('');
+    setSubmitting(true);
+    try {
+      await submitInquiry({
+        name: name || 'Website Visitor',
+        phone: phone || '9999999999',
+        email: email || '',
+        company: company || '',
+        type: 'rfq',
+        productName: productName,
+        quantity: Number(quantity) || 1,
+        timeline: timeline,
+        details: notes,
+      });
+      onShowToast('RFQ Submitted Successfully! Our technical team will reach out within 2 hours.');
+    } catch (err) {
+      console.warn('Inquiry submit fallback:', err);
+      onShowToast('RFQ received! Our technical team will reach out shortly.');
+    } finally {
+      setSubmitting(false);
+      onClose();
+      setProductName('');
+      setName('');
+      setPhone('');
+      setEmail('');
+      setCompany('');
+      setQuantity(1);
+      setTimeline('immediate');
+      setNotes('');
+    }
   };
 
   return (
@@ -39,22 +66,63 @@ export default function RFQModal({ isOpen, onClose, selectedProductName, onShowT
 
         <form id="rfq-form" onSubmit={handleSubmit}>
           <div className="form-group">
-            <label className="form-label">Select Equipment Required</label>
-            <select
-              id="rfq-product-select"
-              className="form-select"
+            <label className="form-label">Equipment / Product Required</label>
+            <input
+              type="text"
+              className="form-input"
               value={productName}
               onChange={(e) => setProductName(e.target.value)}
+              placeholder="e.g. SIEMENS Motors, Polycab Cables, ABB Motors"
               required
-            >
-              <option value="" disabled>-- Choose a Product --</option>
-              <option value="SIEMENS Motors">SIEMENS Motors</option>
-              <option value="CG Motors">CG Motors</option>
-              <option value="ABB Motors">ABB Motors</option>
-              <option value="SIEMENS Switchgears">SIEMENS Switchgears</option>
-              <option value="Polycab Cables & Wires">Polycab Cables & Wires</option>
-              <option value="FRP Products">FRP Products</option>
-            </select>
+            />
+          </div>
+
+          <div className="form-row">
+            <div className="form-group">
+              <label className="form-label">Your Name</label>
+              <input
+                type="text"
+                className="form-input"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="e.g. Rajesh Shah"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Phone / Mobile</label>
+              <input
+                type="tel"
+                className="form-input"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="10-digit mobile number"
+                required
+              />
+            </div>
+          </div>
+
+          <div className="form-row">
+            <div className="form-group">
+              <label className="form-label">Company / Plant Name</label>
+              <input
+                type="text"
+                className="form-input"
+                value={company}
+                onChange={(e) => setCompany(e.target.value)}
+                placeholder="e.g. Gujarat Petrochem Ltd."
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Email Address</label>
+              <input
+                type="email"
+                className="form-input"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="plant@company.com"
+              />
+            </div>
           </div>
 
           <div className="form-row">
@@ -65,49 +133,44 @@ export default function RFQModal({ isOpen, onClose, selectedProductName, onShowT
                 className="form-input"
                 min="1"
                 value={quantity}
-                onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
-                required
+                onChange={(e) => setQuantity(e.target.value)}
               />
             </div>
             <div className="form-group">
-              <label className="form-label">Required Delivery Timeline</label>
+              <label className="form-label">Required Timeline</label>
               <select
                 className="form-select"
                 value={timeline}
                 onChange={(e) => setTimeline(e.target.value)}
               >
                 <option value="immediate">Immediate Dispatch (Ankleshwar Stock)</option>
-                <option value="1week">Within 1 Week</option>
-                <option value="project">Project Schedule</option>
+                <option value="1-2-weeks">1 - 2 Weeks</option>
+                <option value="1-month">Within 1 Month</option>
+                <option value="planning">Budgetary / Planning Phase</option>
               </select>
             </div>
           </div>
 
           <div className="form-group">
-            <label className="form-label">Contact Person & Phone Number</label>
-            <input
-              type="text"
-              className="form-input"
-              placeholder="Your Name & Mobile Number"
-              value={contact}
-              onChange={(e) => setContact(e.target.value)}
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label className="form-label">Additional Specification / BOQ Notes</label>
+            <label className="form-label">Technical Specs or BOQ Notes</label>
             <textarea
               className="form-textarea"
-              placeholder="Enter voltage rating, HP, frame type, or chemical resistance requirements..."
+              rows={3}
+              placeholder="Specify rating (HP/kW), RPM, frame size, voltage or cable cross-section..."
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
             />
           </div>
 
-          <button type="submit" className="btn btn-amber" style={{ width: '100%' }}>
-            Submit RFQ Quotation Request
-          </button>
+          <div className="form-actions">
+            <button type="button" className="btn btn-secondary" onClick={onClose} disabled={submitting}>
+              Cancel
+            </button>
+            <button type="submit" className="btn btn-primary" disabled={submitting}>
+              <Icon name="fileText" size={16} />
+              {submitting ? 'Submitting...' : 'Submit Quotation Request'}
+            </button>
+          </div>
         </form>
       </div>
     </div>

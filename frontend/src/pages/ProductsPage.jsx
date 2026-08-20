@@ -5,25 +5,26 @@ import ProductCard from '../components/ProductCard';
 import CtaBand from '../components/CtaBand';
 import Icon from '../components/Icon';
 import Img from '../components/Img';
-import { PRODUCTS_DATA, CATEGORIES } from '../data/site';
+import { useSiteData } from '../context/SiteDataContext';
 
 export default function ProductsPage({ onOpenRFQ }) {
+  const { products, categories, loading } = useSiteData();
   const [activeCategory, setActiveCategory] = useState('all');
   const [query, setQuery] = useState('');
 
-  const tabs = [{ id: 'all', label: 'All Products' }, ...CATEGORIES];
+  const tabs = [{ id: 'all', label: 'All Products' }, ...categories.map(c => ({ id: c.slug || c.id, label: c.navLabel || c.name }))];
 
-  let filtered = PRODUCTS_DATA;
+  let filtered = products;
   if (activeCategory !== 'all') {
-    filtered = filtered.filter((p) => p.category === activeCategory);
+    filtered = filtered.filter((p) => (p.category === activeCategory || p.categorySlug === activeCategory));
   }
   if (query.trim()) {
     const q = query.toLowerCase();
     filtered = filtered.filter(
       (p) =>
-        p.name.toLowerCase().includes(q) ||
-        p.brand.toLowerCase().includes(q) ||
-        p.desc.toLowerCase().includes(q)
+        p.name?.toLowerCase().includes(q) ||
+        p.brand?.toLowerCase().includes(q) ||
+        p.desc?.toLowerCase().includes(q)
     );
   }
 
@@ -38,8 +39,8 @@ export default function ProductsPage({ onOpenRFQ }) {
       <section className="products-section container">
         {/* Category landing cards */}
         <div className="category-cards">
-          {CATEGORIES.map((cat) => (
-            <Link to={`/products/${cat.id}`} className="glass-card category-card" key={cat.id}>
+          {categories.map((cat) => (
+            <Link to={`/products/${cat.slug || cat.id}`} className="glass-card category-card" key={cat.slug || cat.id}>
               <div className="category-card-image-wrapper">
                 <Img
                   src={cat.image}
@@ -101,7 +102,7 @@ export default function ProductsPage({ onOpenRFQ }) {
             </div>
           ) : (
             filtered.map((product) => (
-              <ProductCard key={product.id} product={product} onOpenRFQ={onOpenRFQ} />
+              <ProductCard key={product.slug || product.id} product={product} onOpenRFQ={onOpenRFQ} />
             ))
           )}
         </div>
