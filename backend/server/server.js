@@ -299,9 +299,11 @@ app.use(async (err, req, res, _next) => {
   });
 });
 
-const port = process.env.PORT || 8000;
+const rawPort = process.env.PORT;
+const port = (!isNaN(Number(rawPort)) && Number(rawPort) > 0) ? Number(rawPort) : 10000;
 
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
   console.log(`✅ Server is running on port ${port}`);
   console.log(`🔒 Security middleware enabled: Helmet, Input Validation, CSRF Protection`);
 });
+
