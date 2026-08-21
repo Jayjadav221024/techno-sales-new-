@@ -21,8 +21,9 @@ const initialState = {
 
 const Login = () => {
     const { fetchMenus } = useContext(MenuContext);
-    const { setAdminData } = useContext(AuthContext);
+    const { setAdminData, setRole } = useContext(AuthContext);
     const navigate = useNavigate();
+
     const [values, setValues] = useState(initialState);
     const [formErrors, setFormErrors] = useState({});
     const [isSubmit, setIsSubmit] = useState(false);
@@ -226,9 +227,10 @@ const Login = () => {
 
                     if (res.data.isOk) {
                         localStorage.setItem("role", res.data.role);
+                        setRole(res.data.role);
                         setAdminData({ ...res.data.data });
                         fetchMenus();
-                        navigate("/admin/dashboard");
+                        navigate("/admin/dashboard", { replace: true });
                     } else {
                         toast.error(res.data.message || "Authentication failed!");
                     }
