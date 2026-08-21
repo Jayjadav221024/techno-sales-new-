@@ -13,7 +13,9 @@ import {
   JOB_OPENINGS,
 } from '../data/site';
 
-const API_BASE = '/api/v1';
+const BACKEND_BASE = (import.meta.env.VITE_API_URL || '').replace(/\/+$/, '');
+const API_BASE = `${BACKEND_BASE}/api/v1`;
+
 
 /**
  * Fetch all active products from backend API (with fallback).
