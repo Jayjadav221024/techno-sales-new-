@@ -113,14 +113,20 @@ app.use(mongoSanitizer);
 // 5. HTTP Parameter Pollution Prevention
 app.use(hpp());
 
+// Enable trust proxy for Render reverse proxy HTTPS detection
+app.set("trust proxy", 1);
+
 // 6. Express Session - MongoDB Session Storage (persistent)
 import MongoStore from "connect-mongo";
+
+const isProduction = process.env.NODE_ENV === "production";
 
 app.use(session({
   secret: process.env.SESSION_SECRET || 'your-super-secret-key-change-in-production',
   resave: false,
   saveUninitialized: false,
   name: 'sessionId',
+  proxy: true,
   store: MongoStore.create({
     mongoUrl: process.env.DATABASE,
     collectionName: 'sessions',
@@ -128,12 +134,13 @@ app.use(session({
     autoRemove: 'native', // Use MongoDB TTL index for cleanup
   }),
   cookie: {
-    secure: process.env.NODE_ENV === 'production', // HTTPS only in production
+    secure: isProduction, // Required for HTTPS
     httpOnly: true, // Prevents XSS attacks
     maxAge: 24 * 60 * 60 * 1000, // 24 hours
-    sameSite: 'lax' // CSRF protection
+    sameSite: isProduction ? 'none' : 'lax' // 'none' is REQUIRED for cross-domain cookies on Render
   }
 }));
+
 
 console.log("✅ Express session middleware configured (MongoDB storage)");
 
