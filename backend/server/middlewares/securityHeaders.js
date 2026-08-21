@@ -111,10 +111,16 @@ export const getCorsConfig = (allowedOrigins = []) => {
 
     return {
         origin: (origin, callback) => {
-            // Allow requests with no origin (mobile apps, curl, etc.)
+            // Allow requests with no origin (mobile apps, curl, server-to-server)
             if (!origin) return callback(null, true);
 
+            // Allow matching explicit origins
             if (origins.includes(origin)) {
+                return callback(null, true);
+            }
+
+            // Automatically allow *.onrender.com subdomains in production
+            if (/^https:\/\/[a-zA-Z0-9_-]+\.onrender\.com$/.test(origin)) {
                 return callback(null, true);
             }
 
@@ -128,6 +134,7 @@ export const getCorsConfig = (allowedOrigins = []) => {
         },
         credentials: true,
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+
         allowedHeaders: [
             'Origin',
             'X-Requested-With',
