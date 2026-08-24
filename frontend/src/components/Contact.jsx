@@ -56,7 +56,25 @@ export default function Contact({ onShowToast }) {
             <div className="info-icon"><Icon name="phone" size={20} /></div>
             <div className="info-text">
               <h4>Phone & WhatsApp Hotline</h4>
-              <p><a href="tel:+919898078247">+91 98980 78247</a> (Direct Sales)</p>
+              <p style={{ marginBottom: '0.4rem' }}>
+                <a href="tel:+919898078247">+91 98980 78247</a> (Direct Sales)
+              </p>
+              <a
+                href="https://wa.me/919898078247?text=Hello%20Techno%20Sales%2C%20I%20would%20like%20to%20inquire%20about%20industrial%20products."
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.4rem',
+                  fontSize: '0.85rem',
+                  fontWeight: 600,
+                  color: '#25D366',
+                  textDecoration: 'none'
+                }}
+              >
+                <span>💬 Chat on WhatsApp (+91 98980 78247)</span>
+              </a>
             </div>
           </div>
 

@@ -93,7 +93,7 @@ export default function ProductDetailPage({ onOpenRFQ }) {
             <h2 className="product-detail-title">{product.name}</h2>
             <p className="product-detail-desc">{product.desc}</p>
 
-            <h3 className="product-detail-subhead">Technical Specifications</h3>
+            <h3 className="product-detail-subhead">Technical Specifications & Scope</h3>
             <ul className="spec-list">
               {(product.specs || []).map((spec, index) => (
                 <li key={index}>
@@ -103,10 +103,43 @@ export default function ProductDetailPage({ onOpenRFQ }) {
               ))}
             </ul>
 
-            <div className="product-detail-actions">
+            {/* Structured Quick Technical Specs Matrix */}
+            <div className="glass-card" style={{ marginTop: '1.5rem', marginBottom: '1.5rem', padding: '1.25rem', border: '1px solid var(--border-color)' }}>
+              <h4 style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '0.8rem', color: 'var(--accent-cyan)' }}>
+                Technical Parameters
+              </h4>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '0.8rem', fontSize: '0.85rem' }}>
+                <div>
+                  <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: '0.75rem' }}>Availability</span>
+                  <strong>Ankleshwar GIDC Stock</strong>
+                </div>
+                <div>
+                  <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: '0.75rem' }}>Standard Warranty</span>
+                  <strong>12 - 24 Months</strong>
+                </div>
+                <div>
+                  <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: '0.75rem' }}>Compliance</span>
+                  <strong>IS / IEC Certified</strong>
+                </div>
+                <div>
+                  <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: '0.75rem' }}>Documentation</span>
+                  <strong>Test Certificate & Manual</strong>
+                </div>
+              </div>
+            </div>
+
+            <div className="product-detail-actions" style={{ flexWrap: 'wrap', gap: '0.75rem' }}>
               <button className="btn btn-primary" onClick={() => onOpenRFQ(product.name)}>
                 <Icon name="fileText" size={16} />
                 Request Formal Quotation
+              </button>
+              <button
+                className="btn btn-secondary"
+                onClick={() => onOpenRFQ(`${product.name} - Technical Datasheet Request`)}
+                title="Request official manufacturer PDF datasheet"
+              >
+                <Icon name="fileText" size={16} />
+                Request Datasheet (PDF)
               </button>
               <a href={COMPANY.phoneHref} className="btn btn-secondary">
                 <Icon name="phone" size={16} />

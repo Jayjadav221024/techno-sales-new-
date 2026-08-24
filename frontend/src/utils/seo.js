@@ -30,20 +30,29 @@ function setPropertyMeta(property, content) {
   el.setAttribute('content', content ?? '');
 }
 
+const PRODUCTION_ORIGIN = 'https://technosales.in';
+
 function setCanonical(href) {
   const el = upsertMeta('link[rel="canonical"]', () => {
     const l = document.createElement('link');
     l.setAttribute('rel', 'canonical');
     return l;
   });
-  el.setAttribute('href', href || window.location.href);
+  
+  let targetHref = href;
+  if (!targetHref) {
+    targetHref = `${PRODUCTION_ORIGIN}${window.location.pathname}${window.location.search}`;
+  } else if (targetHref.startsWith('/')) {
+    targetHref = `${PRODUCTION_ORIGIN}${targetHref}`;
+  }
+  el.setAttribute('href', targetHref);
 }
 
 /** Absolute URL for social tags - Facebook and LinkedIn reject relative paths. */
 function absolute(url) {
   if (!url) return '';
   if (/^https?:\/\//i.test(url)) return url;
-  return new URL(url, window.location.origin).href;
+  return new URL(url, PRODUCTION_ORIGIN).href;
 }
 
 /** Trims to a whole word rather than cutting mid-word. */

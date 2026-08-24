@@ -65,11 +65,16 @@ export default function Testimonials() {
         <div className="glass-card testimonial-card">
           <div className="quote-icon"><Icon name="quote" size={56} strokeWidth={1.5} /></div>
           <p className="testimonial-text">"{t.text}"</p>
-          <div className="client-info">
-            <div className="client-avatar">{t.initials}</div>
+          <div className="client-info" style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '1.5rem' }}>
+            <div className="client-avatar" style={{ background: 'linear-gradient(135deg, var(--color-brand-400), var(--color-brand-600))', color: '#fff', fontWeight: 800 }}>
+              {t.initials}
+            </div>
             <div className="client-details">
-              <h4>{t.name}</h4>
-              <p>{t.role}</p>
+              <h4 style={{ margin: 0, fontSize: '1.05rem', color: 'var(--text-main)' }}>{t.name}</h4>
+              <p style={{ margin: 0, display: 'inline-flex', alignItems: 'center', gap: '0.4rem', color: 'var(--accent-cyan)', fontSize: '0.85rem', fontWeight: 600 }}>
+                <Icon name="shieldCheck" size={14} />
+                <span>{t.role} · Verified Industrial Client</span>
+              </p>
             </div>
           </div>
         </div>

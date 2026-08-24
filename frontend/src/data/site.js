@@ -7,7 +7,7 @@ export const BRAND_MARQUEE = [
   { name: 'Polycab', logo: '/images/brands/polycab.png' },
   { name: 'Siemens', logo: '/images/brands/siemens.png' },
   { name: 'CG Power and Industrial Solutions', logo: '/images/brands/cg-power.png' },
-  { name: 'Innomotics', logo: '/images/brands/innomotics.png' }
+  { name: 'Innomotics (A Siemens Business)', logo: '/images/brands/innomotics.png' }
 ];
 
 import { BLOG_POSTS as IMPORTED_BLOG_POSTS } from './blogPosts';
@@ -57,7 +57,7 @@ export const PRODUCTS_DATA = [
     faqs: [
       {
         q: "How do I choose the right Siemens motor for my application?",
-        a: "Your applicant may have limited help desk wexperience. In that case, look for applicants who are motivated to grow and have some transferable nibh finibus et. Aenean eu enim justo. Vestibulum aliquam hendrerit moles accumsan"
+        a: "To select the ideal Siemens motor, consider your operating duty, required power (kW/HP), speed (RPM), ambient operating conditions, mounting type (B3/B5/B14), and energy efficiency class (IE2/IE3/IE4). Our engineering desk can assist you with exact sizing."
       },
       {
         q: "What is the typical warranty period for Siemens motors?",

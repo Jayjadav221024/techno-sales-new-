@@ -20,6 +20,7 @@ import ContactPage from './pages/ContactPage';
 import LocationsPage from './pages/LocationsPage';
 import CityDetailPage from './pages/CityDetailPage';
 import CareersPage from './pages/CareersPage';
+import LegalPage from './pages/LegalPage';
 import NotFoundPage from './pages/NotFoundPage';
 import { getSeoDefault } from './data/seoDefaults';
 import { applySeo } from './utils/seo';
@@ -88,13 +89,13 @@ export default function App() {
           }
         });
       },
-      { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+      { threshold: 0.01, rootMargin: '50px 0px 50px 0px' }
     );
 
     const scan = () => {
       document.querySelectorAll('.reveal-on-scroll:not(.revealed)').forEach((el) => {
         const rect = el.getBoundingClientRect();
-        if (rect.top < window.innerHeight && rect.bottom > 0) {
+        if (rect.top < window.innerHeight + 50 && rect.bottom > -50) {
           reveal(el);
         } else {
           observer.observe(el);
@@ -166,6 +167,8 @@ export default function App() {
           {/* Unlisted on purpose: reachable at /career by direct link only, so
               it stays out of the navbar and the footer. */}
           <Route path="/career" element={<CareersPage onOpenRFQ={handleOpenRFQ} />} />
+          <Route path="/privacy-policy" element={<LegalPage type="privacy" />} />
+          <Route path="/terms" element={<LegalPage type="terms" />} />
 
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

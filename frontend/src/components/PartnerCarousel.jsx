@@ -1,46 +1,21 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import PartnerCard from './PartnerCard';
 import Icon from './Icon';
 import { PARTNERS } from '../data/site';
 
 export default function PartnerCarousel() {
   const [activeIndex, setActiveIndex] = useState(2); // Start with the center card (ABB)
-  const autoPlayRef = useRef(null);
-
-  const startAutoPlay = () => {
-    stopAutoPlay();
-    autoPlayRef.current = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % PARTNERS.length);
-    }, 4000);
-  };
-
-  const stopAutoPlay = () => {
-    if (autoPlayRef.current) {
-      clearInterval(autoPlayRef.current);
-    }
-  };
-
-  useEffect(() => {
-    startAutoPlay();
-    return () => stopAutoPlay();
-  }, []);
 
   const handlePrev = () => {
-    stopAutoPlay();
     setActiveIndex((prev) => (prev === 0 ? PARTNERS.length - 1 : prev - 1));
-    startAutoPlay();
   };
 
   const handleNext = () => {
-    stopAutoPlay();
     setActiveIndex((prev) => (prev + 1) % PARTNERS.length);
-    startAutoPlay();
   };
 
   const handleCardClick = (index) => {
-    stopAutoPlay();
     setActiveIndex(index);
-    startAutoPlay();
   };
 
   /* No top margin and only a little bottom padding: the section header above

@@ -199,11 +199,18 @@ export default function HomePage({ onOpenRFQ }) {
             <blockquote className="quote-text">
               "{quote.text}"
             </blockquote>
-            <div className="quote-author">
-              <div className="author-avatar">{quote.initials}</div>
+            <div className="quote-author" style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '1.5rem' }}>
+              <div className="author-avatar" style={{ background: 'linear-gradient(135deg, var(--color-brand-400), var(--color-brand-600))', color: '#fff', fontWeight: 800 }}>
+                {quote.initials}
+              </div>
               <div>
-                <div className="author-name">{quote.name}</div>
-                <div className="author-role">{quote.role}</div>
+                <div className="author-name" style={{ fontWeight: 700, fontSize: '1.05rem', color: 'var(--text-main)' }}>
+                  {quote.name}
+                </div>
+                <div className="author-role" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', color: 'var(--accent-cyan)', fontSize: '0.85rem', fontWeight: 600 }}>
+                  <Icon name="shieldCheck" size={14} />
+                  <span>{quote.role} · Verified Industrial Client</span>
+                </div>
               </div>
             </div>
           </div>

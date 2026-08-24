@@ -1,7 +1,18 @@
+import { useEffect } from 'react';
 import ThreeModalCanvas from './ThreeModalCanvas';
 import Icon from './Icon';
 
 export default function SpecModal({ isOpen, onClose, product, onOpenRFQ }) {
+  useEffect(() => {
+    if (isOpen) {
+      const originalStyle = window.getComputedStyle(document.body).overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = originalStyle;
+      };
+    }
+  }, [isOpen]);
+
   if (!isOpen || !product) return null;
 
   return (

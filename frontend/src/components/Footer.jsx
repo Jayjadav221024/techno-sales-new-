@@ -174,8 +174,13 @@ export default function Footer() {
       </div>
 
       <div className="footer-bottom">
-        <div className="container">
-          <p>&copy; 2026 Techno Sales. All rights reserved. www.technosales.in</p>
+        <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', padding: '1.25rem 0' }}>
+          <p style={{ margin: 0 }}>&copy; 2026 Techno Sales. All rights reserved. www.technosales.in</p>
+          <div style={{ display: 'flex', gap: '1.5rem', fontSize: '0.85rem' }}>
+            <span style={{ color: 'var(--text-muted)' }}>GSTIN / Tax Registered Industrial Supplier</span>
+            <Link to="/privacy-policy" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>Privacy Policy</Link>
+            <Link to="/terms" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>Terms of Service</Link>
+          </div>
         </div>
       </div>
     </footer>
