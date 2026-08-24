@@ -44,18 +44,67 @@ export default function AboutPage({ onOpenRFQ }) {
       <section className="about-values-section container">
         <div className="about-grid">
           <div className="glass-card about-card reveal-on-scroll">
-            <h3>Our Mission</h3>
-            <p>
-              To deliver trusted industrial and electrical solutions through quality products,
-              expert service, and strong partnerships — empowering industries to perform better.
+            <div style={{ display: 'inline-flex', padding: '0.6rem', borderRadius: '10px', background: 'var(--icon-tile)', color: 'var(--accent-cyan)', marginBottom: '1rem' }}>
+              <Icon name="shieldCheck" size={24} />
+            </div>
+            <h3 style={{ fontSize: '1.3rem', marginBottom: '0.75rem', color: 'var(--text-main)' }}>Our Mission</h3>
+            <p style={{ color: 'var(--text-muted)', lineHeight: '1.6' }}>
+              To deliver trusted industrial electro-mechanical solutions through certified products,
+              rapid Ankleshwar dispatch, and application-specific engineering consultation — empowering Gujarat plants to achieve zero unplanned downtime.
             </p>
           </div>
 
           <div className="glass-card about-card reveal-on-scroll">
-            <h3>Our Vision</h3>
-            <p>
-              To be the most reliable and preferred distributor of industrial products across
-              India, known for integrity, innovation, and customer satisfaction.
+            <div style={{ display: 'inline-flex', padding: '0.6rem', borderRadius: '10px', background: 'var(--icon-tile)', color: 'var(--accent-cyan)', marginBottom: '1rem' }}>
+              <Icon name="award" size={24} />
+            </div>
+            <h3 style={{ fontSize: '1.3rem', marginBottom: '0.75rem', color: 'var(--text-main)' }}>Our Vision</h3>
+            <p style={{ color: 'var(--text-muted)', lineHeight: '1.6' }}>
+              To be the most reliable and preferred industrial distribution partner across Western India,
+              celebrated for technical integrity, ready stock availability, and long-term client partnerships.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Industrial Growth & Milestone Journey Timeline */}
+      <section className="container reveal-on-scroll" style={{ padding: '3rem 1.5rem' }}>
+        <div className="section-header" style={{ textAlign: 'center', marginBottom: '3rem' }}>
+          <span className="section-tag">OUR EVOLUTION</span>
+          <h2 className="section-title">Milestone Journey & Industrial Heritage</h2>
+          <p className="section-subtitle">Over a decade of trusted electro-mechanical supply excellence across Ankleshwar and Gujarat industrial estates.</p>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(240px, 100%), 1fr))', gap: '1.5rem' }}>
+          <div className="glass-card" style={{ padding: '1.75rem', position: 'relative', borderTop: '3px solid var(--accent-cyan)' }}>
+            <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--accent-cyan)', display: 'block', marginBottom: '0.5rem' }}>2014</span>
+            <h4 style={{ fontSize: '1.1rem', marginBottom: '0.5rem', color: 'var(--text-main)' }}>Foundation in Ankleshwar</h4>
+            <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', lineHeight: '1.5' }}>
+              Established operations in Ankleshwar GIDC to supply genuine industrial electric motors and switchgear components to regional chemical plants.
+            </p>
+          </div>
+
+          <div className="glass-card" style={{ padding: '1.75rem', position: 'relative', borderTop: '3px solid var(--accent-cyan)' }}>
+            <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--accent-cyan)', display: 'block', marginBottom: '0.5rem' }}>2017</span>
+            <h4 style={{ fontSize: '1.1rem', marginBottom: '0.5rem', color: 'var(--text-main)' }}>Siemens & CG Alliances</h4>
+            <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', lineHeight: '1.5' }}>
+              Formed authorized channel partnerships with Siemens and Crompton Greaves to deliver high-efficiency IE2/IE3/IE4 motors and SIRIUS switchgear.
+            </p>
+          </div>
+
+          <div className="glass-card" style={{ padding: '1.75rem', position: 'relative', borderTop: '3px solid var(--accent-cyan)' }}>
+            <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--accent-cyan)', display: 'block', marginBottom: '0.5rem' }}>2020</span>
+            <h4 style={{ fontSize: '1.1rem', marginBottom: '0.5rem', color: 'var(--text-main)' }}>Polycab Cables & FRP Addition</h4>
+            <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', lineHeight: '1.5' }}>
+              Expanded inventory with authorized Polycab LT/HT cables and anti-corrosive FRP structural gratings for heavy chemical & marine zones.
+            </p>
+          </div>
+
+          <div className="glass-card" style={{ padding: '1.75rem', position: 'relative', borderTop: '3px solid var(--accent-cyan)' }}>
+            <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--accent-cyan)', display: 'block', marginBottom: '0.5rem' }}>2026</span>
+            <h4 style={{ fontSize: '1.1rem', marginBottom: '0.5rem', color: 'var(--text-main)' }}>1,000+ Industrial Clients</h4>
+            <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', lineHeight: '1.5' }}>
+              Supplying 10,000+ SKUs across 13+ industrial districts with a 99% client retention rate and 2-hour SLA response support.
             </p>
           </div>
         </div>
