@@ -108,6 +108,24 @@ export async function fetchBlogPosts() {
 }
 
 /**
+ * Fetch blog post details by slug.
+ */
+export async function fetchBlogPostBySlug(slug) {
+  try {
+    const res = await fetch(`${API_BASE}/public/blogs/${encodeURIComponent(slug)}`);
+    if (res.ok) {
+      const json = await res.json();
+      if (json?.data) {
+        return normalizeBlogPost(json.data);
+      }
+    }
+  } catch (err) {
+    console.warn('Backend blog post detail API error:', err.message);
+  }
+  return BLOG_POSTS.find((p) => p.slug === slug) || null;
+}
+
+/**
  * Fetch all active testimonials from backend API.
  */
 export async function fetchTestimonials() {
@@ -268,7 +286,8 @@ function normalizeBlogPost(b) {
     date: b.publishDate || b.date || '',
     readTime: b.readTime || '5 min read',
     excerpt: b.excerpt || '',
-    content: b.content || '',
+    content: b.content || b.body || '',
+    body: b.content || b.body || '',
     image: b.image || '',
   };
 }

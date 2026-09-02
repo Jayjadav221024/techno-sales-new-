@@ -5,6 +5,7 @@ import { MenuContext } from "../../context/MenuContext";
 import { Card, PageHeader } from "@/components/ui/page";
 import { FormActions, FormSection, FullWidth } from "@/components/ui/form";
 import { CheckField, EmailField, Field, PasswordField, SelectField, TextAreaField } from "@/components/ui/field";
+import RichTextEditor from "@/components/ui/rich-text-editor";
 import IconPicker from "@/components/ui/icon-picker";
 import { LoadingIndicator } from "@/components/application/loading-indicator/loading-indicator";
 import { adminPath } from "@/utils/admin-path";
@@ -60,13 +61,15 @@ const renderField = ({ field, values, errors, showErrors, setValues, handleChang
             return <PasswordField key={field.name} {...shared} isNew name={field.name} value={values[field.name]} onChange={handleChange} />;
         case "richtext":
             return (
-                <TextAreaField
+                <RichTextEditor
                     key={field.name}
-                    {...shared}
-                    rows={6}
-                    name={field.name}
+                    label={field.label}
+                    required={field.required}
+                    placeholder={field.placeholder}
                     value={values[field.name]}
-                    onChange={handleChange}
+                    onChange={(newVal) => setValues((v) => ({ ...v, [field.name]: newVal }))}
+                    error={showErrors ? errors[field.name] : undefined}
+                    hint={field.hint}
                 />
             );
         case "icon":

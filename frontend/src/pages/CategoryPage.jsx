@@ -96,8 +96,8 @@ export default function CategoryPage({ onOpenRFQ }) {
           </div>
         )}
 
-        <div className="category-products-grid" style={{ marginTop: '4rem' }}>
-          <h2>Available in {category.title}</h2>
+        <div className="category-products-grid" style={{ marginTop: '3.5rem' }}>
+          <h2 style={{ marginBottom: '1.75rem' }}>Available in {category.title}</h2>
           <div className="products-grid">
             {categoryProducts.map((product) => (
               <ProductCard key={product.slug || product.id} product={product} onOpenRFQ={onOpenRFQ} />
@@ -106,8 +106,8 @@ export default function CategoryPage({ onOpenRFQ }) {
         </div>
 
         {others.length > 0 && (
-          <div className="other-categories reveal-on-scroll">
-            <h2>Explore Other Product Lines</h2>
+          <div className="other-categories reveal-on-scroll" style={{ marginTop: '4rem' }}>
+            <h2 style={{ marginBottom: '1.75rem' }}>Explore Other Product Lines</h2>
             <div className="category-cards">
               {others.map((cat) => (
                 <Link to={`/products/${cat.slug || cat.id}`} className="glass-card category-card" key={cat.slug || cat.id}>
@@ -133,7 +133,7 @@ export default function CategoryPage({ onOpenRFQ }) {
           </div>
         )}
 
-        <div className="section-actions">
+        <div className="section-actions" style={{ marginTop: '2.5rem' }}>
           <Link to="/products" className="btn btn-secondary">
             <Icon name="chevronLeft" size={16} />
             Back to All Products

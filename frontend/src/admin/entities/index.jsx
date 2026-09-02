@@ -565,7 +565,7 @@ export const blogPostConfig = {
         { name: "image", icon: Link01, label: "Featured Image URL", section: "content", placeholder: "/images/blog/cg-vs-siemens-motors.jpg" },
         imageAltField("content", "Featured Image Alt Text"),
         { name: "excerpt", type: "textarea", label: "Summary Excerpt", required: true, section: "content", full: true, placeholder: "Short 2-3 sentence overview for the card list...", error: "Excerpt is required" },
-        { name: "content", type: "textarea", label: "Full Article Body / Content", section: "content", full: true, rows: 6, placeholder: "Detailed article paragraphs, specs, comparisons..." },
+        { name: "content", type: "richtext", label: "Full Article Body / Content (Rich Text)", section: "content", full: true, placeholder: "Detailed article paragraphs, headings, lists, tables, links..." },
         ACTIVE,
         ...SEO_FIELDS,
     ],

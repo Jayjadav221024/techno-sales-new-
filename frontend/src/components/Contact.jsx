@@ -90,7 +90,7 @@ export default function Contact({ onShowToast }) {
             <div className="info-icon"><Icon name="clock" size={20} /></div>
             <div className="info-text">
               <h4>Operational Hours</h4>
-              <p>Monday - Friday: 09:00 AM - 06:00 PM</p>
+              <p>Monday - Saturday: 09:00 AM - 06:00 PM</p>
             </div>
           </div>
         </div>

@@ -141,7 +141,11 @@ export default function Navbar({ onOpenRFQ }) {
               <NavLink to="/" className={navLinkClass} end>Home</NavLink>
             </li>
 
-            {/* Products — two-level mega menu */}
+            <li className="nav-item" onMouseEnter={(e) => moveTo(e.currentTarget)}>
+              <NavLink to="/about" className={navLinkClass}>About Us</NavLink>
+            </li>
+
+            {/* Products — dropdown menu */}
             <li
               className="nav-item nav-item--dropdown"
               onMouseEnter={(e) => { moveTo(e.currentTarget); setOpenMenu('products'); }}
@@ -149,7 +153,7 @@ export default function Navbar({ onOpenRFQ }) {
             >
               <button
                 type="button"
-                className={`nav-link nav-trigger${openMenu === 'products' ? ' is-open' : ''}`}
+                className={`nav-link nav-trigger${location.pathname.startsWith('/product') ? ' is-current' : ''}${openMenu === 'products' ? ' is-open' : ''}`}
                 onClick={() => setOpenMenu(openMenu === 'products' ? null : 'products')}
                 aria-haspopup="true"
                 aria-expanded={openMenu === 'products'}
@@ -176,11 +180,6 @@ export default function Navbar({ onOpenRFQ }) {
                           </Link>
                         </li>
                       ))}
-                      <li>
-                        <Link to="/products" className="nav-menu-row nav-menu-row--all" onClick={closeAll}>
-                          <span>All Products</span>
-                        </Link>
-                      </li>
                     </ul>
 
                     {activeCat === 'motors' && productsInCategory(activeCat).length > 0 && (
@@ -199,54 +198,32 @@ export default function Navbar({ onOpenRFQ }) {
               )}
             </li>
 
-            {/* Feedback — simple dropdown */}
-            <li
-              className="nav-item nav-item--dropdown"
-              onMouseEnter={(e) => { moveTo(e.currentTarget); setOpenMenu('feedback'); }}
-              onMouseLeave={() => setOpenMenu(null)}
-            >
-              <button
-                type="button"
-                className={`nav-link nav-trigger${openMenu === 'feedback' ? ' is-open' : ''}`}
-                onClick={() => setOpenMenu(openMenu === 'feedback' ? null : 'feedback')}
-                aria-haspopup="true"
-                aria-expanded={openMenu === 'feedback'}
-              >
-                Feedback
-                <Icon name="chevronDown" size={14} className="nav-caret" />
-              </button>
-
-              {openMenu === 'feedback' && (
-                <div className="nav-dropdown-wrap">
-                  <div className="nav-dropdown">
-                    <ul className="nav-mega-col">
-                      {FEEDBACK_LINKS.map((link) => (
-                        <li key={link.to}>
-                          <Link to={link.to} className="nav-menu-row" onClick={closeAll}>
-                            <span>{link.label}</span>
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              )}
+            {/* FRP Products Direct Link */}
+            <li className="nav-item" onMouseEnter={(e) => moveTo(e.currentTarget)}>
+              <NavLink to="/product/frp-products" className={navLinkClass}>Why FRP</NavLink>
             </li>
 
-            {SIMPLE_LINKS.map((link) => (
-              <li className="nav-item" key={link.to} onMouseEnter={(e) => moveTo(e.currentTarget)}>
-                <NavLink to={link.to} className={navLinkClass}>{link.label}</NavLink>
-              </li>
-            ))}
+            <li className="nav-item" onMouseEnter={(e) => moveTo(e.currentTarget)}>
+              <NavLink to="/locations" className={navLinkClass}>Locations</NavLink>
+            </li>
+
+            <li className="nav-item" onMouseEnter={(e) => moveTo(e.currentTarget)}>
+              <NavLink to="/testimonials" className={navLinkClass}>Testimonials</NavLink>
+            </li>
+
+            <li className="nav-item" onMouseEnter={(e) => moveTo(e.currentTarget)}>
+              <NavLink to="/blog" className={navLinkClass}>Blog</NavLink>
+            </li>
           </ul>
         </nav>
 
-        <div className="nav-actions" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-
+        <div className="nav-actions">
+          <NavLink to="/contact" className="nav-contact-link">
+            Contact
+          </NavLink>
           
           <button className="nav-cta" onClick={() => onOpenRFQ()}>
-            <span>Request Quote</span>
-            <Icon name="arrowRight" size={15} />
+            <span>Get B2B Quote</span>
           </button>
           <button
             className="nav-burger"
@@ -265,6 +242,7 @@ export default function Navbar({ onOpenRFQ }) {
       {mobileMenuOpen && (
         <div className="nav-sheet">
           <Link to="/" className="nav-sheet-link" onClick={closeAll}>Home</Link>
+          <Link to="/about" className="nav-sheet-link" onClick={closeAll}>About Us</Link>
 
           <button
             type="button"
@@ -277,9 +255,6 @@ export default function Navbar({ onOpenRFQ }) {
           </button>
           {mobileSection === 'products' && (
             <div className="nav-sheet-sub">
-              <Link to="/products" className="nav-sheet-sublink is-head" onClick={closeAll}>
-                All Products
-              </Link>
               {CATEGORIES.map((cat) => (
                 <div key={cat.id}>
                   <Link
@@ -304,34 +279,14 @@ export default function Navbar({ onOpenRFQ }) {
             </div>
           )}
 
-          <button
-            type="button"
-            className={`nav-sheet-link nav-sheet-toggle${mobileSection === 'feedback' ? ' is-open' : ''}`}
-            onClick={() => setMobileSection(mobileSection === 'feedback' ? null : 'feedback')}
-            aria-expanded={mobileSection === 'feedback'}
-          >
-            Feedback
-            <Icon name="chevronDown" size={16} className="nav-caret" />
-          </button>
-          {mobileSection === 'feedback' && (
-            <div className="nav-sheet-sub">
-              {FEEDBACK_LINKS.map((link) => (
-                <Link key={link.to} to={link.to} className="nav-sheet-sublink" onClick={closeAll}>
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-          )}
-
-          {SIMPLE_LINKS.map((link) => (
-            <Link key={link.to} to={link.to} className="nav-sheet-link" onClick={closeAll}>
-              {link.label}
-            </Link>
-          ))}
+          <Link to="/product/frp-products" className="nav-sheet-link" onClick={closeAll}>Why FRP</Link>
+          <Link to="/locations" className="nav-sheet-link" onClick={closeAll}>Locations</Link>
+          <Link to="/testimonials" className="nav-sheet-link" onClick={closeAll}>Testimonials</Link>
+          <Link to="/blog" className="nav-sheet-link" onClick={closeAll}>Blog</Link>
+          <Link to="/contact" className="nav-sheet-link" onClick={closeAll}>Contact</Link>
 
           <button className="nav-cta nav-sheet-cta" onClick={() => { closeAll(); onOpenRFQ(); }}>
-            <span>Request Quote</span>
-            <Icon name="arrowRight" size={15} />
+            <span>Get B2B Quote</span>
           </button>
         </div>
       )}

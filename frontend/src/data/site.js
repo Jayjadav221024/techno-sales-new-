@@ -654,7 +654,7 @@ export const COMPANY = {
   email: 'Mktg@Technosales.In',
   emailHref: 'mailto:Mktg@Technosales.In',
   address: 'Old N H, No 8, B/5-6, Kewal Shopping Centre, Ankleshwar GIDC, Ankleshwar, Gujarat 393002',
-  hours: 'Monday - Friday: 09:00 AM - 06:00 PM',
+  hours: 'Monday - Saturday: 09:00 AM - 06:00 PM',
   /* What the Google Maps embed and the directions links are pointed at. Google
      geocodes this text, so it stays in sync with `address` by hand. If the pin
      ever lands on the wrong unit, replace this with the exact coordinates

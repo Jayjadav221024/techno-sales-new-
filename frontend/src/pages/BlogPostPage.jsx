@@ -1,12 +1,125 @@
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import PageHeader from '../components/PageHeader';
 import NotFoundPage from './NotFoundPage';
 import Icon from '../components/Icon';
 import Img from '../components/Img';
 import { useSiteData } from '../context/SiteDataContext';
+import { fetchBlogPostBySlug } from '../services/api';
 import { seoFromRecord, useSeo } from '../utils/seo';
 
 const WORDS_PER_MINUTE = 200;
+
+/** Converts markdown text to clean structured HTML if content is in markdown format */
+function formatBlogContent(content) {
+  if (!content) return '';
+  // If it already contains HTML tags like <p>, <h2>, <ul>, return as is
+  if (/<(p|h[1-6]|ul|ol|div|blockquote|table)\b/i.test(content)) {
+    return content;
+  }
+
+  // Pre-clean linebreaks & windows linebreaks
+  const lines = content.replace(/\r\n/g, '\n').split('\n');
+  const result = [];
+  let inList = false;
+  let listType = 'ul';
+  let currentParagraph = [];
+
+  const flushParagraph = () => {
+    if (currentParagraph.length > 0) {
+      const pText = currentParagraph.join(' ').trim();
+      if (pText) {
+        result.push(`<p>${pText}</p>`);
+      }
+      currentParagraph = [];
+    }
+  };
+
+  const closeList = () => {
+    if (inList) {
+      result.push(`</${listType}>`);
+      inList = false;
+    }
+  };
+
+  for (let i = 0; i < lines.length; i++) {
+    const rawLine = lines[i];
+    const line = rawLine.trim();
+
+    if (!line) {
+      flushParagraph();
+      closeList();
+      continue;
+    }
+
+    // Headings
+    if (/^######\s+(.*)$/.test(line)) {
+      flushParagraph();
+      closeList();
+      result.push(`<h6>${line.replace(/^######\s+/, '')}</h6>`);
+    } else if (/^#####\s+(.*)$/.test(line)) {
+      flushParagraph();
+      closeList();
+      result.push(`<h5>${line.replace(/^#####\s+/, '')}</h5>`);
+    } else if (/^####\s+(.*)$/.test(line)) {
+      flushParagraph();
+      closeList();
+      result.push(`<h4>${line.replace(/^####\s+/, '')}</h4>`);
+    } else if (/^###\s+(.*)$/.test(line)) {
+      flushParagraph();
+      closeList();
+      result.push(`<h3>${line.replace(/^###\s+/, '')}</h3>`);
+    } else if (/^##\s+(.*)$/.test(line)) {
+      flushParagraph();
+      closeList();
+      result.push(`<h2>${line.replace(/^##\s+/, '')}</h2>`);
+    } else if (/^#\s+(.*)$/.test(line)) {
+      flushParagraph();
+      closeList();
+      result.push(`<h1>${line.replace(/^#\s+/, '')}</h1>`);
+    }
+    // Unordered List item
+    else if (/^(\*|-)\s+(.*)$/.test(line)) {
+      flushParagraph();
+      if (!inList || listType !== 'ul') {
+        closeList();
+        result.push('<ul>');
+        inList = true;
+        listType = 'ul';
+      }
+      const itemContent = line.replace(/^(\*|-)\s+/, '');
+      result.push(`<li>${parseInlineMarkdown(itemContent)}</li>`);
+    }
+    // Ordered List item
+    else if (/^\d+\.\s+(.*)$/.test(line)) {
+      flushParagraph();
+      if (!inList || listType !== 'ol') {
+        closeList();
+        result.push('<ol>');
+        inList = true;
+        listType = 'ol';
+      }
+      const itemContent = line.replace(/^\d+\.\s+/, '');
+      result.push(`<li>${parseInlineMarkdown(itemContent)}</li>`);
+    } else {
+      closeList();
+      currentParagraph.push(parseInlineMarkdown(line));
+    }
+  }
+
+  flushParagraph();
+  closeList();
+
+  return result.join('\n');
+}
+
+/** Helper for inline formatting like bold, italic */
+function parseInlineMarkdown(text) {
+  return text
+    .replace(/\*\*\*(.*?)\*\*\*/g, '<strong><em>$1</em></strong>')
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>');
+}
 
 /** Minutes to read what is actually on the page, tags stripped. */
 function readingMinutes(post) {
@@ -18,7 +131,20 @@ function readingMinutes(post) {
 export default function BlogPostPage() {
   const { slug } = useParams();
   const { blogs } = useSiteData();
-  const post = blogs.find((p) => p.slug === slug);
+  const [post, setPost] = useState(() => {
+    return blogs.find((p) => p.slug === slug) || null;
+  });
+
+  useEffect(() => {
+    const found = blogs.find((p) => p.slug === slug);
+    if (found) {
+      setPost(found);
+    }
+    // Also fetch direct from API to get latest edits immediately
+    fetchBlogPostBySlug(slug).then((res) => {
+      if (res) setPost(res);
+    });
+  }, [slug, blogs]);
 
   // Above the early return - hooks cannot run conditionally.
   useSeo(
@@ -66,13 +192,11 @@ export default function BlogPostPage() {
 
               <p className="blog-post-standfirst">{post.excerpt}</p>
 
-              {/* Every entry in blogPosts.js stops at the excerpt — none carry
-                  a `body`, which is why this card rendered as an empty box.
-                  The markup only mounts once there is something to put in it. */}
-              {post.body && (
+              {/* Support content from admin panel (HTML or Markdown) or body from static dataset */}
+              {(post.content || post.body) && (
                 <div
                   className="blog-post-body"
-                  dangerouslySetInnerHTML={{ __html: post.body }}
+                  dangerouslySetInnerHTML={{ __html: formatBlogContent(post.content || post.body) }}
                 />
               )}
 

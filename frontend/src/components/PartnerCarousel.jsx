@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import PartnerCard from './PartnerCard';
 import Icon from './Icon';
 import { PARTNERS } from '../data/site';
 
 export default function PartnerCarousel() {
   const [activeIndex, setActiveIndex] = useState(2); // Start with the center card (ABB)
+  const isHoveredRef = useRef(false);
 
   const handlePrev = () => {
     setActiveIndex((prev) => (prev === 0 ? PARTNERS.length - 1 : prev - 1));
@@ -18,12 +19,22 @@ export default function PartnerCarousel() {
     setActiveIndex(index);
   };
 
-  /* No top margin and only a little bottom padding: the section header above
-     already contributes 2.75rem, and the 4rem margin + 2rem padding this used
-     to add on top of that left a gulf between the subtitle and the cards. */
+  // Automatic animate every 2.5 seconds (2500ms), pausing while hovering
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (!isHoveredRef.current) {
+        setActiveIndex((prev) => (prev + 1) % PARTNERS.length);
+      }
+    }, 2500);
+
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <div
       className="partner-carousel-container"
+      onMouseEnter={() => { isHoveredRef.current = true; }}
+      onMouseLeave={() => { isHoveredRef.current = false; }}
       style={{ position: 'relative', width: '100%', maxWidth: '1000px', margin: '0 auto', padding: '0 0 1rem 0', overflow: 'hidden' }}
     >
       {/* 3D Scene viewport */}

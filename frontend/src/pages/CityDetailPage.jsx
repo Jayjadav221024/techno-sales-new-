@@ -200,18 +200,18 @@ export default function CityDetailPage({ onOpenRFQ }) {
             {city.desc}
           </p>
 
-          <div style={{ display: 'flex', gap: '3rem', margin: '2.5rem 0 2rem 0', flexWrap: 'wrap' }}>
-            <div>
-              <div className="counter-value">4</div>
-              <div className="stat-label">Product Lines Supplied</div>
+          <div style={{ display: 'flex', gap: '3.5rem', margin: '2.5rem 0 2rem 0', flexWrap: 'wrap', alignItems: 'flex-start' }}>
+            <div style={{ textAlign: 'left' }}>
+              <div className="counter-value" style={{ textAlign: 'left', marginBottom: '0.25rem' }}>4</div>
+              <div className="stat-label" style={{ textAlign: 'left', color: 'rgba(255, 255, 255, 0.75)' }}>Product Lines Supplied</div>
             </div>
-            <div>
-              <div className="counter-value">{city.distance}</div>
-              <div className="stat-label">From Ankleshwar GIDC</div>
+            <div style={{ textAlign: 'left' }}>
+              <div className="counter-value" style={{ textAlign: 'left', marginBottom: '0.25rem' }}>{city.distance}</div>
+              <div className="stat-label" style={{ textAlign: 'left', color: 'rgba(255, 255, 255, 0.75)' }}>From Ankleshwar GIDC</div>
             </div>
-            <div>
-              <div className="counter-value">{city.zones}</div>
-              <div className="stat-label">Industrial Zones Covered</div>
+            <div style={{ textAlign: 'left' }}>
+              <div className="counter-value" style={{ textAlign: 'left', marginBottom: '0.25rem' }}>{city.zones}</div>
+              <div className="stat-label" style={{ textAlign: 'left', color: 'rgba(255, 255, 255, 0.75)' }}>Industrial Zones Covered</div>
             </div>
           </div>
 
@@ -286,13 +286,14 @@ export default function CityDetailPage({ onOpenRFQ }) {
                     ))}
                   </ul>
 
-                  <div className="product-footer">
+                  <div className="product-footer" style={{ display: 'block' }}>
                     <button 
                       className="btn btn-secondary btn-sm"
                       onClick={() => onOpenRFQ(`Inquiry for ${localizedName}`)}
-                      style={{ width: '100%' }}
+                      style={{ width: '100%', justifyContent: 'center' }}
                     >
-                      View Specifications &rarr;
+                      <span>View Specifications</span>
+                      <Icon name="arrowRight" size={15} />
                     </button>
                   </div>
                 </div>
