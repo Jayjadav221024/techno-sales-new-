@@ -468,9 +468,17 @@ html {
     background 0.3s ease;
 }
 
-/* Reduces left space when logo is not present at the top of hero so Home has matching edge margin */
+/* When in home hero (logo hidden), links start on the left with 1rem padding */
 .site-nav.is-home-hero .site-nav-shell {
-  padding-left: 0.5rem;
+  padding-left: 1rem;
+}
+
+.site-nav.is-home-hero .nav-center {
+  margin: 0;
+}
+
+.site-nav.is-home-hero .nav-actions {
+  margin-left: auto;
 }
 
 /* Condenses slightly once the page scrolls */
@@ -500,7 +508,7 @@ html {
   max-width: 0;
   pointer-events: none;
   transform: translateX(-12px);
-  margin-right: 0;
+  margin-right: -1.25rem;
   overflow: hidden;
 }
 
@@ -522,6 +530,8 @@ html {
   position: relative;
   display: flex;
   align-items: center;
+  margin: 0 auto;
+  transition: margin 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .nav-list {
