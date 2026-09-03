@@ -81,12 +81,17 @@ export default function Navbar({ onOpenRFQ }) {
     };
   }, [settle]);
 
-  /* ---- Condense the bar once the page moves ---- */
+  /* ---- Condense the bar & show logo when scrolled past hero ---- */
   useEffect(() => {
     let frame = 0;
+    const isHome = location.pathname === '/';
+
     const onScroll = () => {
       cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => setScrolled(window.scrollY > 24));
+      frame = requestAnimationFrame(() => {
+        const scrollThreshold = isHome ? 320 : 24;
+        setScrolled(window.scrollY > scrollThreshold);
+      });
     };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
@@ -94,7 +99,7 @@ export default function Navbar({ onOpenRFQ }) {
       cancelAnimationFrame(frame);
       window.removeEventListener('scroll', onScroll);
     };
-  }, []);
+  }, [location.pathname]);
 
   // Any completed navigation leaves the menus closed.
   useEffect(() => {
@@ -120,12 +125,14 @@ export default function Navbar({ onOpenRFQ }) {
     };
   }, [openMenu, mobileMenuOpen, closeAll]);
 
+  const isHome = location.pathname === '/';
+  const hideBrandLogo = isHome && !scrolled;
   const navLinkClass = ({ isActive }) => `nav-link${isActive ? ' is-current' : ''}`;
 
   return (
-    <header className={`site-nav${scrolled ? ' is-scrolled' : ''}`} ref={shellRef}>
+    <header className={`site-nav${scrolled ? ' is-scrolled' : ''}${hideBrandLogo ? ' is-home-hero' : ''}`} ref={shellRef}>
       <div className="site-nav-shell">
-        <Link to="/" className="nav-brand" title="Techno Sales Home">
+        <Link to="/" className={`nav-brand${hideBrandLogo ? ' is-hidden-hero' : ''}`} title="Techno Sales Home">
           <Logo showText={true} />
         </Link>
 
@@ -145,22 +152,22 @@ export default function Navbar({ onOpenRFQ }) {
               <NavLink to="/about" className={navLinkClass}>About Us</NavLink>
             </li>
 
-            {/* Products — dropdown menu */}
+            {/* Products — NavLink to /products with hover mega-menu */}
             <li
               className="nav-item nav-item--dropdown"
               onMouseEnter={(e) => { moveTo(e.currentTarget); setOpenMenu('products'); }}
               onMouseLeave={() => setOpenMenu(null)}
             >
-              <button
-                type="button"
+              <NavLink
+                to="/products"
                 className={`nav-link nav-trigger${location.pathname.startsWith('/product') ? ' is-current' : ''}${openMenu === 'products' ? ' is-open' : ''}`}
-                onClick={() => setOpenMenu(openMenu === 'products' ? null : 'products')}
+                onClick={closeAll}
                 aria-haspopup="true"
                 aria-expanded={openMenu === 'products'}
               >
                 Products
                 <Icon name="chevronDown" size={14} className="nav-caret" />
-              </button>
+              </NavLink>
 
               {openMenu === 'products' && (
                 <div className="nav-dropdown-wrap">
@@ -209,14 +216,14 @@ export default function Navbar({ onOpenRFQ }) {
             <li className="nav-item" onMouseEnter={(e) => moveTo(e.currentTarget)}>
               <NavLink to="/blog" className={navLinkClass}>Blog</NavLink>
             </li>
+
+            <li className="nav-item" onMouseEnter={(e) => moveTo(e.currentTarget)}>
+              <NavLink to="/contact" className={navLinkClass}>Contact Us</NavLink>
+            </li>
           </ul>
         </nav>
 
         <div className="nav-actions">
-          <NavLink to="/contact" className="nav-contact-link">
-            Contact
-          </NavLink>
-          
           <button className="nav-cta" onClick={() => onOpenRFQ()}>
             <span>Get B2B Quote</span>
           </button>
@@ -250,6 +257,14 @@ export default function Navbar({ onOpenRFQ }) {
           </button>
           {mobileSection === 'products' && (
             <div className="nav-sheet-sub">
+              <Link
+                to="/products"
+                className="nav-sheet-sublink is-head"
+                style={{ color: 'var(--color-brand-500)', fontWeight: 700 }}
+                onClick={closeAll}
+              >
+                All Products &rarr;
+              </Link>
               {CATEGORIES.map((cat) => (
                 <div key={cat.id}>
                   <Link

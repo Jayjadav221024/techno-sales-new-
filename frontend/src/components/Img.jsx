@@ -8,42 +8,26 @@ export default function Img({
   width,
   height
 }) {
-  // If the path starts with a slash, we expect it to be in the public directory
-  // e.g. /images/hero/abb-motors.jpg
-  const isRaster = src && (src.endsWith('.jpg') || src.endsWith('.png') || src.endsWith('.jpeg'));
-  
-  if (!isRaster) {
-    return (
-      <img 
-        src={src} 
-        alt={alt} 
-        className={className} 
-        style={style} 
-        loading={loading} 
-        fetchPriority={fetchPriority}
-        width={width}
-        height={height}
-      />
-    );
-  }
-
-  // Generate WebP counterpart path
-  const webpSrc = src.substring(0, src.lastIndexOf('.')) + '.webp';
-
   return (
-    <picture>
-      <source srcSet={webpSrc} type="image/webp" />
-      <img 
-        src={src} 
-        alt={alt} 
-        className={className} 
-        style={style} 
-        loading={loading} 
-        fetchPriority={fetchPriority}
-        width={width}
-        height={height}
-        decoding="async"
-      />
-    </picture>
+    <img 
+      src={src} 
+      alt={alt} 
+      className={className} 
+      style={style} 
+      loading={loading} 
+      fetchPriority={fetchPriority}
+      width={width}
+      height={height}
+      decoding="async"
+      onError={(e) => {
+        // Prevent broken image icon if an extension or format mismatch occurs
+        if (!e.target.dataset.triedFallback) {
+          e.target.dataset.triedFallback = 'true';
+          if (src && src.endsWith('.jpg')) {
+            e.target.src = src.replace('.jpg', '.png');
+          }
+        }
+      }}
+    />
   );
 }

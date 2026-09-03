@@ -451,7 +451,7 @@ html {
   justify-content: space-between;
   gap: 1.25rem;
   height: 64px;
-  padding: 0 0.85rem 0 1.25rem;
+  padding: 0 0.5rem 0 1.25rem;
   border-radius: 999px;
 
   /* Clean white surface with subtle crisp border and soft shadow */
@@ -463,8 +463,14 @@ html {
 
   transition:
     height 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    padding-left 0.35s cubic-bezier(0.4, 0, 0.2, 1),
     box-shadow 0.3s ease,
     background 0.3s ease;
+}
+
+/* Reduces left space when logo is not present at the top of hero so Home has matching edge margin */
+.site-nav.is-home-hero .site-nav-shell {
+  padding-left: 0.5rem;
 }
 
 /* Condenses slightly once the page scrolls */
@@ -480,7 +486,22 @@ html {
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              max-width 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              margin 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  max-width: 220px;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.nav-brand.is-hidden-hero {
+  opacity: 0;
+  max-width: 0;
+  pointer-events: none;
+  transform: translateX(-12px);
+  margin-right: 0;
+  overflow: hidden;
 }
 
 .nav-brand:hover {

@@ -117,7 +117,6 @@ export default function ScrollTimeline() {
                 <div className="glass-card scroll-timeline-card">
                   <div className="scroll-timeline-header">
                     <span className="scroll-timeline-year">{item.year}</span>
-                    <span className="scroll-timeline-badge">{item.badge}</span>
                   </div>
 
                   <h3 className="scroll-timeline-title">{item.title}</h3>

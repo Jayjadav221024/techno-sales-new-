@@ -1,22 +1,23 @@
 import { Link } from 'react-router-dom';
 import PageHeader from '../components/PageHeader';
 import Icon from '../components/Icon';
+import { CITY_LANDMARKS } from '../components/CityLandmarks';
 import { useSection, useSectionProps } from '../context/SiteContentContext';
 
 const LOCATIONS = [
-  { name: 'Vadodara', district: 'Vadodara District' },
-  { name: 'Ahmedabad', district: 'Ahmedabad District' },
-  { name: 'Anand', district: 'Anand District' },
-  { name: 'Ankleshwar', district: 'Bharuch District' },
-  { name: 'Bharuch', district: 'Bharuch District' },
-  { name: 'Surat', district: 'Surat District' },
-  { name: 'Rajkot', district: 'Rajkot District' },
-  { name: 'Godhra', district: 'Panchmahal District' },
-  { name: 'Navsari', district: 'Navsari District' },
-  { name: 'Vapi', district: 'Valsad District' },
-  { name: 'Bhuj', district: 'Kutch District' },
-  { name: 'Amreli', district: 'Amreli District' },
-  { name: 'Dahod', district: 'Dahod District' }
+  { name: 'Vadodara', district: 'Vadodara District', type: 'Engineering & Power' },
+  { name: 'Ahmedabad', district: 'Ahmedabad District', type: 'Textile & Heavy Ind.' },
+  { name: 'Anand', district: 'Anand District', type: 'Manufacturing & Agri' },
+  { name: 'Ankleshwar', district: 'Bharuch District', type: 'Chemical Hub (HQ)' },
+  { name: 'Bharuch', district: 'Bharuch District', type: 'Petrochem & Port' },
+  { name: 'Surat', district: 'Surat District', type: 'Textile & Diamond' },
+  { name: 'Rajkot', district: 'Rajkot District', type: 'Auto & Casting' },
+  { name: 'Godhra', district: 'Panchmahal District', type: 'Industrial GIDC' },
+  { name: 'Navsari', district: 'Navsari District', type: 'Processing Units' },
+  { name: 'Vapi', district: 'Valsad District', type: 'Chemical & Paper' },
+  { name: 'Bhuj', district: 'Kutch District', type: 'Port & Heavy Duty' },
+  { name: 'Amreli', district: 'Amreli District', type: 'Fabrication & Power' },
+  { name: 'Dahod', district: 'Dahod District', type: 'Logistics Corridor' }
 ];
 
 export default function LocationsPage() {
@@ -59,28 +60,31 @@ export default function LocationsPage() {
           </div>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(280px, 100%), 1fr))', gap: '2rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(280px, 100%), 1fr))', gap: '1.75rem' }}>
           {LOCATIONS.map((loc) => (
             <Link 
               key={loc.name}
               to={`/locations/${loc.name.toLowerCase()}`}
-              className="glass-card reveal-on-scroll"
-              style={{ textDecoration: 'none', padding: '2rem', display: 'flex', flexDirection: 'column', gap: '0.75rem', transition: 'var(--transition-smooth)' }}
+              className="glass-card location-city-card reveal-on-scroll"
             >
-              <h3 className="location-card-title">
-                {loc.name}
-              </h3>
-              <p className="location-card-desc">
-                {loc.district}
-              </p>
-              
-              <span 
-                className="category-card-link"
-                style={{ marginTop: 'auto', display: 'inline-flex', alignItems: 'center', gap: '0.5rem', alignSelf: 'flex-start' }}
-              >
-                View details
-                <Icon name="arrowRight" size={14} />
-              </span>
+              <div className="location-card-header">
+                <div>
+                  <h3 className="location-card-title">{loc.name}</h3>
+                  <p className="location-card-desc">{loc.district}</p>
+                </div>
+                
+                {/* Right side prominent city landmark line illustration */}
+                <div className="location-landmark-badge" title={`${loc.name} Landmark`}>
+                  {CITY_LANDMARKS[loc.name] || <Icon name="factory" size={36} />}
+                </div>
+              </div>
+
+              <div className="location-card-footer">
+                <span className="category-card-link">
+                  View details
+                  <Icon name="arrowRight" size={14} />
+                </span>
+              </div>
             </Link>
           ))}
         </div>

@@ -131,7 +131,7 @@ export default function StatsBand() {
       <div className="container">
         <div className="section-header reveal-on-scroll">
           <span className="section-tag">OUR PROVEN TRACK RECORD</span>
-          <h2 className="section-title">Milestones in Numbers</h2>
+          <h2 className="section-title">Milestones Achieved</h2>
           <p className="section-desc">A decade of industrial supply excellence and trusted reliability across Gujarat's manufacturing sector.</p>
         </div>
 

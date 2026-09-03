@@ -71,9 +71,9 @@ export default function AboutPage({ onOpenRFQ }) {
       <section className="about-facility-section container reveal-on-scroll">
         <div className="glass-card" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', overflow: 'hidden', padding: 0 }}>
           <Img 
-            src="/images/sections/about.jpg" 
-            alt="Techno Sales Warehouse Facility" 
-            style={{ width: '100%', height: '100%', minHeight: '300px', objectFit: 'cover', display: 'block' }} 
+            src="/images/sections/techno-warehouse.jpg" 
+            alt="Techno Sales Ankleshwar Warehouse Facility" 
+            style={{ width: '100%', height: '100%', minHeight: '340px', objectFit: 'cover', display: 'block' }} 
           />
           <div className="facility-details-card">
             <span className="section-tag">OUR FACILITY</span>
