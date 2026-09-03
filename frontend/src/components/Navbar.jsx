@@ -5,12 +5,12 @@ import Icon from './Icon';
 import { CATEGORIES, productsInCategory, PRODUCTS_DATA, BLOG_POSTS } from '../data/site';
 
 const FEEDBACK_LINKS = [
-  { to: '/testimonials', label: 'Testimonial' },
+  { to: '/testimonials', label: 'Testimonials' },
   { to: '/faq', label: 'FAQ' }
 ];
 
 const SIMPLE_LINKS = [
-  { to: '/blog', label: 'Blog' },
+  { to: '/blog', label: 'Blogs' },
   { to: '/locations', label: 'Locations' },
   { to: '/about', label: 'About Us' },
   { to: '/contact', label: 'Contact Us' }
@@ -214,7 +214,7 @@ export default function Navbar({ onOpenRFQ }) {
             </li>
 
             <li className="nav-item" onMouseEnter={(e) => moveTo(e.currentTarget)}>
-              <NavLink to="/blog" className={navLinkClass}>Blog</NavLink>
+              <NavLink to="/blog" className={navLinkClass}>Blogs</NavLink>
             </li>
 
             <li className="nav-item" onMouseEnter={(e) => moveTo(e.currentTarget)}>
@@ -291,7 +291,7 @@ export default function Navbar({ onOpenRFQ }) {
 
           <Link to="/locations" className="nav-sheet-link" onClick={closeAll}>Locations</Link>
           <Link to="/testimonials" className="nav-sheet-link" onClick={closeAll}>Testimonials</Link>
-          <Link to="/blog" className="nav-sheet-link" onClick={closeAll}>Blog</Link>
+          <Link to="/blog" className="nav-sheet-link" onClick={closeAll}>Blogs</Link>
           <Link to="/contact" className="nav-sheet-link" onClick={closeAll}>Contact</Link>
 
           <button className="nav-cta nav-sheet-cta" onClick={() => { closeAll(); onOpenRFQ(); }}>

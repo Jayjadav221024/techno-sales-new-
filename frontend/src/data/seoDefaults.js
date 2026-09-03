@@ -55,7 +55,7 @@ export const SEO_DEFAULTS = {
     description: 'Browse industrial motors, switchgears, cables & wires and FRP products stocked in Ankleshwar GIDC.',
   },
   '/blog': {
-    title: 'Blog - Techno Sales',
+    title: 'Blogs - Techno Sales',
     description: 'Stay updated with switchgear standards, motor efficiency benchmarks, cable selection guides, and electrical safety.',
   },
   '/faq': {
@@ -67,7 +67,7 @@ export const SEO_DEFAULTS = {
     description: 'Current openings at Techno Sales, Ankleshwar GIDC — sales engineers, technical sales executives and stores staff working with Siemens, Polycab, ABB and CG product lines.',
   },
   '/testimonials': {
-    title: 'Testimonial - Techno Sales',
+    title: 'Testimonials - Techno Sales',
     description: 'Read what chemical, pharmaceutical, and manufacturing plants across Ankleshwar GIDC say about Techno Sales.',
   },
 };

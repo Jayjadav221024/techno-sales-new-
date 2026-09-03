@@ -166,7 +166,7 @@ export default function BlogPostPage() {
       {/* No `lead` here on purpose. PageHeader already ends the trail with the
           title, and the excerpt now opens the article itself — printing it in
           the banner too meant reading the same paragraph twice. */}
-      <PageHeader tag={post.topic} title={post.title} trail={[{ label: 'Blog', to: '/blog' }]} />
+      <PageHeader tag={post.topic} title={post.title} trail={[{ label: 'Blogs', to: '/blog' }]} />
 
       <section className="container blog-detail-section">
         <div className="blog-layout">

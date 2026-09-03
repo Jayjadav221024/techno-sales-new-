@@ -10,7 +10,7 @@ export default function TestimonialsPage({ onOpenRFQ }) {
     <>
       <PageHeader
         tag="CLIENT FEEDBACK"
-        title="Testimonial"
+        title="Testimonials"
         lead="How chemical, pharmaceutical and manufacturing plants across Ankleshwar GIDC rate our products, pricing and turnaround."
         trail={[{ label: 'Feedback' }]}
       />
