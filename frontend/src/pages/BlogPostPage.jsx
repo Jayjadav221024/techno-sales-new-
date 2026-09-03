@@ -158,8 +158,8 @@ export default function BlogPostPage() {
 
   if (!post) return <NotFoundPage />;
 
-  // Recent/Popular feeds: show 5 other recent posts
-  const recentPosts = blogs.filter((p) => p.slug !== post.slug).slice(0, 5);
+  // Recent/Popular feeds: show 4 other recent posts so both sidebar cards fit comfortably
+  const recentPosts = blogs.filter((p) => p.slug !== post.slug).slice(0, 4);
 
   return (
     <>

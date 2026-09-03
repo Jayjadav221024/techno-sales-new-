@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import Icon from './Icon';
 import { MAPS } from '../data/site';
 import { useCompany } from '../context/SiteContentContext';
@@ -18,15 +19,6 @@ export default function LocationMap({
       </div>
 
       <div className="glass-card map-card reveal-on-scroll">
-        <iframe
-          className="map-frame"
-          title="Google Map showing the Techno Sales counter in Ankleshwar GIDC"
-          src={MAPS.embed}
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          allowFullScreen
-        />
-
         <div className="map-details">
           <p className="map-address">
             <Icon name="mapPin" size={18} />
@@ -52,16 +44,38 @@ export default function LocationMap({
               Get Directions
             </a>
             <a
+              href={COMPANY.phoneHref}
+              className="btn btn-secondary"
+            >
+              <Icon name="phone" size={16} />
+              Call {COMPANY.phone}
+            </a>
+            <Link
+              to="/contact"
+              className="btn btn-secondary"
+            >
+              Contact Us
+            </Link>
+            <a
               href={MAPS.place}
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn-secondary"
             >
-              Open in Google Maps
-              <Icon name="arrowRight" size={16} />
+              Google Maps
+              <Icon name="arrowRight" size={14} />
             </a>
           </div>
         </div>
+
+        <iframe
+          className="map-frame"
+          title="Google Map showing the Techno Sales counter in Ankleshwar GIDC"
+          src={MAPS.embed}
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          allowFullScreen
+        />
       </div>
     </section>
   );

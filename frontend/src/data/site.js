@@ -499,6 +499,7 @@ export const FAQS = [
 export const FEATURES = [
   {
     icon: 'shieldCheck',
+    image: '/images/sections/why-choose-us.jpg',
     title: '100% Authorized & Certified',
     // TODO: confirm with client — live site claims Authorized Distributor for ABB & FRP
     // (this sentence carries the same claim as the PARTNERS badges below)
@@ -506,16 +507,19 @@ export const FEATURES = [
   },
   {
     icon: 'cog',
+    image: '/images/hero/motors.jpg',
     title: 'Technical Support & Sizing',
     desc: 'Our experienced engineering team assists you in choosing exact motor frames, breaker breaking capacities, and cable ratings.'
   },
   {
     icon: 'truck',
+    image: '/images/sections/industrial.jpg',
     title: 'Rapid Ankleshwar Dispatch',
     desc: 'Located right at Ankleshwar GIDC with ready stock available for quick dispatch to your plant floor.'
   },
   {
     icon: 'wrench',
+    image: '/images/hero/siemens-switchgear.jpg',
     title: 'After-Sales Lifecycle Support',
     desc: 'Active support throughout product installation, commissioning, replacement parts, and maintenance guidance.'
   }

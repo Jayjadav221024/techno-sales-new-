@@ -140,8 +140,6 @@ export default function CategoryPage({ onOpenRFQ }) {
           </Link>
         </div>
       </section>
-
-      <CtaBand onOpenRFQ={onOpenRFQ} />
     </>
   );
 }

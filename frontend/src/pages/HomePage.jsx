@@ -5,16 +5,19 @@ import Icon from '../components/Icon';
 import Img from '../components/Img';
 import ProductCard from '../components/ProductCard';
 import PartnerCarousel from '../components/PartnerCarousel';
+import FeaturesAccordion from '../components/FeaturesAccordion';
 import LocationMap from '../components/LocationMap';
 import CtaBand from '../components/CtaBand';
 import StatsBand from '../components/StatsBand';
 import EasierBand from '../components/EasierBand';
+import TestimonialCarousel from '../components/TestimonialCarousel';
 import { useSiteData } from '../context/SiteDataContext';
 import { useSection, useSectionProps } from '../context/SiteContentContext';
 import { BRAND_MARQUEE } from '../data/site';
 
 export default function HomePage({ onOpenRFQ }) {
   const [searchQuery, setSearchQuery] = useState('');
+  const [openFaqIndex, setOpenFaqIndex] = useState(0);
   const navigate = useNavigate();
   const { products, testimonials, blogs, faqs, partners } = useSiteData();
 
@@ -105,7 +108,7 @@ export default function HomePage({ onOpenRFQ }) {
         </div>
       </section>
 
-      {/* Why Choose Techno Sales - 6 Features Grid */}
+      {/* Why Choose Techno Sales - Horizontal Accordion with rich imagery */}
       <section id="about" className="features-section container" {...spFeatures}>
         <div className="section-header reveal-on-scroll">
           <span className="section-tag">{features.tag}</span>
@@ -113,59 +116,61 @@ export default function HomePage({ onOpenRFQ }) {
           <p className="section-desc">{features.desc}</p>
         </div>
 
-        <div className="features-grid">
-          {(features.items ?? []).map((feature, i) => (
-            <div className="glass-card feature-card reveal-on-scroll" key={i}>
-              <div className="feature-icon">
-                <Icon name={feature.icon} size={24} />
-              </div>
-              <h3 className="feature-title">{feature.title}</h3>
-              <p className="feature-desc">{feature.desc}</p>
-            </div>
-          ))}
-        </div>
+        <FeaturesAccordion items={features.items ?? []} />
       </section>
 
-      {/* Industries We Serve */}
-      <section className="industries-section container" {...spIndustries}>
-        <div className="section-header reveal-on-scroll">
-          <span className="section-tag">{industries.tag}</span>
-          <h2 className="section-title">{industries.title}</h2>
-          <p className="section-desc">{industries.desc}</p>
+      {/* Industries We Serve - Infinite Horizontal Marquee */}
+      <section className="industries-section" {...spIndustries}>
+        <div className="container">
+          <div className="section-header reveal-on-scroll">
+            <span className="section-tag">{industries.tag}</span>
+            <h2 className="section-title">{industries.title}</h2>
+            <p className="section-desc">{industries.desc}</p>
+          </div>
         </div>
 
-        <div className="industries-grid">
-          {(industries.items ?? []).map((ind, i) => (
-            <div className="glass-card industry-card reveal-on-scroll" key={i}>
-              <div className="industry-icon">
-                <Icon name={ind.icon} size={24} />
-              </div>
-              <h3 className="industry-name">{ind.name}</h3>
-              <p className="industry-desc">{ind.desc}</p>
-            </div>
-          ))}
+        <div className="industries-marquee-container">
+          <div className="industries-marquee-track">
+            {[0, 1].map((pass) =>
+              (industries.items ?? []).map((ind, i) => (
+                <div
+                  className="glass-card industry-marquee-card"
+                  key={`${pass}-${i}`}
+                  aria-hidden={pass > 0 ? 'true' : undefined}
+                >
+                  <div className="industry-icon">
+                    <Icon name={ind.icon} size={24} />
+                  </div>
+                  <h3 className="industry-name">{ind.name}</h3>
+                  <p className="industry-desc">{ind.desc}</p>
+                </div>
+              ))
+            )}
+          </div>
         </div>
       </section>
 
       {/* How We Work - Process Steps */}
-      <section className="process-section container" {...spProcess}>
-        <div className="section-header reveal-on-scroll">
-          <span className="section-tag">{process.tag}</span>
-          <h2 className="section-title">{process.title}</h2>
-          <p className="section-desc">{process.desc}</p>
-        </div>
+      <section className="process-section" {...spProcess}>
+        <div className="container">
+          <div className="section-header reveal-on-scroll">
+            <span className="section-tag">{process.tag}</span>
+            <h2 className="section-title">{process.title}</h2>
+            <p className="section-desc">{process.desc}</p>
+          </div>
 
-        <div className="process-steps">
-          {(process.items ?? []).map((step, i) => (
-            <div className="glass-card process-step reveal-on-scroll" key={i}>
-              <div className="step-number">0{i + 1}</div>
-              <div className="step-icon">
-                <Icon name={step.icon} size={22} />
+          <div className="process-steps">
+            {(process.items ?? []).map((step, i) => (
+              <div className="glass-card process-step reveal-on-scroll" key={i}>
+                <div className="step-number">0{i + 1}</div>
+                <div className="step-icon">
+                  <Icon name={step.icon} size={22} />
+                </div>
+                <h3 className="step-title">{step.title}</h3>
+                <p className="step-desc">{step.desc}</p>
               </div>
-              <h3 className="step-title">{step.title}</h3>
-              <p className="step-desc">{step.desc}</p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
@@ -184,36 +189,15 @@ export default function HomePage({ onOpenRFQ }) {
       {/* Interactive 3D Product Sizing Tool banner */}
       <EasierBand onOpenRFQ={onOpenRFQ} />
 
-      {/* Testimonials */}
-      {quote && (
+      {/* Testimonials Auto-Changing Carousel */}
+      {testimonials && testimonials.length > 0 && (
         <section className="testimonials-section container" {...spTestimonials}>
           <div className="section-header reveal-on-scroll">
             <span className="section-tag">{testimonialsCopy.tag}</span>
             <h2 className="section-title">{testimonialsCopy.title}</h2>
           </div>
 
-          <div className="glass-card quote-card reveal-on-scroll">
-            <div className="quote-icon">
-              <Icon name="quote" size={32} />
-            </div>
-            <blockquote className="quote-text">
-              "{quote.text}"
-            </blockquote>
-            <div className="quote-author" style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '1.5rem' }}>
-              <div className="author-avatar" style={{ background: 'linear-gradient(135deg, var(--color-brand-400), var(--color-brand-600))', color: '#fff', fontWeight: 800 }}>
-                {quote.initials}
-              </div>
-              <div>
-                <div className="author-name" style={{ fontWeight: 700, fontSize: '1.05rem', color: 'var(--text-main)' }}>
-                  {quote.name}
-                </div>
-                <div className="author-role" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', color: 'var(--accent-cyan)', fontSize: '0.85rem', fontWeight: 600 }}>
-                  <Icon name="shieldCheck" size={14} />
-                  <span>{quote.role} · Verified Industrial Client</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          <TestimonialCarousel testimonials={testimonials} interval={4500} />
         </section>
       )}
 
@@ -267,13 +251,26 @@ export default function HomePage({ onOpenRFQ }) {
             <h2 className="section-title">{faqCopy.title}</h2>
           </div>
 
-          <div className="faq-grid">
-            {topFaqs.map((faq, i) => (
-              <div className="glass-card faq-card reveal-on-scroll" key={i}>
-                <h3 className="faq-q">{faq.q}</h3>
-                <p className="faq-a">{faq.a}</p>
-              </div>
-            ))}
+          <div className="faq-accordion reveal-on-scroll">
+            {topFaqs.map((faq, i) => {
+              const isOpen = openFaqIndex === i;
+              return (
+                <div className={`glass-card faq-item${isOpen ? ' is-open' : ''}`} key={i}>
+                  <h3>
+                    <button
+                      type="button"
+                      className="faq-question"
+                      onClick={() => setOpenFaqIndex(isOpen ? -1 : i)}
+                      aria-expanded={isOpen}
+                    >
+                      <span>{faq.q}</span>
+                      <Icon name="chevronDown" size={18} className="faq-caret" />
+                    </button>
+                  </h3>
+                  {isOpen && <p className="faq-answer">{faq.a}</p>}
+                </div>
+              );
+            })}
           </div>
 
           <div className="section-actions reveal-on-scroll">
@@ -285,16 +282,12 @@ export default function HomePage({ onOpenRFQ }) {
         </section>
       )}
 
-      {/* Google Map Section — the shared component carries the address, counter
-          hours, phone and directions links alongside the map. */}
+      {/* Google Map Section with integrated CTA band */}
       <LocationMap
         tag="VISIT US"
         title="Find Our Ankleshwar Office"
         lead="Walk in for switchgear, motor spares and cut-to-length cable — our GIDC counter is five minutes off Old NH 8, with stock on the shelf and a technical team on the floor."
       />
-
-      {/* Call to Action Band */}
-      <CtaBand onOpenRFQ={onOpenRFQ} />
     </>
   );
 }

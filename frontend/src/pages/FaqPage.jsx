@@ -67,12 +67,6 @@ export default function FaqPage({ onOpenRFQ }) {
           </div>
         </div>
       </section>
-
-      <CtaBand
-        title="Still have a question?"
-        text="Our sales engineers answer technical sizing questions directly — no call centre in between."
-        onOpenRFQ={onOpenRFQ}
-      />
     </>
   );
 }

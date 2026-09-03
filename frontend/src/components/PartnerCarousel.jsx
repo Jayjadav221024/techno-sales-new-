@@ -59,7 +59,7 @@ export default function PartnerCarousel() {
           const translateZ = absOffset * -120; // Push inactive cards backwards in Z-space
           const translateX = offset * 260; // Spread cards horizontally
           const scale = 1 - absOffset * 0.12; // Shrink inactive cards
-          const opacity = absOffset > 2 ? 0 : 1 - absOffset * 0.35; // Fade distant cards
+          const opacity = absOffset > 2 ? 0 : 1; // 100% solid opaque cards, never transparent
           const zIndex = 10 - absOffset; // Layer active card on top
 
           return (
@@ -70,7 +70,7 @@ export default function PartnerCarousel() {
                 position: 'absolute',
                 width: '320px',
                 height: '360px',
-                transition: 'transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease, zindex 0.8s ease',
+                transition: 'transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease, z-index 0.8s ease',
                 transform: `translateX(${translateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`,
                 opacity: opacity,
                 zIndex: zIndex,

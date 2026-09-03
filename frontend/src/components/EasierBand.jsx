@@ -23,6 +23,8 @@ export default function EasierBand() {
         </div>
 
         <div className="easier-body reveal-on-scroll">
+          <span className="section-tag">STREAMLINED INDUSTRIAL PROCUREMENT</span>
+
           <h2 className="section-title easier-title">
             We Made Things Easier
             <br />

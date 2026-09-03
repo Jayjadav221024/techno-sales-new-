@@ -242,12 +242,6 @@ export default function CareersPage({ onOpenRFQ }) {
           of work you are after. We keep applications on file and reach out when something fits.
         </p>
       </section>
-
-      <CtaBand
-        title="Want to talk before you apply?"
-        text="Call the counter and ask for the sales desk — we would rather have a five-minute conversation than a perfect covering letter."
-        onOpenRFQ={onOpenRFQ}
-      />
     </>
   );
 }

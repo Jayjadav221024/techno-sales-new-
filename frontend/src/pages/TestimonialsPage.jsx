@@ -36,12 +36,6 @@ export default function TestimonialsPage({ onOpenRFQ }) {
       </section>
 
       <StatsBand />
-
-      <CtaBand
-        title="Want to be our next success story?"
-        text="Tell us what your plant needs and we'll quote it — usually within two hours."
-        onOpenRFQ={onOpenRFQ}
-      />
     </>
   );
 }

@@ -128,10 +128,18 @@ function StatCard({ stat }) {
 export default function StatsBand() {
   return (
     <section className="milestones-section">
-      <div className="container stats-grid">
-        {MILESTONES.map((stat) => (
-          <StatCard key={stat.label} stat={stat} />
-        ))}
+      <div className="container">
+        <div className="section-header reveal-on-scroll">
+          <span className="section-tag">OUR PROVEN TRACK RECORD</span>
+          <h2 className="section-title">Milestones in Numbers</h2>
+          <p className="section-desc">A decade of industrial supply excellence and trusted reliability across Gujarat's manufacturing sector.</p>
+        </div>
+
+        <div className="stats-grid">
+          {MILESTONES.map((stat) => (
+            <StatCard key={stat.label} stat={stat} />
+          ))}
+        </div>
       </div>
     </section>
   );

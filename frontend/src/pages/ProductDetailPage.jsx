@@ -248,8 +248,6 @@ export default function ProductDetailPage({ onOpenRFQ }) {
           </Link>
         </div>
       </section>
-
-      <CtaBand onOpenRFQ={onOpenRFQ} />
     </>
   );
 }

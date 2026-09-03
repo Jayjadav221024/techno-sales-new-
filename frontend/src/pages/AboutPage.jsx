@@ -9,10 +9,14 @@ import { FEATURES, PARTNERS, TEAM } from '../data/site';
 import { useSection, useSectionProps } from '../context/SiteContentContext';
 import { useCompany } from '../context/SiteContentContext';
 
+import FeaturesAccordion from '../components/FeaturesAccordion';
+import ScrollTimeline from '../components/ScrollTimeline';
+
 export default function AboutPage({ onOpenRFQ }) {
   const COMPANY = useCompany();
   const aboutCopy = useSection('about.intro');
   const aboutCopyProps = useSectionProps('about.intro');
+
   return (
     <>
       <PageHeader
@@ -22,19 +26,9 @@ export default function AboutPage({ onOpenRFQ }) {
         lead={aboutCopy.lead}
       />
 
-      {/* Advantages */}
-      <section className="about-features-section container">
-        <div className="features-grid">
-          {FEATURES.map((feature) => (
-            <div className="glass-card feature-card reveal-on-scroll" key={feature.title}>
-              <div className="feature-icon-wrapper">
-                <Icon name={feature.icon} size={28} />
-              </div>
-              <h3 className="feature-title">{feature.title}</h3>
-              <p className="feature-desc">{feature.desc}</p>
-            </div>
-          ))}
-        </div>
+      {/* Advantages Horizontal Accordion */}
+      <section className="about-features-section container" style={{ paddingBottom: '3.5rem' }}>
+        <FeaturesAccordion items={FEATURES} />
       </section>
 
       {/* What the integrated supply model actually buys you */}
@@ -67,48 +61,8 @@ export default function AboutPage({ onOpenRFQ }) {
         </div>
       </section>
 
-      {/* Industrial Growth & Milestone Journey Timeline */}
-      <section className="container reveal-on-scroll" style={{ padding: '3rem 1.5rem' }}>
-        <div className="section-header" style={{ textAlign: 'center', marginBottom: '3rem' }}>
-          <span className="section-tag">OUR EVOLUTION</span>
-          <h2 className="section-title">Milestone Journey & Industrial Heritage</h2>
-          <p className="section-subtitle">Over a decade of trusted electro-mechanical supply excellence across Ankleshwar and Gujarat industrial estates.</p>
-        </div>
-
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(240px, 100%), 1fr))', gap: '1.5rem' }}>
-          <div className="glass-card" style={{ padding: '1.75rem', position: 'relative', borderTop: '3px solid var(--accent-cyan)' }}>
-            <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--accent-cyan)', display: 'block', marginBottom: '0.5rem' }}>2014</span>
-            <h4 style={{ fontSize: '1.1rem', marginBottom: '0.5rem', color: 'var(--text-main)' }}>Foundation in Ankleshwar</h4>
-            <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', lineHeight: '1.5' }}>
-              Established operations in Ankleshwar GIDC to supply genuine industrial electric motors and switchgear components to regional chemical plants.
-            </p>
-          </div>
-
-          <div className="glass-card" style={{ padding: '1.75rem', position: 'relative', borderTop: '3px solid var(--accent-cyan)' }}>
-            <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--accent-cyan)', display: 'block', marginBottom: '0.5rem' }}>2017</span>
-            <h4 style={{ fontSize: '1.1rem', marginBottom: '0.5rem', color: 'var(--text-main)' }}>Siemens & CG Alliances</h4>
-            <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', lineHeight: '1.5' }}>
-              Formed authorized channel partnerships with Siemens and Crompton Greaves to deliver high-efficiency IE2/IE3/IE4 motors and SIRIUS switchgear.
-            </p>
-          </div>
-
-          <div className="glass-card" style={{ padding: '1.75rem', position: 'relative', borderTop: '3px solid var(--accent-cyan)' }}>
-            <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--accent-cyan)', display: 'block', marginBottom: '0.5rem' }}>2020</span>
-            <h4 style={{ fontSize: '1.1rem', marginBottom: '0.5rem', color: 'var(--text-main)' }}>Polycab Cables & FRP Addition</h4>
-            <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', lineHeight: '1.5' }}>
-              Expanded inventory with authorized Polycab LT/HT cables and anti-corrosive FRP structural gratings for heavy chemical & marine zones.
-            </p>
-          </div>
-
-          <div className="glass-card" style={{ padding: '1.75rem', position: 'relative', borderTop: '3px solid var(--accent-cyan)' }}>
-            <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--accent-cyan)', display: 'block', marginBottom: '0.5rem' }}>2026</span>
-            <h4 style={{ fontSize: '1.1rem', marginBottom: '0.5rem', color: 'var(--text-main)' }}>1,000+ Industrial Clients</h4>
-            <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', lineHeight: '1.5' }}>
-              Supplying 10,000+ SKUs across 13+ industrial districts with a 99% client retention rate and 2-hour SLA response support.
-            </p>
-          </div>
-        </div>
-      </section>
+      {/* Interactive On-Scroll Milestone Journey Timeline */}
+      <ScrollTimeline />
 
       {/* Milestones */}
       <StatsBand />
@@ -185,8 +139,6 @@ export default function AboutPage({ onOpenRFQ }) {
           ))}
         </div>
       </section>
-
-      <CtaBand onOpenRFQ={onOpenRFQ} />
     </>
   );
 }

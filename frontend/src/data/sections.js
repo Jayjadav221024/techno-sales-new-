@@ -113,6 +113,7 @@ export const SECTIONS = [
         itemLabel: 'Card',
         itemFields: [
           t('icon', 'Icon Name', 'e.g. shieldCheck, truck, cog'),
+          t('image', 'Background / Illustration Image', 'e.g. /images/sections/why-choose-us.jpg'),
           t('title', 'Card Title'),
           area('desc', 'Card Text'),
         ],

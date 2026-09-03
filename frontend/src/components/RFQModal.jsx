@@ -71,8 +71,8 @@ export default function RFQModal({ isOpen, onClose, selectedProductName, onShowT
           <Icon name="close" size={18} />
         </button>
         
-        <h3 style={{ fontSize: '1.5rem', marginBottom: '0.4rem', color: 'var(--accent-cyan)' }}>Request Formal RFQ Quotation</h3>
-        <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '1.5rem' }}>Fast-track quote request directly to Techno Sales Ankleshwar desk.</p>
+        <h3 style={{ fontSize: '1.3rem', marginBottom: '0.25rem', color: 'var(--accent-cyan)', paddingRight: '2rem' }}>Request Formal RFQ Quotation</h3>
+        <p style={{ fontSize: '0.84rem', color: 'var(--text-muted)', marginBottom: '1rem', paddingRight: '2rem' }}>Fast-track quote request directly to Techno Sales Ankleshwar desk.</p>
 
         <form id="rfq-form" onSubmit={handleSubmit}>
           <div className="form-group">

@@ -48,18 +48,22 @@ export default function Hero({ products, onSelectProduct, onOpenRFQ, searchQuery
     <section id="hero" className="hero" {...sectionProps}>
       <div className="container hero-content">
         <div className="hero-text reveal-on-scroll">
-          <div className="hero-badge">
-            <div className="pulse-dot"></div>
-            {slide.badge}
+          <div className="hero-brand-logo">
+            <img 
+              src="/images/brand/logo-responsive.png" 
+              alt="Techno Sales" 
+              className="logo-light hero-logo-img" 
+            />
+            <img 
+              src="/images/brand/logo-white.png" 
+              alt="Techno Sales" 
+              className="logo-dark hero-logo-img" 
+            />
           </div>
 
           <h1 className="hero-title">
             {hero.headingPrefix} <span className="gradient-text-cyan">{slide.title}</span>
           </h1>
-
-          <p className="hero-description">
-            {slide.desc}
-          </p>
 
           {/* Live Product Instant Search Engine */}
           <div className="search-box-wrapper">

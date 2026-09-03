@@ -198,11 +198,6 @@ export default function Navbar({ onOpenRFQ }) {
               )}
             </li>
 
-            {/* FRP Products Direct Link */}
-            <li className="nav-item" onMouseEnter={(e) => moveTo(e.currentTarget)}>
-              <NavLink to="/product/frp-products" className={navLinkClass}>Why FRP</NavLink>
-            </li>
-
             <li className="nav-item" onMouseEnter={(e) => moveTo(e.currentTarget)}>
               <NavLink to="/locations" className={navLinkClass}>Locations</NavLink>
             </li>
@@ -279,7 +274,6 @@ export default function Navbar({ onOpenRFQ }) {
             </div>
           )}
 
-          <Link to="/product/frp-products" className="nav-sheet-link" onClick={closeAll}>Why FRP</Link>
           <Link to="/locations" className="nav-sheet-link" onClick={closeAll}>Locations</Link>
           <Link to="/testimonials" className="nav-sheet-link" onClick={closeAll}>Testimonials</Link>
           <Link to="/blog" className="nav-sheet-link" onClick={closeAll}>Blog</Link>
